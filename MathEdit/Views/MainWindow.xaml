@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:MathEdit"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
 
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" />
+                <MenuItem Header="_Open" />
+                <MenuItem Header="_Save" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Check if toby = homosex" IsCheckable="false" IsChecked="True" />
+                <MenuItem Header="_Settings" IsCheckable="True" />
+            </MenuItem>
+        </Menu>
+        <TextBox AcceptsReturn="True" />
+    </DockPanel>
+
 </Window>
