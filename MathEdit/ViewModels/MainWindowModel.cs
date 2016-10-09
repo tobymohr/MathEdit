@@ -4,16 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathEdit
+namespace MathEdit.ViewModel
 {
-    class Control
+    class MainWindowModel
     {
-        public void makeFormula()
-        {
-            //return new Formulafield();
-        }
-
+        // INDSÆT ALLE EVENTHANDLERS TIL VIEWET HER
     }
-
-
 }
