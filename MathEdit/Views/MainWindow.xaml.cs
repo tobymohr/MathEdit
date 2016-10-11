@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathEdit.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,12 @@ namespace MathEdit
 {
     public partial class MainWindow : Window
     {
+        EnabledFlowDocument fd = new EnabledFlowDocument();
+    
         public MainWindow()
         {
             InitializeComponent();
+          
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -34,28 +38,52 @@ namespace MathEdit
 
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
-            Paragraph para = new Paragraph();
-            FlowDocument fd = new FlowDocument();
-            fd.Blocks.Add(para);
-            textBoxMain.Document = fd;
-            para.Inlines.Add(new RichTextBox() { Focusable = true });
+            createNewRtb();
         }
+
+       
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void createNewRtb()
         {
-            ComboBox comboBox = (ComboBox) sender;
-            ComboBoxItem value = (ComboBoxItem)comboBox.SelectedValue;
-            TextRange tr = new TextRange(textBoxMain.Selection.Start, textBoxMain.Selection.End);
-            tr.ApplyPropertyValue(TextElement.FontSizeProperty, value.Content);
-            
-            //textBoxMain.FontSize = double.Parse(value.Content.ToString());
-            //textBoxMain.cha
+            Paragraph para = new Paragraph();
+            if(fd.Blocks.Count == 1)
+            {
+                para = (Paragraph)fd.Blocks.LastBlock;
+            }else
+            {
+                fd.Blocks.Add(para);
+            }
+          
+
+            textBoxMain.Document = fd;
+            RichTextBox rtb = new RichTextBox() { Focusable = true };
+            rtb.Width = 100;
+            rtb.Focusable = true;
+            rtb.Focus();
+            rtb.TextChanged += onTextChanged;
+            rtb.AcceptsReturn = false;
+            para.Inlines.Add(rtb);
         }
+
+        private void MouseEnter(Object sender, RoutedEventArgs e)
+        {
+            RichTextBox rt = (RichTextBox)sender;
+            rt.Focus();
+            Console.WriteLine("Mouse entered" );
+        }
+
+        private void onTextChanged(object sender, EventArgs e)
+        {
+            RichTextBox rt = (RichTextBox)sender;
+            string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
+            Console.WriteLine(richText);
+        }
+
 
     }
 }
