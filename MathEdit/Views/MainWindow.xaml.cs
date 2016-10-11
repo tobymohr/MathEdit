@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MathEdit.ViewModel;
+using MathEdit.Views;
+
 namespace MathEdit
 {
     public partial class MainWindow : Window
@@ -51,30 +54,14 @@ namespace MathEdit
             {
                 string filename = saveDialog.FileName;
             }
-        }
           
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
-        }
-
-       
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void createNewRtb()
@@ -99,7 +86,6 @@ namespace MathEdit
             rtb.Focusable = true;
             rtb.Focus();
             rtb.TextChanged += onTextChanged;
-            rtb.MouseEnter += MouseEnter;
             rtb.AcceptsReturn = false;
             para.Inlines.Add(rtb);
         }
@@ -127,6 +113,14 @@ namespace MathEdit
             //textBoxMain.cha
         }
 
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
