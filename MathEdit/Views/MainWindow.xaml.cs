@@ -83,6 +83,16 @@ namespace MathEdit
             string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
             Console.WriteLine(richText);
         }
+        private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            ComboBoxItem value = (ComboBoxItem)comboBox.SelectedValue;
+            TextRange tr = new TextRange(textBoxMain.Selection.Start, textBoxMain.Selection.End);
+            tr.ApplyPropertyValue(TextElement.FontSizeProperty, value.Content);
+
+            //textBoxMain.FontSize = double.Parse(value.Content.ToString());
+            //textBoxMain.cha
+        }
 
 
     }
