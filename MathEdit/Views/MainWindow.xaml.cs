@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathEdit.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,12 @@ namespace MathEdit
 {
     public partial class MainWindow : Window
     {
+        EnabledFlowDocument fd = new EnabledFlowDocument();
+    
         public MainWindow()
         {
             InitializeComponent();
+          
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -34,17 +38,33 @@ namespace MathEdit
 
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
-            Paragraph para = new Paragraph();
-            FlowDocument fd = new FlowDocument();
-            fd.Blocks.Add(para);
-            textBoxMain.Document = fd;
-            para.Inlines.Add(new RichTextBox() { Focusable = true });
+            createNewRtb();
         }
+
+       
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void createNewRtb()
+        {
+            Paragraph para = new Paragraph();
+            fd.Blocks.Add(para);
+            textBoxMain.Document = fd;
+            RichTextBox rtb = new RichTextBox() { Focusable = true };
+            para.Inlines.Add(rtb);
+        }
+
+        private void Control1_MouseEnter(Object sender, RoutedEventArgs e)
+        {
+            
+            RichTextBox rt = (RichTextBox)sender;
+            rt.Focus();
+            Console.WriteLine("SOO GUT");
+        }
+
 
     }
 }
