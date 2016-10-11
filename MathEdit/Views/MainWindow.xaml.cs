@@ -51,18 +51,37 @@ namespace MathEdit
         private void createNewRtb()
         {
             Paragraph para = new Paragraph();
-            fd.Blocks.Add(para);
+            if(fd.Blocks.Count == 1)
+            {
+                para = (Paragraph)fd.Blocks.LastBlock;
+            }else
+            {
+                fd.Blocks.Add(para);
+            }
+          
+
             textBoxMain.Document = fd;
             RichTextBox rtb = new RichTextBox() { Focusable = true };
+            rtb.Width = 100;
+            rtb.Focusable = true;
+            rtb.Focus();
+            rtb.TextChanged += onTextChanged;
+            rtb.AcceptsReturn = false;
             para.Inlines.Add(rtb);
         }
 
-        private void Control1_MouseEnter(Object sender, RoutedEventArgs e)
+        private void MouseEnter(Object sender, RoutedEventArgs e)
         {
-            
             RichTextBox rt = (RichTextBox)sender;
             rt.Focus();
-            Console.WriteLine("SOO GUT");
+            Console.WriteLine("Mouse entered" );
+        }
+
+        private void onTextChanged(object sender, EventArgs e)
+        {
+            RichTextBox rt = (RichTextBox)sender;
+            string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
+            Console.WriteLine(richText);
         }
 
 
