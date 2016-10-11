@@ -23,7 +23,8 @@ namespace MathEdit
         public MainWindow()
         {
             InitializeComponent();
-          
+            textBoxMain.Document = fd;
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -50,22 +51,27 @@ namespace MathEdit
 
         private void createNewRtb()
         {
-            Paragraph para = new Paragraph();
-            if(fd.Blocks.Count == 1)
+            Paragraph para = null;
+            if (fd.Blocks.Count == 0)
             {
-                para = (Paragraph)fd.Blocks.LastBlock;
-            }else
-            {
+                para = new Paragraph();
                 fd.Blocks.Add(para);
+                string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
+                para.Inlines.Add(text);
             }
-          
+            else if (fd.Blocks.Count > 0)
+            {   
+                para = (Paragraph)fd.Blocks.LastBlock;
+            }
 
-            textBoxMain.Document = fd;
             RichTextBox rtb = new RichTextBox() { Focusable = true };
+
+           
             rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
             rtb.TextChanged += onTextChanged;
+            rtb.MouseEnter += MouseEnter;
             rtb.AcceptsReturn = false;
             para.Inlines.Add(rtb);
         }
@@ -80,8 +86,7 @@ namespace MathEdit
         private void onTextChanged(object sender, EventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
-            string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
-            Console.WriteLine(richText);
+            //string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
         }
 
 
