@@ -27,10 +27,16 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Check if toby = homosex" IsCheckable="false" IsChecked="True" />
-                <MenuItem Header="_Settings" IsCheckable="True" />
+                <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
+                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
             </MenuItem>
+            <ComboBox x:Name="fontSizeBox" Width="40" SelectionChanged="fontSizeBox_SelectionChanged">
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem>12</ComboBoxItem>
+                    <ComboBoxItem>20</ComboBoxItem>
+            </ComboBox>
         </Menu>
-        <TextBox AcceptsReturn="True" />
+        <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" />
     </DockPanel>
 
 </Window>
