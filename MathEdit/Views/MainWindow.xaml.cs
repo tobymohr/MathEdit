@@ -21,5 +21,30 @@ namespace MathEdit
         {
             InitializeComponent();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
+        {
+            Paragraph para = new Paragraph();
+            FlowDocument fd = new FlowDocument();
+            fd.Blocks.Add(para);
+            textBoxMain.Document = fd;
+            para.Inlines.Add(new RichTextBox() { Focusable = true });
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

@@ -12,16 +12,17 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_New" />
                 <MenuItem Header="_Open" />
-                <MenuItem Header="_Save" />
+                <MenuItem Header="_Save"  />
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Check if toby = homosex" IsCheckable="false" IsChecked="True" />
-                <MenuItem Header="_Settings" IsCheckable="True" />
+                <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
+                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
             </MenuItem>
         </Menu>
-        <TextBox AcceptsReturn="True" />
+        <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" />
     </DockPanel>
 
 </Window>
