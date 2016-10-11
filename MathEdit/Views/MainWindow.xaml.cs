@@ -56,9 +56,6 @@ namespace MathEdit
             }
           
         }
-
-        
-
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
@@ -79,15 +76,15 @@ namespace MathEdit
                 para = (Paragraph)fd.Blocks.LastBlock;
             }
 
+            
             RichTextBox rtb = new RichTextBox() { Focusable = true };
-
-           
             rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
             rtb.TextChanged += onTextChanged;
-            rtb.AcceptsReturn = false;
             para.Inlines.Add(rtb);
+            Console.WriteLine(rtb.IsFocused);
+
         }
 
         private void MouseEnter(Object sender, RoutedEventArgs e)
