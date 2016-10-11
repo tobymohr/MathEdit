@@ -6,21 +6,35 @@
         xmlns:local="clr-namespace:MathEdit"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed"></CommandBinding>
+        <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed"></CommandBinding>
+    </Window.CommandBindings>
+    
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Control" Command="Open"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control" Command="Save"></KeyBinding>
+    </Window.InputBindings>
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" />
-                <MenuItem Header="_Open" />
-                <MenuItem Header="_Save"  />
+                <MenuItem Header="_New" InputGestureText="Ctrl+N" />
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="Open"/>
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="Save"/>
                 <Separator />
-                <MenuItem Header="_Exit" />
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Check if toby = homosex" IsCheckable="false" IsChecked="True" />
                 <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
                 <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
             </MenuItem>
+            <ComboBox x:Name="fontSizeBox" Width="40" SelectionChanged="fontSizeBox_SelectionChanged">
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem>12</ComboBoxItem>
+                    <ComboBoxItem>20</ComboBoxItem>
+            </ComboBox>
         </Menu>
         <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" />
     </DockPanel>

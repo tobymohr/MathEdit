@@ -1,4 +1,4 @@
-﻿using MathEdit.Views;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,35 @@ namespace MathEdit
         {
             InitializeComponent();
             textBoxMain.Document = fd;
+        }
 
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.DefaultExt = "xml";
+            openDialog.Filter = "XML Files|*.xml";
+
+            Nullable<bool> result = openDialog.ShowDialog();
+            if (result == true)
+            {
+                string filename = openDialog.FileName;
+            }
+        }
+        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // Need to find a way to parse content to an XML doc
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.FileName = "Sheet";
+            saveDialog.DefaultExt = ".xml";
+            saveDialog.Filter = "XML Files|*.xml";
+
+            Nullable<bool> result = saveDialog.ShowDialog();
+            if (result == true)
+            {
+                string filename = saveDialog.FileName;
+            }
+        }
+          
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -87,6 +115,16 @@ namespace MathEdit
         {
             RichTextBox rt = (RichTextBox)sender;
             //string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
+        }
+        private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            ComboBoxItem value = (ComboBoxItem)comboBox.SelectedValue;
+            TextRange tr = new TextRange(textBoxMain.Selection.Start, textBoxMain.Selection.End);
+            tr.ApplyPropertyValue(TextElement.FontSizeProperty, value.Content);
+
+            //textBoxMain.FontSize = double.Parse(value.Content.ToString());
+            //textBoxMain.cha
         }
 
 
