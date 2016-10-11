@@ -8,6 +8,5 @@ namespace MathEdit.ViewModel
 {
     class MainWindowModel
     {
-        // INDSÆT ALLE EVENTHANDLERS TIL VIEWET HER
     }
 }
