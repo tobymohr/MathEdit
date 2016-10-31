@@ -21,6 +21,8 @@ namespace MathEdit
     public partial class MainWindow : Window
     {
         EnabledFlowDocument fd = new EnabledFlowDocument();
+        //fix for fontSizeBox first run
+        bool fr = true;
     
         public MainWindow()
         {
@@ -53,11 +55,7 @@ namespace MathEdit
             {
                 string filename = saveDialog.FileName;
             }
-          
         }
-
-        
-
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
@@ -77,24 +75,31 @@ namespace MathEdit
             {   
                 para = (Paragraph)fd.Blocks.LastBlock;
             }
-
             RichTextBox rtb = new RichTextBox() { Focusable = true };
-
-           
+            
             rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
             rtb.TextChanged += onTextChanged;
-            rtb.AcceptsReturn = false;
+
+            SquareControl sqr = new SquareControl();
+            EnabledFlowDocument rtbDoc = new EnabledFlowDocument();
+            rtb.Document = rtbDoc;
+            Paragraph rtbPara = new Paragraph();
+            rtbDoc.Blocks.Add(rtbPara);
+            rtbPara.Inlines.Add(sqr);
             para.Inlines.Add(rtb);
+
         }
 
         private void MouseEnter(Object sender, RoutedEventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
             rt.Focus();
-            Console.WriteLine("Mouse entered" );
+            Console.WriteLine("Mouse entered");
         }
+
+   
 
         private void onTextChanged(object sender, EventArgs e)
         {
@@ -103,13 +108,16 @@ namespace MathEdit
         }
         private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             ComboBox comboBox = (ComboBox)sender;
-            ComboBoxItem value = (ComboBoxItem)comboBox.SelectedValue;
-            TextRange tr = new TextRange(textBoxMain.Selection.Start, textBoxMain.Selection.End);
-            tr.ApplyPropertyValue(TextElement.FontSizeProperty, value.Content);
-
-            //textBoxMain.FontSize = double.Parse(value.Content.ToString());
-            //textBoxMain.cha
+            string value = (string)comboBox.SelectedValue;
+            if (comboBox.SelectedIndex > -1 && value!=null && !fr)
+            {
+                TextSelection text = textBoxMain.Selection;
+                textBoxMain.Focus();
+                text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
+            }
+            fr = false;
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -120,6 +128,24 @@ namespace MathEdit
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void textBoxMain_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            //Changes combobox to
+            TextSelection text = textBoxMain.Selection;
+            object trsize = text.GetPropertyValue(TextElement.FontSizeProperty);
+            int fs;
+            if (Int32.TryParse(trsize.ToString(), out fs))
+            {
+                fontSizeBox.Text = trsize.ToString();
+            }
+            else
+            {
+                fontSizeBox.SelectedIndex = -1;
+            }
+            //RichTextBox rtb = (RichTextBox)sender;
+            //TextPointer tp = rtb.GetPositionFromPoint()
         }
     }
 }
