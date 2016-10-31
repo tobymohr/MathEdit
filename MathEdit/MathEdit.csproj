@@ -73,6 +73,7 @@
     <Compile Include="Models\DAO.cs" />
     <Compile Include="Models\DTO.cs" />
     <Compile Include="Models\Keybindings.cs" />
+    <Compile Include="Services\DocumentHelper.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="SquareControl.xaml.cs">
       <DependentUpon>SquareControl.xaml</DependentUpon>

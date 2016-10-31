@@ -15,47 +15,24 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using MathEdit.Views;
+using MathEdit.Services;
 
 namespace MathEdit
 {
     public partial class MainWindow : Window
     {
+        string filename = "";
         EnabledFlowDocument fd = new EnabledFlowDocument();
         //fix for fontSizeBox first run
         bool fr = true;
-    
+
         public MainWindow()
         {
             InitializeComponent();
             textBoxMain.Document = fd;
         }
 
-        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "xml";
-            openDialog.Filter = "XML Files|*.xml";
 
-            Nullable<bool> result = openDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = openDialog.FileName;
-            }
-        }
-        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            // Need to find a way to parse content to an XML doc
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.FileName = "Sheet";
-            saveDialog.DefaultExt = ".xml";
-            saveDialog.Filter = "XML Files|*.xml";
-
-            Nullable<bool> result = saveDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = saveDialog.FileName;
-            }
-        }
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
@@ -72,11 +49,11 @@ namespace MathEdit
                 para.Inlines.Add(text);
             }
             else if (fd.Blocks.Count > 0)
-            {   
+            {
                 para = (Paragraph)fd.Blocks.LastBlock;
             }
             RichTextBox rtb = new RichTextBox() { Focusable = true };
-            
+
             rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
@@ -99,7 +76,7 @@ namespace MathEdit
             Console.WriteLine("Mouse entered");
         }
 
-   
+
 
         private void onTextChanged(object sender, EventArgs e)
         {
@@ -108,10 +85,10 @@ namespace MathEdit
         }
         private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             ComboBox comboBox = (ComboBox)sender;
             string value = (string)comboBox.SelectedValue;
-            if (comboBox.SelectedIndex > -1 && value!=null && !fr)
+            if (comboBox.SelectedIndex > -1 && value != null && !fr)
             {
                 TextSelection text = textBoxMain.Selection;
                 textBoxMain.Focus();
@@ -146,6 +123,33 @@ namespace MathEdit
             }
             //RichTextBox rtb = (RichTextBox)sender;
             //TextPointer tp = rtb.GetPositionFromPoint()
+        }
+
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // needs work
+            DocumentHelper helper = new DocumentHelper();
+            fd = helper.openFile();
+        }
+
+        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // works
+            DocumentHelper helper = new DocumentHelper();
+            if (filename == "")
+            {
+                helper.saveDoc(fd);
+            }
+            else
+            {
+                helper.saveDoc(fd, filename);
+            }
+        }
+
+        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDocAs(fd);
         }
     }
 }
