@@ -54,7 +54,6 @@ namespace MathEdit
             {
                 string filename = saveDialog.FileName;
             }
-          
         }
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
@@ -75,15 +74,20 @@ namespace MathEdit
             {   
                 para = (Paragraph)fd.Blocks.LastBlock;
             }
-
-            
             RichTextBox rtb = new RichTextBox() { Focusable = true };
+            
             rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
             rtb.TextChanged += onTextChanged;
+
+            SquareControl sqr = new SquareControl();
+            EnabledFlowDocument rtbDoc = new EnabledFlowDocument();
+            rtb.Document = rtbDoc;
+            Paragraph rtbPara = new Paragraph();
+            rtbDoc.Blocks.Add(rtbPara);
+            rtbPara.Inlines.Add(sqr);
             para.Inlines.Add(rtb);
-            Console.WriteLine(rtb.IsFocused);
 
         }
 
@@ -91,8 +95,10 @@ namespace MathEdit
         {
             RichTextBox rt = (RichTextBox)sender;
             rt.Focus();
-            Console.WriteLine("Mouse entered" );
+            Console.WriteLine("Mouse entered");
         }
+
+   
 
         private void onTextChanged(object sender, EventArgs e)
         {

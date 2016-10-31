@@ -74,7 +74,14 @@
     <Compile Include="Models\DTO.cs" />
     <Compile Include="Models\Keybindings.cs" />
     <Compile Include="Services\Service.cs" />
+    <Compile Include="SquareControl.xaml.cs">
+      <DependentUpon>SquareControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainWindowModel.cs" />
+    <Page Include="SquareControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,7 +123,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\sqrroot.png" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
@@ -128,6 +137,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\sqrrootbase.png" />
+    <Resource Include="images\sqrrootextend.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
