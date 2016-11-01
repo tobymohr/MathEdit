@@ -23,8 +23,11 @@ namespace MathEdit
         public SquareControl()
         {
             InitializeComponent();
+        }
 
-            
+        public RichTextBox getRichTextBox()
+        {
+            return richTextBox;
         }
     }
 }

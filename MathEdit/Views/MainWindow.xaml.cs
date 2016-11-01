@@ -15,6 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using MathEdit.Views;
+using System.Globalization;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace MathEdit
 {
@@ -27,6 +30,7 @@ namespace MathEdit
         public MainWindow()
         {
             InitializeComponent();
+            
             textBoxMain.Document = fd;
         }
 
@@ -63,6 +67,8 @@ namespace MathEdit
 
         private void createNewRtb()
         {
+          
+            
             Paragraph para = null;
             if (fd.Blocks.Count == 0)
             {
@@ -77,19 +83,34 @@ namespace MathEdit
             }
             RichTextBox rtb = new RichTextBox() { Focusable = true };
             
-            rtb.Width = 100;
             rtb.Focusable = true;
             rtb.Focus();
-            rtb.TextChanged += onTextChanged;
+            rtb.Width = 20;
+            rtb.TextChanged += new TextChangedEventHandler((o, e) => rtb.Width = rtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
 
-            SquareControl sqr = new SquareControl();
-            EnabledFlowDocument rtbDoc = new EnabledFlowDocument();
-            rtb.Document = rtbDoc;
-            Paragraph rtbPara = new Paragraph();
-            rtbDoc.Blocks.Add(rtbPara);
-            rtbPara.Inlines.Add(sqr);
+            //SquareControl sqr = new SquareControl();
+            //RichTextBox sqrtRtb = sqr.getRichTextBox();
+            //sqrtRtb.TextChanged += new TextChangedEventHandler((o, e) => sqrtRtb.Width = sqrtRtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
+
+
+            //rtb.Document = rtbDoc;
+            //
+            //
+            //rtbPara.Inlines.Add(sqr);
+            Focus(rtb);
             para.Inlines.Add(rtb);
 
+        }
+
+        public  void Focus(UIElement element)
+        {
+            if (!element.Focus())
+            {
+                element.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(delegate ()
+                {
+                    element.Focus();
+                }));
+            }
         }
 
         private void MouseEnter(Object sender, RoutedEventArgs e)
@@ -146,6 +167,92 @@ namespace MathEdit
             }
             //RichTextBox rtb = (RichTextBox)sender;
             //TextPointer tp = rtb.GetPositionFromPoint()
+        }
+    }
+
+    public static class FlowDocumentExtensions
+    {
+        private static IEnumerable<TextElement> GetRunsAndParagraphs(FlowDocument doc)
+        {
+            for (TextPointer position = doc.ContentStart;
+              position != null && position.CompareTo(doc.ContentEnd) <= 0;
+              position = position.GetNextContextPosition(LogicalDirection.Forward))
+            {
+                if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.ElementEnd)
+                {
+                    Run run = position.Parent as Run;
+
+                    if (run != null)
+                    {
+                        yield return run;
+                    }
+                    else
+                    {
+                        Paragraph para = position.Parent as Paragraph;
+
+                        if (para != null)
+                        {
+                            yield return para;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static FormattedText GetFormattedText(this FlowDocument doc)
+        {
+            if (doc == null)
+            {
+                throw new ArgumentNullException("doc");
+            }
+
+            FormattedText output = new FormattedText(
+              GetText(doc),
+              CultureInfo.CurrentCulture,
+              doc.FlowDirection,
+              new Typeface(doc.FontFamily, doc.FontStyle, doc.FontWeight, doc.FontStretch),
+              doc.FontSize,
+              doc.Foreground);
+
+            int offset = 0;
+
+            foreach (TextElement el in GetRunsAndParagraphs(doc))
+            {
+                Run run = el as Run;
+
+                if (run != null)
+                {
+                    int count = run.Text.Length;
+
+                    output.SetFontFamily(run.FontFamily, offset, count);
+                    output.SetFontStyle(run.FontStyle, offset, count);
+                    output.SetFontWeight(run.FontWeight, offset, count);
+                    output.SetFontSize(run.FontSize, offset, count);
+                    output.SetForegroundBrush(run.Foreground, offset, count);
+                    output.SetFontStretch(run.FontStretch, offset, count);
+                    output.SetTextDecorations(run.TextDecorations, offset, count);
+
+                    offset += count;
+                }
+                else
+                {
+                    offset += Environment.NewLine.Length;
+                }
+            }
+
+            return output;
+        }
+
+        private static string GetText(FlowDocument doc)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (TextElement el in GetRunsAndParagraphs(doc))
+            {
+                Run run = el as Run;
+                sb.Append(run == null ? Environment.NewLine : run.Text);
+            }
+            return sb.ToString();
         }
     }
 }
