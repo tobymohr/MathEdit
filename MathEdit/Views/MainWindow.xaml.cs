@@ -23,8 +23,7 @@ namespace MathEdit
     {
         string filename = "";
         EnabledFlowDocument fd = new EnabledFlowDocument();
-        //fix for fontSizeBox first run
-        bool fr = true;
+        
 
         public MainWindow()
         {
@@ -88,13 +87,13 @@ namespace MathEdit
 
             ComboBox comboBox = (ComboBox)sender;
             string value = (string)comboBox.SelectedValue;
-            if (comboBox.SelectedIndex > -1 && value != null && !fr)
+            if (comboBox.IsDropDownOpen)
             {
                 TextSelection text = textBoxMain.Selection;
                 textBoxMain.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
             }
-            fr = false;
+            
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
