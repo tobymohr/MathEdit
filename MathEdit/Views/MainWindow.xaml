@@ -9,11 +9,13 @@
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed"></CommandBinding>
         <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed"></CommandBinding>
+        <CommandBinding Command="SaveAs" Executed="SaveAsCommandBinding_Executed"></CommandBinding>
     </Window.CommandBindings>
     
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Control" Command="Open"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="Save"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control+Alt" Command="SaveAs"></KeyBinding>
     </Window.InputBindings>
 
     <DockPanel>
@@ -22,6 +24,7 @@
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" />
                 <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="Open"/>
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="Save"/>
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="SaveAs"/>
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>

@@ -18,15 +18,16 @@ using MathEdit.Views;
 using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
+using MathEdit.Services;
 
 namespace MathEdit
 {
     public partial class MainWindow : Window
     {
+        string filename = "";
         EnabledFlowDocument fd = new EnabledFlowDocument();
-        //fix for fontSizeBox first run
-        bool fr = true;
-    
+        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,7 +79,7 @@ namespace MathEdit
                 para.Inlines.Add(text);
             }
             else if (fd.Blocks.Count > 0)
-            {   
+            {
                 para = (Paragraph)fd.Blocks.LastBlock;
             }
             RichTextBox rtb = new RichTextBox() { Focusable = true };
@@ -120,7 +121,7 @@ namespace MathEdit
             Console.WriteLine("Mouse entered");
         }
 
-   
+
 
         private void onTextChanged(object sender, EventArgs e)
         {
@@ -129,16 +130,16 @@ namespace MathEdit
         }
         private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             ComboBox comboBox = (ComboBox)sender;
             string value = (string)comboBox.SelectedValue;
-            if (comboBox.SelectedIndex > -1 && value!=null && !fr)
+            if (comboBox.IsDropDownOpen)
             {
                 TextSelection text = textBoxMain.Selection;
                 textBoxMain.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
             }
-            fr = false;
+            
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -167,6 +168,33 @@ namespace MathEdit
             }
             //RichTextBox rtb = (RichTextBox)sender;
             //TextPointer tp = rtb.GetPositionFromPoint()
+        }
+
+        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // needs work
+            DocumentHelper helper = new DocumentHelper();
+            fd = helper.openFile();
+        }
+
+        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // works
+            DocumentHelper helper = new DocumentHelper();
+            if (filename == "")
+            {
+                helper.saveDoc(fd);
+            }
+            else
+            {
+                helper.saveDoc(fd, filename);
+            }
+        }
+
+        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDocAs(fd);
         }
     }
 
