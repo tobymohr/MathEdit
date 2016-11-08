@@ -35,32 +35,7 @@ namespace MathEdit
             textBoxMain.Document = fd;
         }
 
-        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "xml";
-            openDialog.Filter = "XML Files|*.xml";
-
-            Nullable<bool> result = openDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = openDialog.FileName;
-            }
-        }
-        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            // Need to find a way to parse content to an XML doc
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.FileName = "Sheet";
-            saveDialog.DefaultExt = ".xml";
-            saveDialog.Filter = "XML Files|*.xml";
-
-            Nullable<bool> result = saveDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = saveDialog.FileName;
-            }
-        }
+        
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
