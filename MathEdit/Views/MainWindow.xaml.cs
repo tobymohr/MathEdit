@@ -26,12 +26,13 @@ namespace MathEdit
     {
         string filename = "";
         EnabledFlowDocument fd = new EnabledFlowDocument();
-        
+        RichTextBox parentTb;
+        int count = 0;
+        int countParents = 0;
 
         public MainWindow()
         {
             InitializeComponent();
-            
             textBoxMain.Document = fd;
         }
 
@@ -45,44 +46,36 @@ namespace MathEdit
         {
             Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(this);
-            RichTextBox parentTb = (RichTextBox)focusedControl;
-            FlowDocument localFd;
+            parentTb = (RichTextBox)focusedControl;
+            FlowDocument parentFd;
 
             if(parentTb.Document.GetType() == typeof(EnabledFlowDocument)){
-                localFd = parentTb.Document;
+                parentFd = parentTb.Document;
             }else
             {
-                localFd = new EnabledFlowDocument();
-                parentTb.Document = localFd;
+                parentFd = new EnabledFlowDocument();
+                parentTb.Document = parentFd;
             }
-         
-            if (localFd.Blocks.Count == 0)
+
+            if (parentFd.Blocks.Count == 0)
             {
                 para = new Paragraph();
-                localFd.Blocks.Add(para);
+                parentFd.Blocks.Add(para);
                 string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
                 para.Inlines.Add(text);
             }
-            else if (localFd.Blocks.Count > 0)
+            else if (parentFd.Blocks.Count > 0)
             {
-                para = (Paragraph)localFd.Blocks.LastBlock;
+                para = (Paragraph)parentFd.Blocks.LastBlock;
             }
+
             RichTextBox rtb = new RichTextBox() { Focusable = true };
-            
             rtb.Focusable = true;
             rtb.Focus();
-            rtb.Width = 20;
-            rtb.TextChanged += new TextChangedEventHandler((o, e) => rtb.Width = rtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
+            count++;
+            rtb.Name = "xx" + count + "xxx";
+            rtb.TextChanged += onTextChanged;
             rtb.Document = new EnabledFlowDocument();
-            //SquareControl sqr = new SquareControl();
-            //RichTextBox sqrtRtb = sqr.getRichTextBox();
-            //sqrtRtb.TextChanged += new TextChangedEventHandler((o, e) => sqrtRtb.Width = sqrtRtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
-
-
-            //rtb.Document = rtbDoc;
-            //
-            //
-            //rtbPara.Inlines.Add(sqr);
             Focus(rtb);
             para.Inlines.Add(rtb);
 
@@ -99,19 +92,48 @@ namespace MathEdit
             }
         }
 
-        private void MouseEnter(Object sender, RoutedEventArgs e)
-        {
-            RichTextBox rt = (RichTextBox)sender;
-            rt.Focus();
-            Console.WriteLine("Mouse entered");
-        }
 
-
-
+        private static Action EmptyDelegate = delegate () { };
         private void onTextChanged(object sender, EventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
-            //string richText = new TextRange(rt.Document.ContentStart, rt.Document.ContentEnd).Text;
+            if (rt.IsFocused)
+            {
+                rt.Width = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20;
+            }
+            
+            RichTextBox parent = findParent(rt);
+            while(parent != null)
+            {
+                countParents++;
+                Console.WriteLine("countParents " + countParents);
+                if (parent != null && parent != sender)
+                {
+                    if (parent.Name != "textBoxMain")
+                    {
+                        parent.Width = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
+                    }
+                }
+                parent = findParent(parent);
+            }
+            countParents = 0;
+        }
+
+        private RichTextBox findParent(DependencyObject sender)
+        {
+            if(sender != null)
+            {
+                DependencyObject parentObject = VisualTreeHelper.GetParent(sender);
+
+                RichTextBox parentBox = parentObject as RichTextBox;
+                if (parentBox != null )
+                {
+                    return parentBox;
+                }
+                return findParent(parentObject);
+            }
+            return null;
+           
         }
         private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

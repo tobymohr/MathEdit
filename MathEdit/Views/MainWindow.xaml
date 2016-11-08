@@ -1,6 +1,7 @@
 ﻿<Window x:Class="MathEdit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MathEdit"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathEdit"
@@ -29,7 +30,7 @@
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="_Tools">
-                <MenuItem Header="_Check if toby = homosex" IsCheckable="false" IsChecked="True" Click="MenuItem_Click" />
+           
                 <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
                 <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
             </MenuItem>
@@ -41,7 +42,7 @@
             </ComboBox>
         </Menu>
         <Grid x:Name="gridParent">
-        <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" SelectionChanged="textBoxMain_SelectionChanged" />
+            <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" SelectionChanged="textBoxMain_SelectionChanged" />
         </Grid>
     </DockPanel>
 
