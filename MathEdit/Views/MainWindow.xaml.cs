@@ -43,19 +43,29 @@ namespace MathEdit
 
         private void createNewRtb()
         {
-          
-            
             Paragraph para = null;
-            if (fd.Blocks.Count == 0)
+            IInputElement focusedControl = FocusManager.GetFocusedElement(this);
+            RichTextBox parentTb = (RichTextBox)focusedControl;
+            FlowDocument localFd;
+
+            if(parentTb.Document.GetType() == typeof(EnabledFlowDocument)){
+                localFd = parentTb.Document;
+            }else
+            {
+                localFd = new EnabledFlowDocument();
+                parentTb.Document = localFd;
+            }
+         
+            if (localFd.Blocks.Count == 0)
             {
                 para = new Paragraph();
-                fd.Blocks.Add(para);
+                localFd.Blocks.Add(para);
                 string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
                 para.Inlines.Add(text);
             }
-            else if (fd.Blocks.Count > 0)
+            else if (localFd.Blocks.Count > 0)
             {
-                para = (Paragraph)fd.Blocks.LastBlock;
+                para = (Paragraph)localFd.Blocks.LastBlock;
             }
             RichTextBox rtb = new RichTextBox() { Focusable = true };
             
@@ -63,7 +73,7 @@ namespace MathEdit
             rtb.Focus();
             rtb.Width = 20;
             rtb.TextChanged += new TextChangedEventHandler((o, e) => rtb.Width = rtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
-
+            rtb.Document = new EnabledFlowDocument();
             //SquareControl sqr = new SquareControl();
             //RichTextBox sqrtRtb = sqr.getRichTextBox();
             //sqrtRtb.TextChanged += new TextChangedEventHandler((o, e) => sqrtRtb.Width = sqrtRtb.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20);
