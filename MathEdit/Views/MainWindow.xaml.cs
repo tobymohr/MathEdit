@@ -28,7 +28,7 @@ namespace MathEdit
         EnabledFlowDocument fd = new EnabledFlowDocument();
         RichTextBox parentTb;
         int count = 0;
-        int countParents = 0;
+      
 
         public MainWindow()
         {
@@ -93,7 +93,7 @@ namespace MathEdit
         }
 
 
-        private static Action EmptyDelegate = delegate () { };
+    
         private void onTextChanged(object sender, EventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
@@ -105,8 +105,6 @@ namespace MathEdit
             RichTextBox parent = findParent(rt);
             while(parent != null)
             {
-                countParents++;
-                Console.WriteLine("countParents " + countParents);
                 if (parent != null && parent != sender)
                 {
                     if (parent.Name != "textBoxMain")
@@ -116,7 +114,7 @@ namespace MathEdit
                 }
                 parent = findParent(parent);
             }
-            countParents = 0;
+     
         }
 
         private RichTextBox findParent(DependencyObject sender)
