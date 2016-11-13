@@ -4,22 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MathEdit"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              Name="parent"
-             Height="51.5"
-             Width="80"
              >
-    <StackPanel x:Name="sqaureCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Top" Orientation="Horizontal" Width="auto" >
-        <Image x:Name="sqrrootbase" Source="images/sqrrootbase.png" VerticalAlignment="Bottom" HorizontalAlignment="Left"     />
-        <Canvas Name="canvasStrech" Background="White" Width="52"  >
-            <StackPanel Background="Black" Width="{Binding ElementName=canvasStrech, Path=ActualWidth}" Height="0.7" Canvas.Top="1"></StackPanel>
-            <RichTextBox x:Name="richTextBox" Height="30"  Width="34" Canvas.Left="9" Canvas.Top="15" >
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text=""/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
-        </Canvas>
-    </StackPanel>
+    <Grid x:Name="TrackSurface" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="14*"/>
+        </Grid.ColumnDefinitions>
+        <Path Stretch="Fill"  Stroke="Black" StrokeThickness="1" Grid.ColumnSpan="2"  >
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="10,25">
+                        <LineSegment Point="25,50" />
+                        <LineSegment Point="45,5" />
+                        <LineSegment Point="100,5" />
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <RichTextBox x:Name="fieldTextBox" Margin="0,0,0,5" MinWidth="54" MinHeight="37" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"   >
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
 </UserControl>

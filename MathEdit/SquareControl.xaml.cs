@@ -27,7 +27,7 @@ namespace MathEdit
 
         public RichTextBox getRichTextBox()
         {
-            return richTextBox;
+            return fieldTextBox;
         }
     }
 }
