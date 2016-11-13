@@ -24,11 +24,9 @@ namespace MathEdit
 {
     public partial class MainWindow : Window
     {
-        string filename = "";
         EnabledFlowDocument fd = new EnabledFlowDocument();
         RichTextBox parentTb;
         int count = 0;
-      
 
         public MainWindow()
         {
@@ -36,7 +34,7 @@ namespace MathEdit
             textBoxMain.Document = fd;
         }
 
-        
+
         private void MenuItem_Add_Click(object sender, RoutedEventArgs e)
         {
             createNewRtb();
@@ -49,9 +47,11 @@ namespace MathEdit
             parentTb = (RichTextBox)focusedControl;
             FlowDocument parentFd;
 
-            if(parentTb.Document.GetType() == typeof(EnabledFlowDocument)){
+            if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
+            {
                 parentFd = parentTb.Document;
-            }else
+            }
+            else
             {
                 parentFd = new EnabledFlowDocument();
                 parentTb.Document = parentFd;
@@ -81,7 +81,7 @@ namespace MathEdit
 
         }
 
-        public  void Focus(UIElement element)
+        public void Focus(UIElement element)
         {
             if (!element.Focus())
             {
@@ -93,7 +93,7 @@ namespace MathEdit
         }
 
 
-    
+
         private void onTextChanged(object sender, EventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
@@ -101,9 +101,9 @@ namespace MathEdit
             {
                 rt.Width = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20;
             }
-            
+
             RichTextBox parent = findParent(rt);
-            while(parent != null)
+            while (parent != null)
             {
                 if (parent != null && parent != sender)
                 {
@@ -114,24 +114,24 @@ namespace MathEdit
                 }
                 parent = findParent(parent);
             }
-     
+
         }
 
         private RichTextBox findParent(DependencyObject sender)
         {
-            if(sender != null)
+            if (sender != null)
             {
                 DependencyObject parentObject = VisualTreeHelper.GetParent(sender);
 
                 RichTextBox parentBox = parentObject as RichTextBox;
-                if (parentBox != null )
+                if (parentBox != null)
                 {
                     return parentBox;
                 }
                 return findParent(parentObject);
             }
             return null;
-           
+
         }
         private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -144,7 +144,7 @@ namespace MathEdit
                 textBoxMain.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
             }
-            
+
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
@@ -175,32 +175,6 @@ namespace MathEdit
             //TextPointer tp = rtb.GetPositionFromPoint()
         }
 
-        private void OpenCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            // needs work
-            DocumentHelper helper = new DocumentHelper();
-            fd = helper.openFile();
-        }
-
-        private void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            // works
-            DocumentHelper helper = new DocumentHelper();
-            if (filename == "")
-            {
-                helper.saveDoc(fd);
-            }
-            else
-            {
-                helper.saveDoc(fd, filename);
-            }
-        }
-
-        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveDocAs(fd);
-        }
     }
 
     public static class FlowDocumentExtensions

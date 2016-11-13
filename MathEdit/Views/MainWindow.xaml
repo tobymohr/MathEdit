@@ -5,26 +5,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathEdit"
+        xmlns:VM="clr-namespace:MathEdit.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Window.CommandBindings>
-        <CommandBinding Command="Open" Executed="OpenCommandBinding_Executed"></CommandBinding>
-        <CommandBinding Command="Save" Executed="SaveCommandBinding_Executed"></CommandBinding>
-        <CommandBinding Command="SaveAs" Executed="SaveAsCommandBinding_Executed"></CommandBinding>
-    </Window.CommandBindings>
+    <Window.DataContext>
+        <VM:MainWindowModel/>
+    </Window.DataContext>
     
     <Window.InputBindings>
-        <KeyBinding Key="O" Modifiers="Control" Command="Open"></KeyBinding>
-        <KeyBinding Key="S" Modifiers="Control" Command="Save"></KeyBinding>
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommandBinding_Executed}"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="SaveAs"></KeyBinding>
     </Window.InputBindings>
 
-    <DockPanel>
+    <DockPanel x:Name="menuPanel">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" />
-                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="Open"/>
-                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="Save"/>
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenCommandBinding_Executed}"/>
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}"/>
                 <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="SaveAs"/>
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />

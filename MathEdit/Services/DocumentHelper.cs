@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
@@ -15,7 +16,7 @@ namespace MathEdit.Services
     class DocumentHelper
     {
 
-        public async void saveDoc(EnabledFlowDocument fd)
+        public void saveDoc(EnabledFlowDocument fd)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
@@ -25,29 +26,25 @@ namespace MathEdit.Services
             Nullable<bool> result = saveDialog.ShowDialog();
             if (result == true)
             {
-                try
+                // no working right now
+                string filename = saveDialog.FileName;
+                using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
                 {
-                    await Task.Run(() =>
-                    {
-                        // no working right now
-                        string filename = saveDialog.FileName;
-                        using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
-                        {
-                            TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                            textRange.Save(fs, DataFormats.Xaml);
-                        }
-                    });
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
+                    textRange.Save(fs, DataFormats.Xaml);
                 }
             }
         }
 
-        public async void saveDoc(EnabledFlowDocument fd, string filename)
+        public void saveDoc(EnabledFlowDocument fd, string filename)
         {
-
+            Monitor.Enter(this);
+            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
+                textRange.Save(fs, DataFormats.Xaml);
+            }
+            Monitor.Exit(this);
         }
 
         public void saveDocAs(EnabledFlowDocument fd)
