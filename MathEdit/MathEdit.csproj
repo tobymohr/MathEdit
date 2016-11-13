@@ -75,6 +75,7 @@
     <Compile Include="Models\Keybindings.cs" />
     <Compile Include="Services\DocumentHelper.cs" />
     <Compile Include="Services\AsyncRelayCommand.cs" />
+    <Compile Include="Services\RelayCommand.cs" />
     <Compile Include="SquareControl.xaml.cs">
       <DependentUpon>SquareControl.xaml</DependentUpon>
     </Compile>

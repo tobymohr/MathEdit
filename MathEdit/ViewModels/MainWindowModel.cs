@@ -1,4 +1,5 @@
 ﻿using MathEdit.Services;
+using MathEdit.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,40 +13,44 @@ namespace MathEdit.ViewModel
 {
     class MainWindowModel
     {
-        public ICommand SaveCommand { get; set; }
+        private ICommand _SaveCommand;
+        private ICommand _OpenCommand;
         public string fileName { get; set; }
+        public EnabledFlowDocument fd { get; set; }
         public bool isSaving { get; set; }
 
-        //public MainWindowModel
-        //{
-        //    this.SaveCommand = new AsyncRelayCommand<object>(this.SaveCommandBinding_Executed, (a) => { return !this.isSaving; });
-        //}
 
-        //private void OpenCommandBinding_Executed(object sender, RoutedEventArgs e)
-        //{
-        //    // needs work
-        //    DocumentHelper helper = new DocumentHelper();
-        //    fd = helper.openFile();
-        //}
+        public MainWindowModel()
+        {
+           this._SaveCommand = new AsyncRelayCommand<object>(this.SaveCommand, (a) => { return !this.isSaving; });
+           //this._OpenCommand = new RelayCommand<object>(this.OpenCommand);
+        }
 
-        //private void SaveCommandBinding_Executed(object sender)
-        //{
-        //    // works
-        //    DocumentHelper helper = new DocumentHelper();
-        //    if (filename == "")
-        //    {
-        //        helper.saveDoc(fd);
-        //    }
-        //    else
-        //    {
-        //        helper.saveDoc(fd, filename);
-        //    }
-        //}
+        private void OpenCommand(object sender, RoutedEventArgs e)
+        {
+            // needs work
+            DocumentHelper helper = new DocumentHelper();
+            fd = helper.openFile();
+        }
 
-        //private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    DocumentHelper helper = new DocumentHelper();
-        //    helper.saveDocAs(fd);
-        //}
+        private void SaveCommand(object sender)
+        {
+            // works
+            DocumentHelper helper = new DocumentHelper();
+            if (fileName != null || fileName == "")
+            {
+                fileName = helper.saveDoc(fd);
+            }
+            else
+            {
+                helper.saveDoc(fd, fileName);
+            }
+        }
+
+        private void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDocAs(fd);
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace MathEdit
 
         public MainWindow()
         {
+           
             InitializeComponent();
             textBoxMain.Document = fd;
         }

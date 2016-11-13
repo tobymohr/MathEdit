@@ -16,7 +16,7 @@ namespace MathEdit.Services
     class DocumentHelper
     {
 
-        public void saveDoc(EnabledFlowDocument fd)
+        public string saveDoc(EnabledFlowDocument fd)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
@@ -33,7 +33,9 @@ namespace MathEdit.Services
                     TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
                     textRange.Save(fs, DataFormats.Xaml);
                 }
+                return filename;
             }
+            return null;
         }
 
         public void saveDoc(EnabledFlowDocument fd, string filename)
