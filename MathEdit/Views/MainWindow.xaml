@@ -5,13 +5,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathEdit"
-        xmlns:VM="clr-namespace:MathEdit.ViewModel"
+        xmlns:vm="clr-namespace:MathEdit.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="1200">
-    <Window.DataContext>
-        <VM:MainWindowModel/>
-    </Window.DataContext>
-    
+        Title="MainWindow" Height="350" Width="525"
+        DataContext="{DynamicResource MainWindowModel}">
+    <Window.Resources>
+        <vm:MainWindowModel x:Key="MainWindowModel"/>
+    </Window.Resources>
+
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
