@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace MathEdit.ViewModel
+namespace MathEdit.ViewModels
 {
-    class MainWindowModel
+    class MainWindowModel : ViewModelBase
     {
         private ICommand _SaveCommand;
         private ICommand _OpenCommand;
@@ -22,11 +22,11 @@ namespace MathEdit.ViewModel
 
         public MainWindowModel()
         {
-           this._SaveCommand = new AsyncRelayCommand<object>(this.SaveCommand, (a) => { return !this.isSaving; });
-           //this._OpenCommand = new RelayCommand<object>(this.OpenCommand);
+            this._SaveCommand = new AsyncRelayCommand<object>(this.SaveCommand, (a) => { return !this.isSaving; });
+            //this._OpenCommand = new RelayCommand<object>(this.OpenCommand);
         }
 
-        private void OpenCommand(object sender, RoutedEventArgs e)
+        private void OpenCommand(object sender)
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
