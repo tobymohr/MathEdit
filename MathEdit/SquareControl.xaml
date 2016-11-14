@@ -26,7 +26,7 @@
         <RichTextBox x:Name="fieldTextBox" Margin="0,0,0,5" MinWidth="54" MinHeight="37" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"   >
             <FlowDocument>
                 <Paragraph>
-                    <Run Text=""/>
+                    <Run Text="xaaaaaaaaaaaaaxsxsxsxsxsxsxsxsxsxsxsxsxsxs"/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:MathEdit"
         xmlns:VM="clr-namespace:MathEdit.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="1200">
     <Window.DataContext>
         <VM:MainWindowModel/>
     </Window.DataContext>
@@ -32,7 +32,8 @@
            
                 <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
                 <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
-              
+                <MenuItem Header="_Add fraction" x:Name="menuItemFraction" Click="menuItemFraction_Click"  />
+
             </MenuItem>
             <ComboBox x:Name="fontSizeBox" Width="40" SelectedValuePath="Content" SelectionChanged="fontSizeBox_SelectionChanged" SelectedIndex="2">
                 <ComboBoxItem Content="5"/>

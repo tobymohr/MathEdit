@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FractionControl.xaml.cs">
+      <DependentUpon>FractionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\DAO.cs" />
     <Compile Include="Models\DTO.cs" />
     <Compile Include="Models\Keybindings.cs" />
@@ -80,6 +83,10 @@
       <DependentUpon>SquareControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainWindowModel.cs" />
+    <Page Include="FractionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SquareControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
