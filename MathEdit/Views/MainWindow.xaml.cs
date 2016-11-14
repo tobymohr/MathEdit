@@ -79,13 +79,12 @@ namespace MathEdit
             rtb.TextChanged += onTextChanged;
             rtb.Document = new EnabledFlowDocument();
             Paragraph insideParagraph = new Paragraph();
-            SquareControl sq = new SquareControl();
-
-            insideParagraph.Inlines.Add(sq);
-            rtb.Document.Blocks.Add(insideParagraph);
 
 
             Focus(rtb);
+            FractionControl fControl = new FractionControl();
+            insideParagraph.Inlines.Add(fControl);
+            rtb.Document.Blocks.Add(insideParagraph);
             para.Inlines.Add(rtb);
 
         }
@@ -101,15 +100,17 @@ namespace MathEdit
             }
         }
 
-
-
         private void onTextChanged(object sender, EventArgs e)
         {
             RichTextBox rt = (RichTextBox)sender;
             if (rt.IsFocused)
             {
-                minWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace + 20;
-                rt.Width = minWidth;
+                double newWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace ;
+                if (newWidth > minWidth)
+                {
+                    minWidth = newWidth;
+                    rt.Width = minWidth;
+                }
             }
 
             RichTextBox parent = findParent(rt);
@@ -119,8 +120,7 @@ namespace MathEdit
                 {
                     if (parent.Name != "textBoxMain")
                     {
-                        Console.WriteLine("Setting width on " + parent.Name);
-                        parent.Width = minWidth;
+                        parent.Width = minWidth + 20;
                     }
                 }
                 parent = findParent(parent);
@@ -185,7 +185,10 @@ namespace MathEdit
             //TextPointer tp = rtb.GetPositionFromPoint()
         }
 
-       
+        private void menuItemFraction_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public static class FlowDocumentExtensions
