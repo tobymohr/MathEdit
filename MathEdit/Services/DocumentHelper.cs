@@ -22,8 +22,8 @@ namespace MathEdit.Services
             saveDialog.FileName = "Sheet";
             saveDialog.DefaultExt = ".xml";
             saveDialog.Filter = "XML Files|*.xml";
-
-            Nullable<bool> result = saveDialog.ShowDialog();
+            
+            bool? result = saveDialog.ShowDialog();
             if (result == true)
             {
                 // no working right now
@@ -40,13 +40,11 @@ namespace MathEdit.Services
 
         public void saveDoc(EnabledFlowDocument fd, string filename)
         {
-            Monitor.Enter(this);
             using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
                 textRange.Save(fs, DataFormats.Xaml);
             }
-            Monitor.Exit(this);
         }
 
         public void saveDocAs(EnabledFlowDocument fd)
