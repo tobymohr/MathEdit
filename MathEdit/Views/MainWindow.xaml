@@ -41,6 +41,12 @@
                 <ComboBoxItem Content="16"/>
                 <ComboBoxItem Content="20"/>
             </ComboBox>
+            <ToggleButton Width="20" Name="Bold" FontStyle="Normal" Click="Bold_Click">
+                B
+            </ToggleButton>
+            <ToggleButton Width="20" Name="Italic" FontStyle="Italic" Click="Italic_Click">
+                I
+            </ToggleButton>
         </Menu>
         <Grid x:Name="gridParent">
             <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" SelectionChanged="textBoxMain_SelectionChanged" />
