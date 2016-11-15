@@ -18,6 +18,7 @@ using MathEdit.Views;
 using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
+using MathEdit.ViewModels;
 using MathEdit.Services;
 
 namespace MathEdit
@@ -33,6 +34,7 @@ namespace MathEdit
         {
            
             InitializeComponent();
+            DataContext = new MainWindowModel();
             textBoxMain.Document = fd;
         }
 

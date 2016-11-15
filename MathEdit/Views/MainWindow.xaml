@@ -7,11 +7,8 @@
         xmlns:local="clr-namespace:MathEdit"
         xmlns:vm="clr-namespace:MathEdit.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
-        DataContext="{DynamicResource MainWindowModel}">
-    <Window.Resources>
-        <vm:MainWindowModel x:Key="MainWindowModel"/>
-    </Window.Resources>
+        Title="MainWindow" Height="350" Width="525" >
+
 
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
