@@ -13,8 +13,8 @@ namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
-        private ICommand _SaveCommand;
-        private ICommand _OpenCommand;
+        public ICommand _SaveCommand { get; set; }
+        public ICommand _OpenCommand { get; set; }
         public string fileName { get; set; }
         public EnabledFlowDocument fd { get; set; }
         public bool isSaving { get; set; }
@@ -37,7 +37,7 @@ namespace MathEdit.ViewModels
         {
             // works
             DocumentHelper helper = new DocumentHelper();
-            if (fileName != null || fileName == "")
+            if (fileName == null || fileName == "")
             {
                 fileName = helper.saveDoc(fd);
             }
