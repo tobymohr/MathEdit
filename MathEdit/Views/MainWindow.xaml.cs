@@ -151,8 +151,9 @@ namespace MathEdit
             string value = (string)comboBox.SelectedValue;
             if (comboBox.IsDropDownOpen)
             {
-                TextSelection text = textBoxMain.Selection;
-                textBoxMain.Focus();
+                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+                TextSelection text = parentTb.Selection;
+                parentTb.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
             }
 
@@ -170,7 +171,8 @@ namespace MathEdit
         private void textBoxMain_SelectionChanged(object sender, RoutedEventArgs e)
         {
             //Changes combobox to
-            TextSelection text = textBoxMain.Selection;
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+            TextSelection text = parentTb.Selection;
             object trsize = text.GetPropertyValue(RichTextBox.FontSizeProperty);
             int fs;
             if (Int32.TryParse(trsize.ToString(), out fs))
@@ -224,16 +226,15 @@ namespace MathEdit
         {
             if (Bold.IsChecked != null)
             {
+                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+                TextSelection text = parentTb.Selection;
+                parentTb.Focus();
                 if ((bool)Bold.IsChecked)
                 {
-                    TextSelection text = textBoxMain.Selection;
-                    textBoxMain.Focus();
                     text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.UltraBold);
                 }
                 else
                 {
-                    TextSelection text = textBoxMain.Selection;
-                    textBoxMain.Focus();
                     text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.Normal);
                 }
             }
@@ -243,16 +244,15 @@ namespace MathEdit
         {
             if (Italic.IsChecked != null)
             {
+                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+                TextSelection text = parentTb.Selection;
+                parentTb.Focus();
                 if ((bool)Italic.IsChecked)
                 {
-                    TextSelection text = textBoxMain.Selection;
-                    textBoxMain.Focus();
                     text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
                 }
                 else
                 {
-                    TextSelection text = textBoxMain.Selection;
-                    textBoxMain.Focus();
                     text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
                 }
             }
