@@ -12,14 +12,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <RichTextBox x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,10" Width="Auto" MinHeight="37" HorizontalAlignment="Stretch" VerticalAlignment="Top"   >
+        <RichTextBox x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,10" Width="Auto" MinHeight="37" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="1" Margin="0,10,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="1" Margin="0,10,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Path.Data>
                 <PathGeometry>
                     <PathFigure StartPoint="25,25">
@@ -36,10 +36,6 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-
-
-
-
 
     </Grid>
 </UserControl>

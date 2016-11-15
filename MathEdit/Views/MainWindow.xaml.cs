@@ -42,6 +42,7 @@ namespace MathEdit
             createNewRtb();
         }
 
+
         private void createNewRtb()
         {
             Paragraph para = null;
@@ -79,11 +80,13 @@ namespace MathEdit
             rtb.TextChanged += onTextChanged;
             rtb.Document = new EnabledFlowDocument();
             Paragraph insideParagraph = new Paragraph();
-
-
+           
+            rtb.BorderThickness = new Thickness(0);
             Focus(rtb);
             FractionControl fControl = new FractionControl();
-            insideParagraph.Inlines.Add(fControl);
+            SquareControl sControl = new SquareControl();
+            rtb.Width = sControl.Width;
+            insideParagraph.Inlines.Add(sControl);
             rtb.Document.Blocks.Add(insideParagraph);
             para.Inlines.Add(rtb);
 
