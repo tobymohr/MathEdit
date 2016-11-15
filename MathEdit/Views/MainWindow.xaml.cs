@@ -171,7 +171,7 @@ namespace MathEdit
         {
             //Changes combobox to
             TextSelection text = textBoxMain.Selection;
-            object trsize = text.GetPropertyValue(TextElement.FontSizeProperty);
+            object trsize = text.GetPropertyValue(RichTextBox.FontSizeProperty);
             int fs;
             if (Int32.TryParse(trsize.ToString(), out fs))
             {
@@ -181,8 +181,81 @@ namespace MathEdit
             {
                 fontSizeBox.SelectedIndex = -1;
             }
+            //Changes Italic checked
+            try
+            {
+                FontStyle italic = (FontStyle)text.GetPropertyValue(RichTextBox.FontStyleProperty);
+                if (italic == FontStyles.Normal)
+                {
+                    Italic.IsChecked = false;
+                }
+                else
+                {
+                    Italic.IsChecked = true;
+                }
+            }
+            catch (Exception)
+            {
+                Italic.IsChecked = false;
+            }
+            //Changes Bold checked
+            //Changes Italic checked
+            try
+            {
+                FontWeight bold = (FontWeight)text.GetPropertyValue(RichTextBox.FontWeightProperty);
+                if (bold == FontWeights.Normal)
+                {
+                    Bold.IsChecked = false;
+                }
+                else
+                {
+                    Bold.IsChecked = true;
+                }
+            }
+            catch (Exception)
+            {
+                Bold.IsChecked = false;
+            }
             //RichTextBox rtb = (RichTextBox)sender;
             //TextPointer tp = rtb.GetPositionFromPoint()
+        }
+
+        private void Bold_Click(object sender, RoutedEventArgs e)
+        {
+            if (Bold.IsChecked != null)
+            {
+                if ((bool)Bold.IsChecked)
+                {
+                    TextSelection text = textBoxMain.Selection;
+                    textBoxMain.Focus();
+                    text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.UltraBold);
+                }
+                else
+                {
+                    TextSelection text = textBoxMain.Selection;
+                    textBoxMain.Focus();
+                    text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.Normal);
+                }
+            }
+        }
+
+        private void Italic_Click(object sender, RoutedEventArgs e)
+        {
+            if (Italic.IsChecked != null)
+            {
+                if ((bool)Italic.IsChecked)
+                {
+                    TextSelection text = textBoxMain.Selection;
+                    textBoxMain.Focus();
+                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
+                }
+                else
+                {
+                    TextSelection text = textBoxMain.Selection;
+                    textBoxMain.Focus();
+                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
+                }
+            }
         }
 
         private void menuItemFraction_Click(object sender, RoutedEventArgs e)
