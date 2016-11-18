@@ -54,6 +54,7 @@ namespace MathEdit
 
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
             {
+
                 parentFd = parentTb.Document;
             }
             else
