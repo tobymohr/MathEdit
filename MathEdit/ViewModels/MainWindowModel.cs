@@ -34,10 +34,7 @@ namespace MathEdit.ViewModels
 
         private void OpenHotKeys(object sender)
         {
-                    
-                hotKeys.Visibility = Visibility.Visible;
-          
-            
+            hotKeys.Visibility = Visibility.Visible;
         }
 
         private void OpenDoc(object sender)

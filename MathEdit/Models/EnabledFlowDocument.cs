@@ -7,7 +7,8 @@ using System.Windows.Documents;
 
 namespace MathEdit.Views
 {
-    class EnabledFlowDocument : FlowDocument
+    [Serializable]
+    public class EnabledFlowDocument : FlowDocument
     {
         protected override bool IsEnabledCore
         {

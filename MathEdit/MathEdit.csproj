@@ -76,6 +76,9 @@
     <Compile Include="HotkeyMenu.xaml.cs">
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PowControl.xaml.cs">
+      <DependentUpon>PowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\DocumentHelper.cs" />
     <Compile Include="Services\AsyncRelayCommand.cs" />
     <Compile Include="Services\RelayCommand.cs" />
@@ -88,6 +91,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HotkeyMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

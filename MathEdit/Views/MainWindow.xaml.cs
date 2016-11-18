@@ -87,8 +87,9 @@ namespace MathEdit
             Focus(rtb);
             FractionControl fControl = new FractionControl();
             SquareControl sControl = new SquareControl();
-            rtb.Width = sControl.Width;
-            insideParagraph.Inlines.Add(sControl);
+            PowControl pControl = new PowControl();
+            rtb.Width = pControl.Width;
+            insideParagraph.Inlines.Add(pControl);
             rtb.Document.Blocks.Add(insideParagraph);
             para.Inlines.Add(rtb);
 
