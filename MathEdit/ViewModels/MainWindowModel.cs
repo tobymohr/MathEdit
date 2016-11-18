@@ -27,6 +27,7 @@ namespace MathEdit.ViewModels
             this.SaveCommand = new AsyncRelayCommand<object>(this.SaveDoc, (a) => { return !this.isSaving; });
             this.OpenCommand = new RelayCommand<object>(this.OpenDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.SaveAsDoc);
+            this.fd = new EnabledFlowDocument();
         }
 
         private void OpenDoc(object sender)

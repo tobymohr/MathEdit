@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Markup;
 
 namespace MathEdit.Services
 {
@@ -28,6 +29,7 @@ namespace MathEdit.Services
             {
                 // no working right now
                 string filename = saveDialog.FileName;
+                System.Diagnostics.Debug.WriteLine(filename);
                 using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
