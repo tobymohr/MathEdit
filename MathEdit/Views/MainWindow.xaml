@@ -44,11 +44,14 @@
                 I
             </ToggleButton>
         </Menu>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
         <Grid x:Name="gridParent">
             <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" SelectionChanged="textBoxMain_SelectionChanged" />
             <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             </local:HotkeyMenu>
         </Grid>
+        </ScrollViewer>
     </DockPanel>
 
 </Window>

@@ -17,7 +17,6 @@ namespace MathEdit.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand OpenCommand { get; set; }
         public ICommand SaveAsCommand { get; set; }
-
         public ICommand OpenHotkeysCommand { get; set; }
         public string fileName { get; set; }
         public EnabledFlowDocument fd { get; set; }
