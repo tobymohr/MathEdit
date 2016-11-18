@@ -45,6 +45,54 @@ namespace MathEdit
         }
 
 
+        private void createFractionRtb()
+        {
+            Paragraph para = null;
+            IInputElement focusedControl = FocusManager.GetFocusedElement(this);
+            parentTb = (RichTextBox)focusedControl;
+            FlowDocument parentFd;
+
+            if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
+            {
+                parentFd = parentTb.Document;
+            }
+            else
+            {
+                parentFd = new EnabledFlowDocument();
+                parentTb.Document = parentFd;
+            }
+
+            if (parentFd.Blocks.Count == 0)
+            {
+                para = new Paragraph();
+                parentFd.Blocks.Add(para);
+                string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
+                para.Inlines.Add(text);
+            }
+            else if (parentFd.Blocks.Count > 0)
+            {
+                para = (Paragraph)parentFd.Blocks.LastBlock;
+            }
+
+            RichTextBox rtb = new RichTextBox() { Focusable = true };
+            rtb.Focusable = true;
+            rtb.Focus();
+            count++;
+            rtb.Name = "xx" + count + "xxx";
+            rtb.TextChanged += onTextChanged;
+            rtb.Document = new EnabledFlowDocument();
+            Paragraph insideParagraph = new Paragraph();
+
+            rtb.BorderThickness = new Thickness(0);
+            Focus(rtb);
+            FractionControl fControl = new FractionControl();
+            rtb.Width = fControl.Width;
+            insideParagraph.Inlines.Add(fControl);
+            rtb.Document.Blocks.Add(insideParagraph);
+            para.Inlines.Add(rtb);
+
+        }
+
         private void createNewRtb()
         {
             Paragraph para = null;
@@ -264,9 +312,10 @@ namespace MathEdit
             }
         }
 
-        private void menuItemFraction_Click(object sender, RoutedEventArgs e)
-        {
 
+        private void menuItemAddFraction_Click(object sender, RoutedEventArgs e)
+        {
+            createFractionRtb();
         }
     }
 

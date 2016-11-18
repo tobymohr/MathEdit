@@ -63,6 +63,7 @@ namespace MathEdit
                     if (parent.Name != "textBoxMain")
                     {
                         parent.Width = number.Width + pow.Width + 20;
+                        parent.Height = parentGrid.Height;
                     }
                 }
                 parent = findParent(parent);
