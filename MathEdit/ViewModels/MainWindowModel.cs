@@ -17,8 +17,11 @@ namespace MathEdit.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand OpenCommand { get; set; }
         public ICommand SaveAsCommand { get; set; }
+
+        public ICommand OpenHotkeysCommand { get; set; }
         public string fileName { get; set; }
         public EnabledFlowDocument fd { get; set; }
+        public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
 
 
@@ -27,6 +30,15 @@ namespace MathEdit.ViewModels
             this.SaveCommand = new AsyncRelayCommand<object>(this.SaveDoc, (a) => { return !this.isSaving; });
             this.OpenCommand = new RelayCommand<object>(this.OpenDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.SaveAsDoc);
+            this.OpenHotkeysCommand = new RelayCommand<object>(this.OpenHotKeys);
+        }
+
+        private void OpenHotKeys(object sender)
+        {
+                    
+                hotKeys.Visibility = Visibility.Visible;
+          
+            
         }
 
         private void OpenDoc(object sender)
