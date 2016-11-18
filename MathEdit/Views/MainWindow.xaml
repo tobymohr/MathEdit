@@ -27,6 +27,10 @@
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Redo" x:Name="Redo" Click="Redo_Click" ></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo" Click="Undo_Click"></MenuItem>
+            </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
                 <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />

@@ -25,6 +25,7 @@ namespace MathEdit
 {
     public partial class MainWindow : Window
     {
+
         EnabledFlowDocument fd = new EnabledFlowDocument();
         RichTextBox parentTb;
         int count = 0;
@@ -317,6 +318,16 @@ namespace MathEdit
         private void menuItemAddFraction_Click(object sender, RoutedEventArgs e)
         {
             createFractionRtb();
+        }
+
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 
