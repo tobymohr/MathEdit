@@ -42,12 +42,14 @@
                 <ComboBoxItem Content="16"/>
                 <ComboBoxItem Content="20"/>
             </ComboBox>
-            <!--<ToggleButton Width="20" Checked="{Binding IsBoldChecked, Mode=TwoWay}" FontStyle="Normal" > --><!-- bind til command --><!--
+            <ToggleButton Width="20" IsChecked="{Binding IsBoldChecked, Mode=TwoWay}" FontStyle="Normal" Command="{Binding ToggleBold}">
+                <!-- bind til command -->
                 B
             </ToggleButton>
-            <ToggleButton Width="20" Checked="{Binding IsItalicChecked, Mode=TwoWay}" FontStyle="Italic" > --><!-- bind til command --><!--
+            <ToggleButton Width="20" IsChecked="{Binding IsItalicChecked, Mode=TwoWay}" FontStyle="Italic" Command="{Binding ToggleItalic}">
+                <!-- bind til command -->
                 I
-            </ToggleButton>-->
+            </ToggleButton>
         </Menu>
         <Grid>
             <ScrollViewer  VerticalScrollBarVisibility="Visible">
