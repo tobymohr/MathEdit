@@ -33,6 +33,7 @@ namespace MathEdit.ViewModels
         public RichTextBox parentTb { get; set; }
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
+        public DependencyObject focusedObj { get; set; }
 
         public MainWindowModel()
         {
@@ -61,6 +62,7 @@ namespace MathEdit.ViewModels
                 element.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(delegate ()
                 {
                     element.Focus();
+                    focusedObj = element;
                 }));
             }
         }
@@ -120,7 +122,7 @@ namespace MathEdit.ViewModels
         private void createNewRtb(object sender)
         {
             Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(this);
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             parentTb = (RichTextBox)focusedControl;
             FlowDocument parentFd;
 
@@ -170,7 +172,7 @@ namespace MathEdit.ViewModels
         private void createFractionRtb(object sender)
         {
             Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(this);
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             parentTb = (RichTextBox)focusedControl;
             FlowDocument parentFd;
 
@@ -192,6 +194,7 @@ namespace MathEdit.ViewModels
                 string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
                 para.Inlines.Add(text);
             }
+
             else if (parentFd.Blocks.Count > 0)
             {
                 para = (Paragraph)parentFd.Blocks.LastBlock;
@@ -223,7 +226,7 @@ namespace MathEdit.ViewModels
             string value = (string)comboBox.SelectedValue;
             if (comboBox.IsDropDownOpen)
             {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
                 TextSelection text = parentTb.Selection;
                 parentTb.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
@@ -234,7 +237,7 @@ namespace MathEdit.ViewModels
         private void textBoxMain_SelectionChanged(object sender, RoutedEventArgs e)
         {
             //Changes combobox to
-            parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
             TextSelection text = parentTb.Selection;
             object trsize = text.GetPropertyValue(RichTextBox.FontSizeProperty);
             int fs;
