@@ -35,10 +35,10 @@ namespace MathEdit.ViewModels
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
         public DependencyObject focusedObj { get; set; }
-        public string fontSize;
-        public int fontSizeIndex;
-        public bool isBoldChecked = false;
-        public bool isItalicChecked = false; 
+        private string fontSize;
+        private int fontSizeIndex;
+        private bool isBoldChecked;
+        private bool isItalicChecked; 
 
         public MainWindowModel()
         {

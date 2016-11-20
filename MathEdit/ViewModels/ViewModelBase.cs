@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace MathEdit.ViewModels
 {
     // Generic ViewModelBase
-    class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         internal void RaisePropertyChanged(string prop)
         {
