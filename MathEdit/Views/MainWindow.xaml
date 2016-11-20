@@ -36,7 +36,7 @@
                 <MenuItem Header="_Add formula" x:Name="menuItemAdd" Command="{Binding createNewRTBCommand}" />
                 <MenuItem Header="_Add fraction" x:Name="menuItemAddFraction" Command="{Binding createNewFractionCommand}" />
             </MenuItem>
-            <ComboBox x:Name="fontSizeBox" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" > <!-- bind selection changed command -->
+            <ComboBox x:Name="fontSizeBox" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" SelectionChanged="{Binding ChangeFontSize}"> <!-- bind selection changed command -->
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="12"/>
                 <ComboBoxItem Content="16"/>

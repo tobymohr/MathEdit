@@ -26,6 +26,7 @@ namespace MathEdit.ViewModels
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand createNewRTBCommand { get; set; }
         public ICommand createNewFractionCommand { get; set; }
+        public ICommand ChangeFontSize { get; set; }
 
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
@@ -38,7 +39,7 @@ namespace MathEdit.ViewModels
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
-        private bool isItalicChecked; 
+        private bool isItalicChecked;
 
         public MainWindowModel()
         {
@@ -49,6 +50,7 @@ namespace MathEdit.ViewModels
             this.OpenSettingsCommand = new RelayCommand<object>(this.OpenSettings);
             this.createNewRTBCommand = new RelayCommand<object>(this.createNewRtb);
             this.createNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
+            this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 2;
@@ -254,7 +256,7 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void fontSizeBox_SelectionChanged(object sender)
+        private void changeFontSize(object sender)
         {
 
             ComboBox comboBox = (ComboBox)sender;
