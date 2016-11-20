@@ -32,9 +32,9 @@
                 <MenuItem Header="_Undo" x:Name="Undo" Click="Undo_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Tools">
-                <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
-                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
-                <MenuItem Header="_Add fraction" x:Name="menuItemAddFraction" Click="menuItemAddFraction_Click" />
+                <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
+                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Command="{Binding createNewRTBCommand}" />
+                <MenuItem Header="_Add fraction" x:Name="menuItemAddFraction" Command="{Binding createNewFractionCommand}" />
             </MenuItem>
             <ComboBox x:Name="fontSizeBox" Width="40" SelectedValuePath="Content" SelectionChanged="fontSizeBox_SelectionChanged" SelectedIndex="2">
                 <ComboBoxItem Content="5"/>

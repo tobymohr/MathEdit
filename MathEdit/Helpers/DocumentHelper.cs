@@ -14,9 +14,9 @@ using System.Windows.Markup;
 
 namespace MathEdit.Services
 {
+    /* Filesystem IO */
     class DocumentHelper
     {
-
         public string saveDoc(EnabledFlowDocument fd)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
