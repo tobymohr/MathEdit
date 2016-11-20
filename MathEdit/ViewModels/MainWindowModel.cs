@@ -28,6 +28,7 @@ namespace MathEdit.ViewModels
         public ICommand CreateNewFractionCommand { get; set; }
         public ICommand ToggleBold { get; set; }
         public ICommand ToggleItalic { get; set; }
+        public ICommand ChangeFontSize { get; set; }
 
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
@@ -53,6 +54,7 @@ namespace MathEdit.ViewModels
             this.CreateNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
+            this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 2;
