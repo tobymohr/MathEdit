@@ -8,8 +8,8 @@ namespace MathEdit
     {
         public MainWindow()
         {
-            InitializeComponent();
             DataContext = new MainWindowModel();
+            InitializeComponent();
             textBoxMain.Document = new EnabledFlowDocument();
         }
     }

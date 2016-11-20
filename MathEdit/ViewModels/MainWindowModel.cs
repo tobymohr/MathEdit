@@ -1,4 +1,5 @@
 ﻿using MathEdit.Helpers;
+using MathEdit.Models;
 using MathEdit.Views;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,10 @@ namespace MathEdit.ViewModels
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
         public DependencyObject focusedObj { get; set; }
+        public string fontSize;
+        public int fontSizeIndex;
+        public bool isBoldChecked = false;
+        public bool isItalicChecked = false; 
 
         public MainWindowModel()
         {
@@ -46,13 +51,43 @@ namespace MathEdit.ViewModels
             this.createNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
             rtbCount = 0;
             minWidth = 0;
+            fontSizeIndex = 2;
+            isBoldChecked = false;
+            isItalicChecked = false;
         }
 
+        #region PropertyFields
         public EnabledFlowDocument FlowDoc
         {
             get { return this.flowDoc; }
             set { this.SetProperty(ref this.flowDoc, value); }
         }
+
+        public string FontSize
+        {
+            get { return this.fontSize; }
+            set { this.SetProperty(ref this.fontSize, value); }
+        }
+
+        public int FontSizeIndex
+        {
+            get { return this.fontSizeIndex; }
+            set { this.SetProperty(ref this.fontSizeIndex, value); }
+        }
+
+        public bool IsBoldChecked
+        {
+            get { return this.isBoldChecked; }
+            set { this.SetProperty(ref this.isBoldChecked, value); }
+        }
+
+        public bool IsItalicChecked
+        {
+            get { return this.isItalicChecked; }
+            set { this.SetProperty(ref this.isItalicChecked, value); }
+        }
+
+        #endregion
 
         #region Generic calls
         public void Focus(UIElement element)
@@ -234,7 +269,7 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void textBoxMain_SelectionChanged(object sender, RoutedEventArgs e)
+        private void textBoxMain_SelectionChanged(object sender)
         {
             //Changes combobox to
             parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
@@ -243,11 +278,11 @@ namespace MathEdit.ViewModels
             int fs;
             if (Int32.TryParse(trsize.ToString(), out fs))
             {
-                fontSizeBox.Text = trsize.ToString();
+                FontSize = trsize.ToString();
             }
             else
             {
-                fontSizeBox.SelectedIndex = -1;
+                FontSizeIndex = -1;
             }
             //Changes Italic checked
             try
@@ -255,16 +290,16 @@ namespace MathEdit.ViewModels
                 FontStyle italic = (FontStyle)text.GetPropertyValue(RichTextBox.FontStyleProperty);
                 if (italic == FontStyles.Normal)
                 {
-                    Italic.IsChecked = false;
+                    IsItalicChecked = false;
                 }
                 else
                 {
-                    Italic.IsChecked = true;
+                    IsItalicChecked = true;
                 }
             }
             catch (Exception)
             {
-                Italic.IsChecked = false;
+                IsItalicChecked = false;
             }
             //Changes Bold checked
             //Changes Italic checked
@@ -273,16 +308,16 @@ namespace MathEdit.ViewModels
                 FontWeight bold = (FontWeight)text.GetPropertyValue(RichTextBox.FontWeightProperty);
                 if (bold == FontWeights.Normal)
                 {
-                    Bold.IsChecked = false;
+                    IsBoldChecked = false;
                 }
                 else
                 {
-                    Bold.IsChecked = true;
+                    IsBoldChecked = true;
                 }
             }
             catch (Exception)
             {
-                Bold.IsChecked = false;
+                IsBoldChecked = false;
             }
             //RichTextBox rtb = (RichTextBox)sender;
             //TextPointer tp = rtb.GetPositionFromPoint()
@@ -290,30 +325,25 @@ namespace MathEdit.ViewModels
 
         private void Bold_Click(object sender, RoutedEventArgs e)
         {
-            if (Bold.IsChecked != null)
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = parentTb.Selection;
+            parentTb.Focus();
+            if (IsBoldChecked)
             {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
-                TextSelection text = parentTb.Selection;
-                parentTb.Focus();
-                if ((bool)Bold.IsChecked)
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.UltraBold);
-                }
-                else
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.Normal);
-                }
+                text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.UltraBold);
+            }
+            else
+            {
+                text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.Normal);
             }
         }
 
         private void Italic_Click(object sender, RoutedEventArgs e)
         {
-            if (Italic.IsChecked != null)
-            {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(this);
+                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
                 TextSelection text = parentTb.Selection;
                 parentTb.Focus();
-                if ((bool)Italic.IsChecked)
+                if (IsItalicChecked)
                 {
                     text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
                 }
@@ -321,7 +351,6 @@ namespace MathEdit.ViewModels
                 {
                     text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
                 }
-            }
         }
 
         private void OpenSettings(object sender)

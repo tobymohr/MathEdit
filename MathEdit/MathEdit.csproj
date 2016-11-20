@@ -76,6 +76,7 @@
     <Compile Include="HotkeyMenu.xaml.cs">
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\FlowDocumentExtensions.cs" />
     <Compile Include="PowControl.xaml.cs">
       <DependentUpon>PowControl.xaml</DependentUpon>
     </Compile>
