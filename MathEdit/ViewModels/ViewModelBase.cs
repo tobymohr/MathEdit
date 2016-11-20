@@ -29,7 +29,6 @@ namespace MathEdit.ViewModels
                 this.RaisePropertyChanged(propertyName);
             }
         }
-
     }
 
     // Extension class for all Viewmodels.

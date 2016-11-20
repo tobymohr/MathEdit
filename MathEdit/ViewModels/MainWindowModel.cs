@@ -1,5 +1,4 @@
-﻿using MathEdit.Services;
-using MathEdit.Services.MathEdit.Services;
+﻿using MathEdit.Helpers;
 using MathEdit.Views;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,6 @@ namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
-
         public ICommand SaveCommand { get; set; }
         public ICommand OpenCommand { get; set; }
         public ICommand SaveAsCommand { get; set; }
@@ -28,7 +26,6 @@ namespace MathEdit.ViewModels
         public ICommand createNewRTBCommand { get; set; }
         public ICommand createNewFractionCommand { get; set; }
 
-
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
         public HotkeyMenu hotKeys { get; set; }
@@ -36,7 +33,6 @@ namespace MathEdit.ViewModels
         public RichTextBox parentTb { get; set; }
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
-
 
         public MainWindowModel()
         {
@@ -220,7 +216,7 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void fontSizeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void fontSizeBox_SelectionChanged(object sender)
         {
 
             ComboBox comboBox = (ComboBox)sender;
