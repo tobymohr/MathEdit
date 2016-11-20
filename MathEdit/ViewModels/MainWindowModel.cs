@@ -24,9 +24,10 @@ namespace MathEdit.ViewModels
         public ICommand SaveAsCommand { get; set; }
         public ICommand OpenHotkeysCommand { get; set; }
         public ICommand OpenSettingsCommand { get; set; }
-        public ICommand createNewRTBCommand { get; set; }
-        public ICommand createNewFractionCommand { get; set; }
-        public ICommand ChangeFontSize { get; set; }
+        public ICommand CreateNewRTBCommand { get; set; }
+        public ICommand CreateNewFractionCommand { get; set; }
+        public ICommand ToggleBold { get; set; }
+        public ICommand ToggleItalic { get; set; }
 
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
@@ -43,14 +44,15 @@ namespace MathEdit.ViewModels
 
         public MainWindowModel()
         {
-            this.SaveCommand = new AsyncRelayCommand<object>(this.SaveDoc, (a) => { return !this.isSaving; });
-            this.OpenCommand = new RelayCommand<object>(this.OpenDoc);
-            this.SaveAsCommand = new RelayCommand<object>(this.SaveAsDoc);
-            this.OpenHotkeysCommand = new RelayCommand<object>(this.OpenHotKeys);
-            this.OpenSettingsCommand = new RelayCommand<object>(this.OpenSettings);
-            this.createNewRTBCommand = new RelayCommand<object>(this.createNewRtb);
-            this.createNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
-            this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
+            this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
+            this.OpenCommand = new RelayCommand<object>(this.openDoc);
+            this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
+            this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
+            this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
+            this.CreateNewRTBCommand = new RelayCommand<object>(this.createNewRtb);
+            this.CreateNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
+            this.ToggleBold = new RelayCommand<object>(this.bold_Click);
+            this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 2;
@@ -151,7 +153,7 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Menu Item calls
-        private void OpenHotKeys(object sender)
+        private void openHotKeys(object sender)
         {
             hotKeys.Visibility = Visibility.Visible;
         }
@@ -325,7 +327,7 @@ namespace MathEdit.ViewModels
             //TextPointer tp = rtb.GetPositionFromPoint()
         }
 
-        private void Bold_Click(object sender, RoutedEventArgs e)
+        private void bold_Click(object sender)
         {
             parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
             TextSelection text = parentTb.Selection;
@@ -340,7 +342,7 @@ namespace MathEdit.ViewModels
             }
         }
 
-        private void Italic_Click(object sender, RoutedEventArgs e)
+        private void italic_Click(object sender)
         {
                 parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
                 TextSelection text = parentTb.Selection;
@@ -355,21 +357,21 @@ namespace MathEdit.ViewModels
                 }
         }
 
-        private void OpenSettings(object sender)
+        private void openSettings(object sender)
         {
             System.Diagnostics.Debug.WriteLine("du trykkede på settings");
         }
         #endregion
 
         #region Services
-        private void OpenDoc(object sender)
+        private void openDoc(object sender)
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
             FlowDoc = helper.openFile();
         }
 
-        private void SaveDoc(object sender)
+        private void saveDoc(object sender)
         {
             // works
             DocumentHelper helper = new DocumentHelper();
@@ -383,7 +385,7 @@ namespace MathEdit.ViewModels
             }
         }
 
-        private void SaveAsDoc(object sender)
+        private void saveAsDoc(object sender)
         {
             DocumentHelper helper = new DocumentHelper();
             helper.saveDocAs(flowDoc);
