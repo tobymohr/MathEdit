@@ -63,11 +63,12 @@ namespace MathEdit.ViewModels
         }
 
         #region PropertyFields
-        public EnabledFlowDocument FlowDoc
+        public EnabledFlowDocument MainFlowDocument
         {
             get { return this.flowDoc; }
             set { this.SetProperty(ref this.flowDoc, value); }
         }
+
 
         public string FontSize
         {
@@ -159,6 +160,14 @@ namespace MathEdit.ViewModels
         {
             hotKeys.Visibility = Visibility.Visible;
         }
+        
+        private void createNewRtb2(object sender)
+        {
+            object rtb = new RichTextBoxModel();
+            // hent element tilhørende focus (parent)
+            // smid rtb ind
+        }
+
 
         private void createNewRtb(object sender)
         {
