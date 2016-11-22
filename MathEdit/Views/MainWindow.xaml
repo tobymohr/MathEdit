@@ -8,6 +8,7 @@
         xmlns:my="clr-namespace:MathEdit"
         xmlns:vm="clr-namespace:MathEdit.ViewModels"
         mc:Ignorable="d"
+        FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
         Title="MainWindow" Height="350" Width="525" >
 
     <Window.InputBindings>

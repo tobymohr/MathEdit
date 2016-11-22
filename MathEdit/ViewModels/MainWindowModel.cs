@@ -37,11 +37,12 @@ namespace MathEdit.ViewModels
         public RichTextBox parentTb { get; set; }
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
-        public DependencyObject focusedObj { get; set; }
+        public MainWindow focusedObj;
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
         private bool isItalicChecked;
+        
 
         public MainWindowModel()
         {
@@ -55,6 +56,7 @@ namespace MathEdit.ViewModels
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
+            focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 2;
@@ -63,6 +65,7 @@ namespace MathEdit.ViewModels
         }
 
         #region PropertyFields
+      
         public EnabledFlowDocument FlowDoc
         {
             get { return this.flowDoc; }
@@ -96,17 +99,7 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Generic calls
-        public void Focus(UIElement element)
-        {
-            if (!element.Focus())
-            {
-                element.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(delegate ()
-                {
-                    element.Focus();
-                    focusedObj = element;
-                }));
-            }
-        }
+      
 
         private RichTextBox findParent(DependencyObject sender)
         {
@@ -190,16 +183,15 @@ namespace MathEdit.ViewModels
             }
 
             RichTextBox rtb = new RichTextBox() { Focusable = true };
+
             rtb.Focusable = true;
             rtb.Focus();
-            rtbCount++;
-            rtb.Name = "xx" + rtbCount + "xxx";
             rtb.TextChanged += onTextChanged;
             rtb.Document = new EnabledFlowDocument();
             Paragraph insideParagraph = new Paragraph();
 
             rtb.BorderThickness = new Thickness(0);
-            Focus(rtb);
+            rtb.Focus();
             FractionControl fControl = new FractionControl();
             SquareControl sControl = new SquareControl();
             PowControl pControl = new PowControl();
@@ -251,7 +243,7 @@ namespace MathEdit.ViewModels
             Paragraph insideParagraph = new Paragraph();
 
             rtb.BorderThickness = new Thickness(0);
-            Focus(rtb);
+            rtb.Focus();
             FractionControl fControl = new FractionControl();
             rtb.Width = fControl.Width;
             insideParagraph.Inlines.Add(fControl);
