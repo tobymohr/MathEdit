@@ -27,25 +27,36 @@
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
-            <MenuItem Header="_Tools">
-                <MenuItem Header="_Settings" Click="MenuItem_Click_2" IsCheckable="True" />
-                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Click="MenuItem_Add_Click" />
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Redo" x:Name="Redo" ></MenuItem> <!-- bind til command -->
+                <MenuItem Header="_Undo" x:Name="Undo" ></MenuItem> <!-- bind til command -->
             </MenuItem>
-            <ComboBox x:Name="fontSizeBox" Width="40" SelectedValuePath="Content" SelectionChanged="fontSizeBox_SelectionChanged" SelectedIndex="2">
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
+                <MenuItem Header="_Add formula" x:Name="menuItemAdd" Command="{Binding CreateNewRTBCommand}" />
+                <MenuItem Header="_Add fraction" x:Name="menuItemAddFraction" Command="{Binding CreateNewFractionCommand}" />
+            </MenuItem>
+            <ComboBox x:Name="fontSizeBox" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" > <!-- bind selection changed command -->
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="12"/>
                 <ComboBoxItem Content="16"/>
                 <ComboBoxItem Content="20"/>
             </ComboBox>
-            <ToggleButton Width="20" Name="Bold" FontStyle="Normal" Click="Bold_Click">
+            <ToggleButton Width="20" IsChecked="{Binding IsBoldChecked, Mode=TwoWay}" FontStyle="Normal" Command="{Binding ToggleBold}">
+                <!-- bind til command -->
                 B
             </ToggleButton>
-            <ToggleButton Width="20" Name="Italic" FontStyle="Italic" Click="Italic_Click">
+            <ToggleButton Width="20" IsChecked="{Binding IsItalicChecked, Mode=TwoWay}" FontStyle="Italic" Command="{Binding ToggleItalic}">
+                <!-- bind til command -->
                 I
             </ToggleButton>
         </Menu>
-        <Grid x:Name="gridParent">
-            <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" SelectionChanged="textBoxMain_SelectionChanged" />
+        <Grid>
+            <ScrollViewer  VerticalScrollBarVisibility="Visible">
+                <Grid x:Name="gridParent">
+                    <RichTextBox x:Name="textBoxMain" AcceptsReturn="True" /> <!-- bind selectionchanged command -->
+                </Grid>
+            </ScrollViewer>
             <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             </local:HotkeyMenu>
         </Grid>

@@ -12,11 +12,11 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 
-namespace MathEdit.Services
+namespace MathEdit.Helpers
 {
+    /* Filesystem IO */
     class DocumentHelper
     {
-
         public string saveDoc(EnabledFlowDocument fd)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();

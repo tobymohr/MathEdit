@@ -17,21 +17,17 @@ using System.Windows.Shapes;
 namespace MathEdit
 {
     /// <summary>
-    /// Interaction logic for SquareControl.xaml
+    /// Interaction logic for PowControl.xaml
     /// </summary>
-    public partial class SquareControl : UserControl
+    public partial class PowControl : UserControl
     {
-        private double allWidth = 95;
-        private static double minWidth = 50;
-        public SquareControl()
+
+
+        public PowControl()
         {
             InitializeComponent();
-            fieldTextBox.TextChanged += onTextChanged;
-        }
-
-        public RichTextBox getRichTextBox()
-        {
-            return fieldTextBox;
+            pow.TextChanged += onTextChanged;
+            number.TextChanged += onTextChanged;
         }
 
         private void onTextChanged(object sender, EventArgs e)
@@ -40,21 +36,24 @@ namespace MathEdit
             if (rt.IsFocused)
             {
                 double newWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (newWidth > allWidth)
+                rt.Width = newWidth;
+                if(newWidth <= 30)
                 {
-                    rt.Width = newWidth;
-                    allWidth = newWidth;
-                }else if(newWidth <= 0)
-                {
-                    rt.Width = minWidth;
-                    allWidth = 95;
+                    if (rt.Name.Equals(pow.Name))
+                    {
+                        rt.Width = pow.MinWidth;
+                    }else
+                    {
+                        rt.Width = number.MinWidth;
+                    }
                 }
+
             }
             DependencyObject parentObject = VisualTreeHelper.GetParent(rt);
             Grid parentGrid = parentObject as Grid;
             if (parentGrid != null)
             {
-                parentGrid.Width = allWidth;
+                parentGrid.Width = number.Width + pow.Width + 20;
             }
 
             RichTextBox parent = findParent(rt);
@@ -64,7 +63,8 @@ namespace MathEdit
                 {
                     if (parent.Name != "textBoxMain")
                     {
-                        parent.Width = allWidth + 20;
+                        parent.Width = number.Width + pow.Width + 20;
+                        parent.Height = parentGrid.Height;
                     }
                 }
                 parent = findParent(parent);

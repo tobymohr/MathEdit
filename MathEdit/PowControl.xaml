@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="MathEdit.PowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MathEdit"
+             mc:Ignorable="d" 
+          >
+    <Grid x:Name="TrackSurface" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <RichTextBox x:Name="pow" MinHeight="20" MinWidth="20" Grid.Column="1" Grid.Row="0">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="2"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <RichTextBox x:Name="number" MinHeight="30" MinWidth="30" Grid.Column="0" Grid.Row="1">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="x"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</UserControl>
