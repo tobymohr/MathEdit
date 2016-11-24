@@ -370,7 +370,7 @@ namespace MathEdit.ViewModels
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-            FlowDoc = helper.openFile();
+            flowDoc = helper.openFile();
         }
 
         private void saveDoc(object sender)

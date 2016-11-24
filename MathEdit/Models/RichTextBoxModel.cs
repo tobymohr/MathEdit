@@ -16,9 +16,5 @@ namespace MathEdit.Models
             
         }
 
-        public RichTextBoxModel createNewRichTextBox()
-        {
-            
-        }
     }
 }

@@ -26,6 +26,7 @@ namespace MathEdit
         
         public FractionControl()
         {
+            DataContext = new FractionModel();
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
             numenatorTextBox.TextChanged += onTextChanged;
