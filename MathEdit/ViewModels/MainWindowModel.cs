@@ -51,7 +51,6 @@ namespace MathEdit.ViewModels
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
             this.CreateNewRTBCommand = new RelayCommand<object>(this.createNewRtb);
-            this.CreateNewFractionCommand = new RelayCommand<object>(this.createFractionRtb);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
@@ -100,50 +99,6 @@ namespace MathEdit.ViewModels
         #region Generic calls
       
 
-        private RichTextBox findParent(DependencyObject sender)
-        {
-            if (sender != null)
-            {
-                DependencyObject parentObject = VisualTreeHelper.GetParent(sender);
-
-                RichTextBox parentBox = parentObject as RichTextBox;
-                if (parentBox != null)
-                {
-                    return parentBox;
-                }
-                return findParent(parentObject);
-            }
-            return null;
-        }
-
-        private void onTextChanged(object sender, EventArgs e)
-        {
-            RichTextBox rt = (RichTextBox)sender;
-            if (rt.IsFocused)
-            {
-                double newWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (newWidth > minWidth)
-                {
-                    minWidth = newWidth;
-                    rt.Width = minWidth;
-                }
-            }
-
-            //RichTextBox parent = findParent(rt);
-            //while (parent != null)
-            //{
-            //    if (parent != null && parent != sender)
-            //    {
-            //        if (parent.Name != "textBoxMain")
-            //        {
-            //            parent.Width = minWidth + 20;
-            //        }
-            //    }
-            //    parent = findParent(parent);
-            //}
-
-        }
-
         #endregion
 
         #region Menu Item calls
@@ -182,81 +137,10 @@ namespace MathEdit.ViewModels
                 para = (Paragraph)parentFd.Blocks.LastBlock;
             }
             FractionControl fControl = new FractionControl();
-            fControl.Name = "flow" + rtbCount;
+            fControl.Name = "flow" + ++rtbCount;
             EnabledFlowDocument fd = parentFd as EnabledFlowDocument;
             fd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
-            //RichTextBox rtb = new RichTextBox() { Focusable = true };
-            // rtb.Focusable = true;
-            // rtb.Focus();
-            //// rtb.TextChanged += onTextChanged;
-            // EnabledFlowDocument flow = new EnabledFlowDocument();
-            // rtb.Document = flow;
-            // rtbCount = rtbCount + 1;
-            // rtb.Name = "CRTB" +rtbCount;
-            // flow.Name = "flow" + rtbCount;
-            // rtb.TextChanged += onChange;
-            //// rtb.BorderThickness = new Thickness(0);
-            // rtb.Focus();
-            //SquareControl sControl = new SquareControl();
-            //PowControl pControl = new PowControl();
-            //rtb.Width = pControl.Width;
-
-
-        }
-
-      
-
-       
-
-        private void createFractionRtb(object sender)
-        {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            parentTb = (RichTextBox)focusedControl;
-            FlowDocument parentFd;
-
-            if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
-            {
-
-                parentFd = parentTb.Document;
-            }
-            else
-            {
-                parentFd = new EnabledFlowDocument();
-                parentTb.Document = parentFd;
-            }
-
-            if (parentFd.Blocks.Count == 0)
-            {
-                para = new Paragraph();
-                parentFd.Blocks.Add(para);
-                string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
-                para.Inlines.Add(text);
-            }
-
-            else if (parentFd.Blocks.Count > 0)
-            {
-                para = (Paragraph)parentFd.Blocks.LastBlock;
-            }
-
-            RichTextBox rtb = new RichTextBox() { Focusable = true };
-            rtb.Focusable = true;
-            rtb.Focus();
-            rtbCount++;
-            rtb.Name = "xx" + rtbCount + "xxx";
-            rtb.TextChanged += onTextChanged;
-            rtb.Document = new EnabledFlowDocument();
-            Paragraph insideParagraph = new Paragraph();
-
-            rtb.BorderThickness = new Thickness(0);
-            rtb.Focus();
-            FractionControl fControl = new FractionControl();
-            rtb.Width = fControl.Width;
-            insideParagraph.Inlines.Add(fControl);
-            rtb.Document.Blocks.Add(insideParagraph);
-            para.Inlines.Add(rtb);
-
         }
 
         private void changeFontSize(object sender)

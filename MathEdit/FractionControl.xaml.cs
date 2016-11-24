@@ -23,7 +23,7 @@ namespace MathEdit
     {
         private double minParentWidth = 70;
         public FractionModel model { get; set; }
-        
+
         public FractionControl()
         {
             model = new FractionModel();
@@ -42,23 +42,37 @@ namespace MathEdit
             EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
             if (tb.Name != "FirstBox")
             {
-                double newWidth = tb.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                int count = 0;
-                double sumWidth = 0;
-                foreach (IOperation op in flowDoc.childrenOperations)
-                {
-                    Console.WriteLine("Op width " + op.width);
-                    sumWidth = op.width;
-                }
-                model.width = newWidth + sumWidth;
-                if (model.width > TrackSurface.Width)
-                {
-                    TrackSurface.Width = model.width;
-                } 
-}
-                Console.WriteLine("Own width" + model.width);
-                tb.Width = model.width;
+                model.width = getTotalWidth(flowDoc) ;
+                tb.Width = model.width + 20;
+                
+                double outerWidth = Math.Max(getTotalWidth(model.boxes.ElementAt(0)), getTotalWidth(model.boxes.ElementAt(1)));
+                Console.WriteLine(this.Name + " " +  outerWidth);
+                TrackSurface.Width = outerWidth + 70;
             }
         }
+
+        private double getTotalWidth(EnabledFlowDocument model)
+        {
+            double maxValue = 0;
+            double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
+            double sumWidth = 0;
+            foreach (IOperation op in model.childrenOperations)
+            {
+                sumWidth += op.width;
+            }
+            
+            if (sumWidth > textWidth)
+            {
+                maxValue = sumWidth;
+            }
+            else
+            {
+                maxValue = textWidth;
+            }
+
+            return maxValue;
+        }
+    }
+
 
 }
