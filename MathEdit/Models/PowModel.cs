@@ -17,6 +17,7 @@ namespace MathEdit.Models
         {
             boxes = new List<EnabledFlowDocument>();
             boxes.Add(new EnabledFlowDocument());
+            boxes.Add(new EnabledFlowDocument());
         }
 
         double IOperation.width

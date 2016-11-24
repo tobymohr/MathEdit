@@ -26,6 +26,42 @@ namespace MathEdit
         {
             model = new SquareModel();
             InitializeComponent();
+            numberBox.Document = model.boxes.ElementAt(0);
+            numberBox.TextChanged += onChange;
+        }
+
+        public void onChange(object sender, RoutedEventArgs e)
+        {
+            RichTextBox tb = sender as RichTextBox;
+            EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
+            if (tb.Name != "FirstBox")
+            {
+                model.width = getTotalWidth(flowDoc);
+                tb.Width = model.width + 20;
+                TrackSurface.Width += model.width;
+            }
+        }
+
+        private double getTotalWidth(EnabledFlowDocument model)
+        {
+            double maxValue = 0;
+            double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
+            double sumWidth = 0;
+            foreach (IOperation op in model.childrenOperations)
+            {
+                sumWidth += op.width;
+            }
+
+            if (sumWidth > textWidth)
+            {
+                maxValue = sumWidth;
+            }
+            else
+            {
+                maxValue = textWidth;
+            }
+
+            return maxValue;
         }
     }
 }

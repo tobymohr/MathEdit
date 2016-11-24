@@ -16,19 +16,19 @@
         </Grid.ColumnDefinitions>
        
 
-        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="0" Margin="0,10,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Width="Auto"  HorizontalAlignment="Stretch" >
             <Path.Data>
                 <PathGeometry>
                     <PathFigure StartPoint="10,25">
                         <LineSegment Point="25,50" />
-                        <LineSegment Point="45,5" />
+                        <LineSegment Point="45,0" />
                       
                     </PathFigure>
                 </PathGeometry>
             </Path.Data>
         </Path>
 
-        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="1" Grid.Row="0" Margin="0,10,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="1" Grid.Row="0" Margin="0,0,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Path.Data>
                 <PathGeometry>
                     <PathFigure StartPoint="55,5">
@@ -38,7 +38,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="fieldTextBox" Grid.Column="1" Grid.Row="0" Margin="5,15,5,5"  MinHeight="37"  MinWidth="50">
+        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,15,5,5"  MinHeight="37"  MinWidth="80">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
