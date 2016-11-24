@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MathEdit"
              mc:Ignorable="d"
-             MinWidth="100"
+             MinWidth="50"
              Name="parent">
     
     <Grid x:Name="TrackSurface" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

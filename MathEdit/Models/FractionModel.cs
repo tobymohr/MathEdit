@@ -43,11 +43,7 @@ namespace MathEdit.Models
         }
 
 
-        public void onIOperationChanged()
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();

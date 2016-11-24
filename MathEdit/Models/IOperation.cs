@@ -12,7 +12,6 @@ namespace MathEdit.Models
     public interface IOperation : ISerializable
     {
         #region public methods
-        void onIOperationChanged();
         double width { get; set; }
         List<EnabledFlowDocument> boxes { get; }
         #endregion

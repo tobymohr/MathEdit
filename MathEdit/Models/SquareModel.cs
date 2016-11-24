@@ -43,10 +43,5 @@ namespace MathEdit.Models
         {
             throw new NotImplementedException();
         }
-
-        public void onIOperationChanged()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
