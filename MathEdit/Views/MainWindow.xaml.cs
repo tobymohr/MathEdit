@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using MathEdit.Views;
 using MathEdit.ViewModels;
+using MathEdit.Models;
 
 namespace MathEdit
 {
@@ -10,7 +10,7 @@ namespace MathEdit
         {
             DataContext = new MainWindowModel();
             InitializeComponent();
-            textBoxMain.Document = new EnabledFlowDocument();
+            //textBoxMain.Document = new EnabledFlowDocument();
         }
     }
 }

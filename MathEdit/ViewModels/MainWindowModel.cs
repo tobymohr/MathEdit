@@ -1,6 +1,5 @@
 ﻿using MathEdit.Helpers;
 using MathEdit.Models;
-using MathEdit.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
