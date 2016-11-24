@@ -15,6 +15,9 @@
     <Window.InputBindings>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
+        <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
+        <KeyBinding Key="D" Modifiers="Alt" Command="{Binding CreateSqrtCommand}"></KeyBinding>
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="SaveAs"></KeyBinding>
     </Window.InputBindings>
@@ -68,7 +71,7 @@
                     </RichTextBox>
                 </Grid>
             </ScrollViewer>
-            <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, Mode=TwoWay}">
+            <local:HotkeyMenu DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"  x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, Mode=TwoWay}" >
             </local:HotkeyMenu>
         </Grid>
     </DockPanel>

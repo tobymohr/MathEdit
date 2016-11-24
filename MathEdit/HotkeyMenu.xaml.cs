@@ -24,10 +24,5 @@ namespace MathEdit
         {
             InitializeComponent();
         }
-
-        private void fraction_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
