@@ -43,6 +43,7 @@ namespace MathEdit.ViewModels
         private bool isBoldChecked;
         private bool isItalicChecked;
         private bool dropDownOpen;
+        private Visibility visibility;
 
 
         public MainWindowModel()
@@ -63,6 +64,7 @@ namespace MathEdit.ViewModels
             fontSizeIndex = 1;
             isBoldChecked = false;
             isItalicChecked = false;
+            visibility = Visibility.Collapsed;
         }
 
         #region PropertyFields
@@ -70,6 +72,12 @@ namespace MathEdit.ViewModels
         {
             get { return this.flowDoc; }
             set { this.SetProperty(ref this.flowDoc, value); }
+        }
+
+        public Visibility Visibility
+        {
+            get { return this.visibility; }
+            set { this.SetProperty(ref this.visibility, value); }
         }
 
 
@@ -113,7 +121,13 @@ namespace MathEdit.ViewModels
         #region Menu Item calls
         private void openHotKeys(object sender)
         {
-            hotKeys.Visibility = Visibility.Visible;
+            if(Visibility == Visibility.Visible)
+            {
+                Visibility = Visibility.Collapsed;
+            }else
+            {
+                Visibility = Visibility.Visible;
+            }
         }
 
 

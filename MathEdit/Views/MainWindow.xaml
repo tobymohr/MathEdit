@@ -68,7 +68,7 @@
                     </RichTextBox>
                 </Grid>
             </ScrollViewer>
-            <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+            <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, Mode=TwoWay}">
             </local:HotkeyMenu>
         </Grid>
     </DockPanel>
