@@ -152,13 +152,6 @@ namespace MathEdit.ViewModels
             hotKeys.Visibility = Visibility.Visible;
         }
 
-        private void createNewRtb2(object sender)
-        {
-            object rtb = new RichTextBoxModel();
-            // hent element tilhørende focus (parent)
-            // smid rtb ind
-        }
-
 
         private void createNewRtb(object sender)
         {
@@ -192,10 +185,7 @@ namespace MathEdit.ViewModels
             fControl.Name = "flow" + rtbCount;
             EnabledFlowDocument fd = parentFd as EnabledFlowDocument;
             fd.childrenOperations.Add(fControl.model);
-
             para.Inlines.Add(fControl);
-
-
             //RichTextBox rtb = new RichTextBox() { Focusable = true };
             // rtb.Focusable = true;
             // rtb.Focus();

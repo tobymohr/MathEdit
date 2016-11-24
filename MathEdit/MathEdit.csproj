@@ -77,10 +77,8 @@
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FlowDocumentExtensions.cs" />
-    <Compile Include="Models\CustomRichTextBox.cs" />
     <Compile Include="Models\IOperation.cs" />
     <Compile Include="Models\FractionModel.cs" />
-    <Compile Include="Models\RichTextBoxModel.cs" />
     <Compile Include="PowControl.xaml.cs">
       <DependentUpon>PowControl.xaml</DependentUpon>
     </Compile>

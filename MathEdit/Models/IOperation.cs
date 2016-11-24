@@ -14,7 +14,7 @@ namespace MathEdit.Models
         #region public methods
         void onIOperationChanged();
         double width { get; set; }
-        List<EnabledFlowDocument> getBoxes();
+        List<EnabledFlowDocument> boxes { get; }
         #endregion
     }
 }

@@ -27,6 +27,14 @@ namespace MathEdit.Models
             }
         }
 
+        List<EnabledFlowDocument> IOperation.boxes
+        {
+            get
+            {
+                return boxes;
+            }
+        }
+
         public FractionModel()
         {
             boxes = new List<EnabledFlowDocument>();
@@ -34,10 +42,6 @@ namespace MathEdit.Models
             boxes.Add(new EnabledFlowDocument());
         }
 
-        public List<EnabledFlowDocument> getBoxes()
-        {
-            return boxes;
-        }
 
         public void onIOperationChanged()
         {
