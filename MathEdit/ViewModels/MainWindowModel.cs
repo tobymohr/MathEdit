@@ -28,6 +28,7 @@ namespace MathEdit.ViewModels
         public ICommand ToggleBold { get; set; }
         public ICommand ToggleItalic { get; set; }
         public ICommand ChangeFontSize { get; set; }
+        public ICommand TextBoxMainSelectionChanged { get; set; }
 
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
@@ -41,6 +42,7 @@ namespace MathEdit.ViewModels
         private int fontSizeIndex;
         private bool isBoldChecked;
         private bool isItalicChecked;
+        private bool dropDownOpen;
 
 
         public MainWindowModel()
@@ -54,10 +56,11 @@ namespace MathEdit.ViewModels
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
+            this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
-            fontSizeIndex = 2;
+            fontSizeIndex = 1;
             isBoldChecked = false;
             isItalicChecked = false;
         }
@@ -94,10 +97,16 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.isItalicChecked, value); }
         }
 
+        public bool FontDropOpen
+        {
+            get { return this.dropDownOpen; }
+            set { this.SetProperty(ref this.dropDownOpen, value); }
+        }
+
         #endregion
 
         #region Generic calls
-      
+
 
         #endregion
 
@@ -145,17 +154,13 @@ namespace MathEdit.ViewModels
 
         private void changeFontSize(object sender)
         {
-
-            ComboBox comboBox = (ComboBox)sender;
-            string value = (string)comboBox.SelectedValue;
-            if (comboBox.IsDropDownOpen)
+            if (dropDownOpen)
             {
                 parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
                 TextSelection text = parentTb.Selection;
                 parentTb.Focus();
-                text.ApplyPropertyValue(RichTextBox.FontSizeProperty, value);
+                text.ApplyPropertyValue(RichTextBox.FontSizeProperty, fontSize);
             }
-
         }
 
         private void textBoxMain_SelectionChanged(object sender)
@@ -208,8 +213,6 @@ namespace MathEdit.ViewModels
             {
                 IsBoldChecked = false;
             }
-            //RichTextBox rtb = (RichTextBox)sender;
-            //TextPointer tp = rtb.GetPositionFromPoint()
         }
 
         private void bold_Click(object sender)
