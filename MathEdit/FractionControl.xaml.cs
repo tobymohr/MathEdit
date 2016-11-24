@@ -31,16 +31,35 @@ namespace MathEdit
             DataContext = model;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
-           // numenatorTextBox.TextChanged += onTextChanged;
-          //  denumenatorTextBox.TextChanged += onTextChanged;
+            numenatorTextBox.Document = new EnabledFlowDocument();
+            denumenatorTextBox.Document = new EnabledFlowDocument();
+            numenatorTextBox.TextChanged += onChange;
+            denumenatorTextBox.TextChanged += onChange;
         }
 
-        private void onTextChanged(object sender, EventArgs e)
+        public void onChange(object sender, RoutedEventArgs e)
         {
-            RichTextBox rt = (RichTextBox)sender;
-            resizeRichTextBox(rt);
-            resizeParent(rt);
+            RichTextBox tb = sender as RichTextBox;
+            EnabledFlowDocument flowDock = tb.Document as EnabledFlowDocument;
+            if (tb.Name != "FirstBox")
+            {
+                double newWidth = tb.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
+                tb.Width = newWidth;
+                if(newWidth > TrackSurface.Width)
+                {
+                    TrackSurface.Width = newWidth;
+                }
+                foreach (IOperation op in flowDock.childrenOperations)
+                {
+                    foreach (EnabledFlowDocument tempDock in op.getChildren())
+                    {
+
+                    }
+                }
+            }
         }
+
+        
 
         private void resizeParent(object sender)
         {

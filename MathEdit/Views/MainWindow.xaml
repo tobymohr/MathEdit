@@ -55,7 +55,7 @@
         <Grid>
             <ScrollViewer  VerticalScrollBarVisibility="Visible">
                 <Grid x:Name="gridParent">
-                    <RichTextBox  AcceptsReturn="True" /> <!-- bind selectionchanged command -->
+                    <RichTextBox  AcceptsReturn="True" Name="FirstBox"/> <!-- bind selectionchanged command -->
                 </Grid>
             </ScrollViewer>
             <local:HotkeyMenu x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">

@@ -188,37 +188,33 @@ namespace MathEdit.ViewModels
             {
                 para = (Paragraph)parentFd.Blocks.LastBlock;
             }
+            FractionControl fControl = new FractionControl();
+            fControl.Name = "flow" + rtbCount;
+            EnabledFlowDocument fd = parentFd as EnabledFlowDocument;
+            fd.childrenOperations.Add(fControl.model);
+            para.Inlines.Add(fControl);
 
-            CustomRichTextBox rtb = new CustomRichTextBox() { Focusable = true };
 
-           
-            rtb.Focusable = true;
-            rtb.Focus();
-           // rtb.TextChanged += onTextChanged;
-            EnabledFlowDocument flow = new EnabledFlowDocument();
-            rtb.Document = flow;
-            rtbCount = rtbCount + 1;
-            rtb.Name = "CRTB" +rtbCount;
-
-            // Paragraph insideParagraph = new Paragraph();
-            // rtb.Width = 50;
+            //RichTextBox rtb = new RichTextBox() { Focusable = true };
+            // rtb.Focusable = true;
+            // rtb.Focus();
+            //// rtb.TextChanged += onTextChanged;
+            // EnabledFlowDocument flow = new EnabledFlowDocument();
+            // rtb.Document = flow;
+            // rtbCount = rtbCount + 1;
+            // rtb.Name = "CRTB" +rtbCount;
+            // flow.Name = "flow" + rtbCount;
+            // rtb.TextChanged += onChange;
             //// rtb.BorderThickness = new Thickness(0);
             // rtb.Focus();
-            // FractionControl fControl = new FractionControl();
-            // flow.childrenOperations.Add(fControl.model);
             //SquareControl sControl = new SquareControl();
             //PowControl pControl = new PowControl();
             //rtb.Width = pControl.Width;
-            // insideParagraph.Inlines.Add(fControl);
-            // rtb.Document.Blocks.Add(insideParagraph);
-            para.Inlines.Add(rtb);
+
 
         }
 
-        public void onChange(object sender, RoutedEventArgs e)
-        {
-
-        }
+      
 
        
 
