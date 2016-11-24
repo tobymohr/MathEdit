@@ -192,6 +192,7 @@ namespace MathEdit.ViewModels
             fControl.Name = "flow" + rtbCount;
             EnabledFlowDocument fd = parentFd as EnabledFlowDocument;
             fd.childrenOperations.Add(fControl.model);
+
             para.Inlines.Add(fControl);
 
 

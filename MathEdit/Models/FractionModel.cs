@@ -10,30 +10,41 @@ namespace MathEdit.Models
     public class FractionModel : IOperation
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private List<EnabledFlowDocument> children;
+        private List<EnabledFlowDocument> boxes;
+        public double width;
+
+        double IOperation.width
+        {
+            get
+            {
+                return width;
+            }
+
+            set
+            {
+                this.width = value;
+            }
+        }
 
         public FractionModel()
         {
-            children = new List<EnabledFlowDocument>();
-        }
-        public List<EnabledFlowDocument> getChildren()
-        {
-            return children;
+            boxes = new List<EnabledFlowDocument>();
+            boxes.Add(new EnabledFlowDocument());
+            boxes.Add(new EnabledFlowDocument());
         }
 
-        public double getWidth()
+        public List<EnabledFlowDocument> getBoxes()
         {
-            throw new NotImplementedException();
+            return boxes;
         }
+
 
         public void onIOperationChanged()
         {
             throw new NotImplementedException();
         }
 
-        public double setWidth(double width)
-        {
-            throw new NotImplementedException();
-        }
+
+        
     }
 }

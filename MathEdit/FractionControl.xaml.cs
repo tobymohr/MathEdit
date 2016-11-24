@@ -31,8 +31,8 @@ namespace MathEdit
             DataContext = model;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
-            numenatorTextBox.Document = new EnabledFlowDocument();
-            denumenatorTextBox.Document = new EnabledFlowDocument();
+            numenatorTextBox.Document = model.getBoxes().ElementAt(0);
+            denumenatorTextBox.Document = model.getBoxes().ElementAt(1);
             numenatorTextBox.TextChanged += onChange;
             denumenatorTextBox.TextChanged += onChange;
         }
@@ -40,22 +40,29 @@ namespace MathEdit
         public void onChange(object sender, RoutedEventArgs e)
         {
             RichTextBox tb = sender as RichTextBox;
-            EnabledFlowDocument flowDock = tb.Document as EnabledFlowDocument;
+            EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
             if (tb.Name != "FirstBox")
             {
                 double newWidth = tb.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                tb.Width = newWidth;
+                
+                model.width = newWidth;
                 if(newWidth > TrackSurface.Width)
                 {
                     TrackSurface.Width = newWidth;
                 }
-                foreach (IOperation op in flowDock.childrenOperations)
-                {
-                    foreach (EnabledFlowDocument tempDock in op.getChildren())
-                    {
 
+                int count = 0;
+                double sumWidth = 0;
+                foreach (IOperation op in flowDoc.childrenOperations)
+                {
+                    foreach (EnabledFlowDocument tempDock in op.getBoxes())
+                    {
+                        sumWidth += op.width;
                     }
                 }
+                model.width = newWidth + sumWidth;
+                tb.Width = model.width;
+                Console.WriteLine(count + "");
             }
         }
 

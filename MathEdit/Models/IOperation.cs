@@ -11,10 +11,9 @@ namespace MathEdit.Models
     public interface IOperation : INotifyPropertyChanged
     {
         #region public methods
-        double getWidth();
-        double setWidth(double width);
         void onIOperationChanged();
-        List<EnabledFlowDocument> getChildren();
+        double width { get; set; }
+        List<EnabledFlowDocument> getBoxes();
         #endregion
     }
 }
