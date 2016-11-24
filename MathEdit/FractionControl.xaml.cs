@@ -44,25 +44,21 @@ namespace MathEdit
             if (tb.Name != "FirstBox")
             {
                 double newWidth = tb.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                
-                model.width = newWidth;
-                if(newWidth > TrackSurface.Width)
-                {
-                    TrackSurface.Width = newWidth;
-                }
-
                 int count = 0;
                 double sumWidth = 0;
                 foreach (IOperation op in flowDoc.childrenOperations)
                 {
-                    foreach (EnabledFlowDocument tempDock in op.getBoxes())
-                    {
-                        sumWidth += op.width;
-                    }
+                    Console.WriteLine("Op width " + op.width);
+                    sumWidth = op.width;
                 }
                 model.width = newWidth + sumWidth;
+                if (model.width > TrackSurface.Width)
+                {
+                    TrackSurface.Width = model.width;
+                } 
+}
+                Console.WriteLine("Own width" + model.width);
                 tb.Width = model.width;
-                Console.WriteLine(count + "");
             }
         }
 

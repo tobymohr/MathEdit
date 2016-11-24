@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MathEdit.Models
 {
+    [Serializable]
     public class FractionModel : IOperation
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private List<EnabledFlowDocument> boxes;
+        public List<EnabledFlowDocument> boxes;
         public double width;
 
         double IOperation.width
@@ -38,13 +39,14 @@ namespace MathEdit.Models
             return boxes;
         }
 
-
         public void onIOperationChanged()
         {
             throw new NotImplementedException();
         }
 
-
-        
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
