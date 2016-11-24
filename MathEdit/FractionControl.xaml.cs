@@ -22,6 +22,7 @@ namespace MathEdit
     public partial class FractionControl : UserControl
     {
         private double minParentWidth = 70;
+        private double prevWidth = 0;
         public FractionModel model { get; set; }
 
         public FractionControl()
@@ -44,10 +45,9 @@ namespace MathEdit
             {
                 model.width = getTotalWidth(flowDoc) ;
                 tb.Width = model.width + 20;
-                
                 double outerWidth = Math.Max(getTotalWidth(model.boxes.ElementAt(0)), getTotalWidth(model.boxes.ElementAt(1)));
                 Console.WriteLine(this.Name + " " +  outerWidth);
-                TrackSurface.Width = outerWidth + 70;
+                TrackSurface.Width = outerWidth+40;
             }
         }
 
