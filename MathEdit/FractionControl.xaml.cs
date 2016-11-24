@@ -23,14 +23,16 @@ namespace MathEdit
     {
         private double minWidth = 50;
         private double minParentWidth = 70;
+        public FractionModel model { get; set; }
         
         public FractionControl()
         {
-            DataContext = new FractionModel();
+            model = new FractionModel();
+            DataContext = model;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
-            numenatorTextBox.TextChanged += onTextChanged;
-            denumenatorTextBox.TextChanged += onTextChanged;
+           // numenatorTextBox.TextChanged += onTextChanged;
+          //  denumenatorTextBox.TextChanged += onTextChanged;
         }
 
         private void onTextChanged(object sender, EventArgs e)

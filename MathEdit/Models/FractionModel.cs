@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MathEdit.Models
 {
-    class FractionModel : IOperation
+    public class FractionModel : IOperation
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

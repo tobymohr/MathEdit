@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace MathEdit.Models
 {
-    interface IOperation : INotifyPropertyChanged
+    public interface IOperation : INotifyPropertyChanged
     {
         #region public methods
         double getWidth();

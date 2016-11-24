@@ -15,7 +15,7 @@ namespace MathEdit.Models
     {
         #region Fields
         public RichTextBox parentContainer { get; set; }
-        private List<IOperation> childrenOperations { get; set; }
+        public List<IOperation> childrenOperations { get; set; }
         #endregion
 
         public EnabledFlowDocument()

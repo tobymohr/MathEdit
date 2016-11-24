@@ -129,18 +129,18 @@ namespace MathEdit.ViewModels
                 }
             }
 
-            RichTextBox parent = findParent(rt);
-            while (parent != null)
-            {
-                if (parent != null && parent != sender)
-                {
-                    if (parent.Name != "textBoxMain")
-                    {
-                        parent.Width = minWidth + 20;
-                    }
-                }
-                parent = findParent(parent);
-            }
+            //RichTextBox parent = findParent(rt);
+            //while (parent != null)
+            //{
+            //    if (parent != null && parent != sender)
+            //    {
+            //        if (parent.Name != "textBoxMain")
+            //        {
+            //            parent.Width = minWidth + 20;
+            //        }
+            //    }
+            //    parent = findParent(parent);
+            //}
 
         }
 
@@ -189,25 +189,38 @@ namespace MathEdit.ViewModels
                 para = (Paragraph)parentFd.Blocks.LastBlock;
             }
 
-            RichTextBox rtb = new RichTextBox() { Focusable = true };
+            CustomRichTextBox rtb = new CustomRichTextBox() { Focusable = true };
 
+           
             rtb.Focusable = true;
             rtb.Focus();
-            rtb.TextChanged += onTextChanged;
-            rtb.Document = new EnabledFlowDocument();
-            Paragraph insideParagraph = new Paragraph();
+           // rtb.TextChanged += onTextChanged;
+            EnabledFlowDocument flow = new EnabledFlowDocument();
+            rtb.Document = flow;
+            rtbCount = rtbCount + 1;
+            rtb.Name = "CRTB" +rtbCount;
 
-            rtb.BorderThickness = new Thickness(0);
-            rtb.Focus();
-            FractionControl fControl = new FractionControl();
-            SquareControl sControl = new SquareControl();
-            PowControl pControl = new PowControl();
-            rtb.Width = pControl.Width;
-            insideParagraph.Inlines.Add(pControl);
-            rtb.Document.Blocks.Add(insideParagraph);
+            // Paragraph insideParagraph = new Paragraph();
+            // rtb.Width = 50;
+            //// rtb.BorderThickness = new Thickness(0);
+            // rtb.Focus();
+            // FractionControl fControl = new FractionControl();
+            // flow.childrenOperations.Add(fControl.model);
+            //SquareControl sControl = new SquareControl();
+            //PowControl pControl = new PowControl();
+            //rtb.Width = pControl.Width;
+            // insideParagraph.Inlines.Add(fControl);
+            // rtb.Document.Blocks.Add(insideParagraph);
             para.Inlines.Add(rtb);
 
         }
+
+        public void onChange(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
 
         private void createFractionRtb(object sender)
         {
