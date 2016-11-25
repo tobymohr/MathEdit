@@ -328,7 +328,6 @@ namespace MathEdit.ViewModels
 
         private void saveDoc(object sender)
         {
-            // works
             DocumentHelper helper = new DocumentHelper();
             if (fileName == null || fileName == "")
             {
