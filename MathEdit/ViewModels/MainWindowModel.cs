@@ -32,6 +32,7 @@ namespace MathEdit.ViewModels
         public ICommand ToggleItalic { get; set; }
         public ICommand ChangeFontSize { get; set; }
         public ICommand TextBoxMainSelectionChanged { get; set; }
+        public ICommand ScrollZoom { get; set; }
 
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
@@ -48,6 +49,7 @@ namespace MathEdit.ViewModels
         private bool dropDownOpen;
         private Visibility visibility;
         private int count = 0;
+        private double zoomValue;
 
 
         public MainWindowModel()
@@ -64,6 +66,7 @@ namespace MathEdit.ViewModels
             this.CreatePowCommand = new RelayCommand<object>(this.createPow);
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
+            this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
@@ -71,6 +74,7 @@ namespace MathEdit.ViewModels
             isBoldChecked = false;
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
+            zoomValue = 1;
         }
 
         #region PropertyFields
@@ -117,6 +121,12 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.dropDownOpen, value); }
         }
 
+        public double ZoomValue
+        {
+            get { return this.zoomValue; }
+            set { this.SetProperty(ref this.zoomValue, value); }
+        }
+
         #endregion
 
         #region Generic calls
@@ -147,6 +157,16 @@ namespace MathEdit.ViewModels
         private void createSquared(object sender)
         {
             createNewSqrtControl();
+        }
+
+        private void scrollZoom(object sender)
+        {
+            if(ZoomValue < 10)
+            {
+                ZoomValue = ZoomValue + 0.5;
+
+            }
+            
         }
         #endregion
 
