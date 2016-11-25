@@ -55,7 +55,7 @@ namespace MathEdit
             double maxValue = 0;
             double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
             double sumWidth = 0;
-            foreach (IOperation op in model.childrenOperations)
+            foreach (Operation op in model.childrenOperations)
             {
                 sumWidth += op.outerWidth;
             }
