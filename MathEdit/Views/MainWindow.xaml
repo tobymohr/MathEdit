@@ -24,7 +24,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" />
                 <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenCommand}"/>
-                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}"/>
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox}"/>
                 <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="SaveAs"/>
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
