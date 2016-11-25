@@ -13,6 +13,8 @@ namespace MathEdit.Models
     {
         public List<EnabledFlowDocument> boxes;
         public double width;
+        public double outerWidth;
+        public int id;
 
         double IOperation.width
         {
@@ -32,6 +34,32 @@ namespace MathEdit.Models
             get
             {
                 return boxes;
+            }
+        }
+
+        int IOperation.id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                this.id = value;
+            }
+        }
+
+        double IOperation.outerWidth
+        {
+            get
+            {
+                return outerWidth;
+            }
+
+            set
+            {
+                this.outerWidth = value;
             }
         }
 

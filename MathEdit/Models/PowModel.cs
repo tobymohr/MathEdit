@@ -41,6 +41,32 @@ namespace MathEdit.Models
             }
         }
 
+        public int id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                this.id = value;
+            }
+        }
+
+        public double outerWidth
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();

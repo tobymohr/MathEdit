@@ -18,6 +18,33 @@ namespace MathEdit.Models
             boxes = new List<EnabledFlowDocument>();
             boxes.Add(new EnabledFlowDocument());
         }
+
+        public int id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                this.id = value;
+            }
+        }
+
+        public double outerWidth
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         List<EnabledFlowDocument> IOperation.boxes
         {
             get

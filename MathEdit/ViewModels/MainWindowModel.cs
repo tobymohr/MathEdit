@@ -47,6 +47,7 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
+        private int count = 0;
 
 
         public MainWindowModel()
@@ -189,6 +190,7 @@ namespace MathEdit.ViewModels
             para = getCorrectParagraph(parentBox);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl();
+            fControl.model.id = count++;
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
         }
