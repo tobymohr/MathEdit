@@ -37,19 +37,6 @@ namespace MathEdit.Models
             }
         }
 
-        int IOperation.id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                this.id = value;
-            }
-        }
-
         double IOperation.outerWidth
         {
             get

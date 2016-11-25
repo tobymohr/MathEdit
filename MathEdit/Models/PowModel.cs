@@ -12,6 +12,7 @@ namespace MathEdit.Models
     {
         public List<EnabledFlowDocument> boxes;
         public double width;
+        public double outerWidth;
 
         public PowModel()
         {
@@ -41,29 +42,18 @@ namespace MathEdit.Models
             }
         }
 
-        public int id
+       
+
+        double IOperation.outerWidth
         {
             get
             {
-                return id;
+                return outerWidth;
             }
 
             set
             {
-                this.id = value;
-            }
-        }
-
-        public double outerWidth
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
+                this.outerWidth = value;
             }
         }
 

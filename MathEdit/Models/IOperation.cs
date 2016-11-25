@@ -15,7 +15,6 @@ namespace MathEdit.Models
         double width { get; set; }
         List<EnabledFlowDocument> boxes { get; }
         double outerWidth { get; set; }
-        int id { get; set; }
         #endregion
     }
 }

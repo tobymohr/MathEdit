@@ -12,6 +12,7 @@ namespace MathEdit.Models
     {
         public List<EnabledFlowDocument> boxes;
         public double width;
+        public double outerWidth;
 
         public SquareModel()
         {
@@ -19,31 +20,19 @@ namespace MathEdit.Models
             boxes.Add(new EnabledFlowDocument());
         }
 
-        public int id
+        double IOperation.outerWidth
         {
             get
             {
-                return id;
+                return outerWidth;
             }
 
             set
             {
-                this.id = value;
+                this.outerWidth = value;
             }
         }
 
-        public double outerWidth
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         List<EnabledFlowDocument> IOperation.boxes
         {
