@@ -21,70 +21,47 @@ namespace MathEdit
     /// </summary>
     public partial class SquareControl : UserControl
     {
-        private double allWidth = 95;
-        private static double minWidth = 50;
+        public SquareModel model { get; set; }
         public SquareControl()
         {
+            model = new SquareModel();
             InitializeComponent();
-            fieldTextBox.TextChanged += onTextChanged;
+            numberBox.Document = model.boxes.ElementAt(0);
+            numberBox.TextChanged += onChange;
         }
 
-        public RichTextBox getRichTextBox()
+        public void onChange(object sender, RoutedEventArgs e)
         {
-            return fieldTextBox;
+            RichTextBox tb = sender as RichTextBox;
+            EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
+            if (tb.Name != "FirstBox")
+            {
+                model.width = getTotalWidth(flowDoc);
+                tb.Width = model.width + 20;
+                TrackSurface.Width += model.width;
+            }
         }
 
-        private void onTextChanged(object sender, EventArgs e)
+        private double getTotalWidth(EnabledFlowDocument model)
         {
-            RichTextBox rt = (RichTextBox)sender;
-            if (rt.IsFocused)
+            double maxValue = 0;
+            double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
+            double sumWidth = 0;
+            foreach (IOperation op in model.childrenOperations)
             {
-                double newWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (newWidth > allWidth)
-                {
-                    rt.Width = newWidth;
-                    allWidth = newWidth;
-                }else if(newWidth <= 0)
-                {
-                    rt.Width = minWidth;
-                    allWidth = 95;
-                }
-            }
-            DependencyObject parentObject = VisualTreeHelper.GetParent(rt);
-            Grid parentGrid = parentObject as Grid;
-            if (parentGrid != null)
-            {
-                parentGrid.Width = allWidth;
+                sumWidth += op.width;
             }
 
-            RichTextBox parent = findParent(rt);
-            while (parent != null)
+            if (sumWidth > textWidth)
             {
-                if (parent != null && parent != sender)
-                {
-                    if (parent.Name != "textBoxMain")
-                    {
-                        parent.Width = allWidth + 20;
-                    }
-                }
-                parent = findParent(parent);
+                maxValue = sumWidth;
             }
-        }
-        private RichTextBox findParent(DependencyObject sender)
-        {
-            if (sender != null)
+            else
             {
-                DependencyObject parentObject = VisualTreeHelper.GetParent(sender);
-
-                RichTextBox parentBox = parentObject as RichTextBox;
-                if (parentBox != null)
-                {
-                    return parentBox;
-                }
-                return findParent(parentObject);
+                maxValue = textWidth;
             }
-            return null;
 
+            return maxValue;
         }
     }
 }

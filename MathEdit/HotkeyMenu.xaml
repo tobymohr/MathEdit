@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:MathEdit"
              mc:Ignorable="d" 
              MinHeight="50" 
+             DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"
              MinWidth="150">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,7 +14,7 @@
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="fraction" Grid.Column="0" Grid.Row="0" Click="fraction_Click">
+        <Button x:Name="fraction" Grid.Column="0" Grid.Row="0" >
             <TextBlock FontSize="10">
                ALT+W
             </TextBlock>
@@ -25,7 +26,7 @@
         </Button>
         <Button x:Name="power" Grid.Column="2" Grid.Row="0">
             <TextBlock FontSize="10">
-               ALT+D
+               ALT+D 
             </TextBlock>
         </Button>
     </Grid>

@@ -19,12 +19,15 @@ namespace MathEdit.ViewModels
     class MainWindowModel : ViewModelBase
     {
         public ICommand SaveCommand { get; set; }
+        public ICommand CreateFractionCommand { get; set; }
+        public ICommand CreatePowCommand { get; set; }
+        public ICommand CreateSqrtCommand { get; set; }
         public ICommand OpenCommand { get; set; }
         public ICommand SaveAsCommand { get; set; }
         public ICommand OpenHotkeysCommand { get; set; }
         public ICommand OpenSettingsCommand { get; set; }
         public ICommand CreateNewRTBCommand { get; set; }
-        public ICommand CreateNewFractionCommand { get; set; }
+ 
         public ICommand ToggleBold { get; set; }
         public ICommand ToggleItalic { get; set; }
         public ICommand ChangeFontSize { get; set; }
@@ -53,10 +56,12 @@ namespace MathEdit.ViewModels
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
-            this.CreateNewRTBCommand = new RelayCommand<object>(this.createNewRtb);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
+            this.CreateFractionCommand = new RelayCommand<object>(this.createFraction);
+            this.CreatePowCommand = new RelayCommand<object>(this.createPow);
+            this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
@@ -114,30 +119,44 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Generic calls
-
-
         #endregion
 
-        #region Menu Item calls
+        #region hotKey calls
         private void openHotKeys(object sender)
         {
-            if(Visibility == Visibility.Visible)
+            if (Visibility == Visibility.Visible)
             {
                 Visibility = Visibility.Collapsed;
-            }else
+            }
+            else
             {
                 Visibility = Visibility.Visible;
             }
         }
-
-
-        private void createNewRtb(object sender)
+        private void createFraction(object sender)
         {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            parentTb = (RichTextBox)focusedControl;
-            FlowDocument parentFd;
+            createNewFractionControl();
+        }
 
+        private void createPow(object sender)
+        {
+            createNewPowControl();
+        }
+
+        private void createSquared(object sender)
+        {
+            createNewSqrtControl();
+        }
+        #endregion
+
+        #region Menu Item calls
+
+
+        private Paragraph getCorrectParagraph(RichTextBox parentTb)
+        {
+           
+            FlowDocument parentFd;
+            Paragraph para = null;
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
             {
                 parentFd = parentTb.Document;
@@ -159,11 +178,43 @@ namespace MathEdit.ViewModels
             {
                 para = (Paragraph)parentFd.Blocks.LastBlock;
             }
+            return para;
+        }
+
+        private void createNewFractionControl()
+        {
+            Paragraph para = null;
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+            RichTextBox parentBox = focusedControl as RichTextBox;
+            para = getCorrectParagraph(parentBox);
+            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl();
-            fControl.Name = "flow" + ++rtbCount;
-            EnabledFlowDocument fd = parentFd as EnabledFlowDocument;
-            fd.childrenOperations.Add(fControl.model);
+            parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
+        }
+
+        private void createNewPowControl()
+        {
+            Paragraph para = null;
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+            RichTextBox parentBox = focusedControl as RichTextBox;
+            para = getCorrectParagraph(parentBox);
+            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
+            PowControl pControl = new PowControl();
+            parentFd.childrenOperations.Add(pControl.model);
+            para.Inlines.Add(pControl);
+        }
+
+        private void createNewSqrtControl()
+        {
+            Paragraph para = null;
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+            RichTextBox parentBox = focusedControl as RichTextBox;
+            para = getCorrectParagraph(parentBox);
+            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
+            SquareControl sControl = new SquareControl();
+            parentFd.childrenOperations.Add(sControl.model);
+            para.Inlines.Add(sControl);
         }
 
         private void changeFontSize(object sender)

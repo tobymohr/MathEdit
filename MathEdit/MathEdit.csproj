@@ -87,6 +87,8 @@
     <Compile Include="Helpers\FlowDocumentExtensions.cs" />
     <Compile Include="Models\IOperation.cs" />
     <Compile Include="Models\FractionModel.cs" />
+    <Compile Include="Models\PowModel.cs" />
+    <Compile Include="Models\SquareModel.cs" />
     <Compile Include="PowControl.xaml.cs">
       <DependentUpon>PowControl.xaml</DependentUpon>
     </Compile>

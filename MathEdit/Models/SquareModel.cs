@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -9,10 +8,23 @@ using System.Threading.Tasks;
 namespace MathEdit.Models
 {
     [Serializable]
-    public class FractionModel : IOperation
+    public class SquareModel : IOperation
     {
         public List<EnabledFlowDocument> boxes;
         public double width;
+
+        public SquareModel()
+        {
+            boxes = new List<EnabledFlowDocument>();
+            boxes.Add(new EnabledFlowDocument());
+        }
+        List<EnabledFlowDocument> IOperation.boxes
+        {
+            get
+            {
+                return boxes;
+            }
+        }
 
         double IOperation.width
         {
@@ -27,23 +39,6 @@ namespace MathEdit.Models
             }
         }
 
-        List<EnabledFlowDocument> IOperation.boxes
-        {
-            get
-            {
-                return boxes;
-            }
-        }
-
-        public FractionModel()
-        {
-            boxes = new List<EnabledFlowDocument>();
-            boxes.Add(new EnabledFlowDocument());
-            boxes.Add(new EnabledFlowDocument());
-        }
-
-
-       
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();

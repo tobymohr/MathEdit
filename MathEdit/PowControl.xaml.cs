@@ -21,70 +21,56 @@ namespace MathEdit
     /// </summary>
     public partial class PowControl : UserControl
     {
-
-
+        private double minParentWidth = 70;
+        private double prevWidth = 0;
+        public PowModel model { get; set; }
         public PowControl()
         {
+            model = new PowModel();
             InitializeComponent();
-            pow.TextChanged += onTextChanged;
-            number.TextChanged += onTextChanged;
+            TrackSurface.Width = minParentWidth;
+            pow.Document = model.boxes.ElementAt(0);
+            number.Document = model.boxes.ElementAt(1);
+            pow.TextChanged += onChange;
+            number.TextChanged += onChange;
         }
 
-        private void onTextChanged(object sender, EventArgs e)
+        public void onChange(object sender, RoutedEventArgs e)
         {
-            RichTextBox rt = (RichTextBox)sender;
-            if (rt.IsFocused)
+            RichTextBox tb = sender as RichTextBox;
+            EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
+            if (tb.Name != "FirstBox")
             {
-                double newWidth = rt.Document.GetFormattedText().WidthIncludingTrailingWhitespace;
-                rt.Width = newWidth;
-                if(newWidth <= 30)
-                {
-                    if (rt.Name.Equals(pow.Name))
-                    {
-                        rt.Width = pow.MinWidth;
-                    }else
-                    {
-                        rt.Width = number.MinWidth;
-                    }
-                }
-
-            }
-            DependencyObject parentObject = VisualTreeHelper.GetParent(rt);
-            Grid parentGrid = parentObject as Grid;
-            if (parentGrid != null)
-            {
-                parentGrid.Width = number.Width + pow.Width + 20;
-            }
-
-            RichTextBox parent = findParent(rt);
-            while (parent != null)
-            {
-                if (parent != null && parent != sender)
-                {
-                    if (parent.Name != "textBoxMain")
-                    {
-                        parent.Width = number.Width + pow.Width + 20;
-                        parent.Height = parentGrid.Height;
-                    }
-                }
-                parent = findParent(parent);
+                model.width = getTotalWidth(flowDoc);
+                tb.Width = model.width + 20;
+                double outerWidth = getTotalWidth(model.boxes.ElementAt(0)) + getTotalWidth(model.boxes.ElementAt(1));
+                Console.WriteLine(this.Name + " " + outerWidth);
+                TrackSurface.Width = outerWidth + 40;
             }
         }
-        private RichTextBox findParent(DependencyObject sender)
+
+        private double getTotalWidth(EnabledFlowDocument model)
         {
-            if (sender != null)
+            double maxValue = 0;
+            double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
+            double sumWidth = 0;
+            foreach (IOperation op in model.childrenOperations)
             {
-                DependencyObject parentObject = VisualTreeHelper.GetParent(sender);
-
-                RichTextBox parentBox = parentObject as RichTextBox;
-                if (parentBox != null)
-                {
-                    return parentBox;
-                }
-                return findParent(parentObject);
+                sumWidth += op.width;
             }
-            return null;
 
+            if (sumWidth > textWidth)
+            {
+                maxValue = sumWidth;
+            }
+            else
+            {
+                maxValue = textWidth;
+            }
+
+            return maxValue;
         }
     }
+
+
 }
