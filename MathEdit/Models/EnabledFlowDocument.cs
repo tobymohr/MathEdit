@@ -11,15 +11,16 @@ using System.Windows.Media;
 namespace MathEdit.Models
 {
     [Serializable]
+
     public class EnabledFlowDocument : FlowDocument
     {
         #region Fields
-        public List<IOperation> childrenOperations { get; set; }
+        public List<Operation> childrenOperations { get; set; }
         #endregion
 
         public EnabledFlowDocument()
         {
-            childrenOperations = new List<IOperation>();
+            childrenOperations = new List<Operation>();
         }
 
         #region public methods

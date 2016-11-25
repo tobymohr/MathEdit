@@ -190,7 +190,6 @@ namespace MathEdit.ViewModels
             para = getCorrectParagraph(parentBox);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl();
-            fControl.model.id = count++;
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
         }

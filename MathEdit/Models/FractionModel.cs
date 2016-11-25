@@ -9,46 +9,10 @@ using System.Threading.Tasks;
 namespace MathEdit.Models
 {
     [Serializable]
-    public class FractionModel : IOperation
+    public class FractionModel : Operation
     {
-        public List<EnabledFlowDocument> boxes;
-        public double width;
-        public double outerWidth;
-        public int id;
-
-        double IOperation.width
-        {
-            get
-            {
-                return width;
-            }
-
-            set
-            {
-                this.width = value;
-            }
-        }
-
-        List<EnabledFlowDocument> IOperation.boxes
-        {
-            get
-            {
-                return boxes;
-            }
-        }
-
-        double IOperation.outerWidth
-        {
-            get
-            {
-                return outerWidth;
-            }
-
-            set
-            {
-                this.outerWidth = value;
-            }
-        }
+        public List<EnabledFlowDocument> _boxes;
+        public double _outerWidth, _width;
 
         public FractionModel()
         {
@@ -57,11 +21,43 @@ namespace MathEdit.Models
             boxes.Add(new EnabledFlowDocument());
         }
 
-
-       
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override double width
         {
-            throw new NotImplementedException();
+            get
+            {
+                return this._width;
+            }
+
+            set
+            {
+                this._width = value;
+            }
+        }
+
+        public override List<EnabledFlowDocument> boxes
+        {
+            get
+            {
+                return this._boxes;
+            }
+            set
+            {
+                this._boxes = value;
+            }
+            
+        }
+
+        public override double outerWidth
+        {
+            get
+            {
+                return this._outerWidth;
+            }
+
+            set
+            {
+                this._outerWidth = value;
+            }
         }
     }
 }
