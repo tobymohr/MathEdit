@@ -326,14 +326,15 @@ namespace MathEdit.ViewModels
 
         private void saveDoc(object sender)
         {
+            
             DocumentHelper helper = new DocumentHelper();
             if (fileName == null || fileName == "")
             {
-                fileName = helper.saveDoc(flowDoc);
+                fileName = helper.saveDoc((EnabledFlowDocument)sender);
             }
             else
             {
-                helper.saveDoc(flowDoc, fileName);
+                helper.saveDoc((EnabledFlowDocument)sender, fileName);
             }
         }
 
