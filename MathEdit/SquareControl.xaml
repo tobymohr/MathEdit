@@ -5,43 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MathEdit"
              mc:Ignorable="d"
-             MinWidth="50"
              Name="parent">
-    
-    <Grid x:Name="TrackSurface" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+    <Grid x:Name="TrackSurface" MinWidth="40" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-       
+
 
         <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Width="Auto"  HorizontalAlignment="Stretch" >
             <Path.Data>
                 <PathGeometry>
-                    <PathFigure StartPoint="10,25">
-                        <LineSegment Point="25,50" />
-                        <LineSegment Point="45,0" />
-                      
+                    <PathFigure StartPoint="25,25">
+                        <LineSegment Point="30,40" />
+                        <LineSegment Point="40,0" />
                     </PathFigure>
                 </PathGeometry>
             </Path.Data>
         </Path>
 
-        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="1" Grid.Row="0" Margin="0,0,0,10" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="1" Grid.Row="0" Margin="0,0,0,0" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Path.Data>
                 <PathGeometry>
-                    <PathFigure StartPoint="55,5">
-                        <LineSegment Point="100,5" />
+                    <PathFigure StartPoint="20,5">
+                        <LineSegment Point="0,5" />
                     </PathFigure>
                 </PathGeometry>
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,15,5,5"  MinHeight="37"  MinWidth="80">
+        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5"  MinHeight="10"  MinWidth="20">
             <FlowDocument>
                 <Paragraph>
-                    <Run Text=""/>
+                    <Run Text="x"/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

@@ -29,6 +29,7 @@ namespace MathEdit
         {
             model = new FractionModel();
             DataContext = model;
+            model._outerWidth = 30;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
             numenatorTextBox.Document = model.boxes.ElementAt(0);
@@ -48,7 +49,14 @@ namespace MathEdit
                 double outerWidth = Math.Max(getTotalWidth(model.boxes.ElementAt(0)), getTotalWidth(model.boxes.ElementAt(1)));
                 model.outerWidth = outerWidth + 40;
                 TrackSurface.Width = model.outerWidth;
-               
+                if (model.width > 0)
+                {
+                    tb.BorderThickness = new Thickness(0);
+                }
+                else
+                {
+                    tb.BorderThickness = new Thickness(1);
+                }
             }
         }
 
