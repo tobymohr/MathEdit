@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:MathEdit"
              mc:Ignorable="d" 
           >
+
+       
     <Grid x:Name="TrackSurface" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
