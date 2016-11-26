@@ -10,16 +10,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <RichTextBox x:Name="pow" MinHeight="20" MinWidth="20" Grid.Column="1" Grid.Row="0">
+        <RichTextBox x:Name="pow" Width="Auto"  MinHeight="5"  MinWidth="20" Grid.Column="1" Grid.Row="0">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="2"/>
@@ -27,7 +25,7 @@
             </FlowDocument>
         </RichTextBox>
 
-        <RichTextBox x:Name="number" MinHeight="30" MinWidth="30" Grid.Column="0" Grid.Row="1">
+        <RichTextBox x:Name="number" Width="Auto"  Margin="0,0,0,0" MinHeight="10" MinWidth="20" Grid.Column="0" Grid.Row="1">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="x"/>

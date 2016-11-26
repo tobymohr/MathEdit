@@ -26,6 +26,7 @@ namespace MathEdit
         {
             model = new SquareModel();
             InitializeComponent();
+            model._outerWidth = 40;
             numberBox.Document = model.boxes.ElementAt(0);
             numberBox.TextChanged += onChange;
         }
@@ -38,7 +39,15 @@ namespace MathEdit
             {
                 model.width = getTotalWidth(flowDoc);
                 tb.Width = model.width + 20;
-                TrackSurface.Width += model.width;
+                double outerWidth = model.width + TrackSurface.MinWidth;
+                model.outerWidth = outerWidth;
+                TrackSurface.Width = model.outerWidth;
+                if (model.width > 0) {
+                    tb.BorderThickness = new Thickness(0);
+                }else
+                {
+                    tb.BorderThickness = new Thickness(1);
+                }
             }
         }
 
@@ -49,7 +58,7 @@ namespace MathEdit
             double sumWidth = 0;
             foreach (Operation op in model.childrenOperations)
             {
-                sumWidth += op.width;
+                sumWidth += op.outerWidth;
             }
 
             if (sumWidth > textWidth)

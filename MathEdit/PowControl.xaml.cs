@@ -27,6 +27,7 @@ namespace MathEdit
         public PowControl()
         {
             model = new PowModel();
+            model._outerWidth = 40;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
             pow.Document = model.boxes.ElementAt(0);
@@ -34,6 +35,7 @@ namespace MathEdit
             pow.TextChanged += onChange;
             number.TextChanged += onChange;
         }
+
 
         public void onChange(object sender, RoutedEventArgs e)
         {
@@ -47,6 +49,14 @@ namespace MathEdit
                 Console.WriteLine(this.Name + " " + outerWidth);
                 model.outerWidth = outerWidth + 40;
                 TrackSurface.Width = model.outerWidth;
+                if (model.width > 0)
+                {
+                    tb.BorderThickness = new Thickness(0);
+                }
+                else
+                {
+                    tb.BorderThickness = new Thickness(1);
+                }
             }
         }
 
