@@ -5,20 +5,19 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace MathEdit.Models
 {
     [Serializable]
     public class FractionModel : Operation
     {
-        public List<EnabledFlowDocument> _boxes;
+        public ListOfEnabledDocs _boxes;
         public double _outerWidth, _width;
 
         public FractionModel()
         {
-            boxes = new List<EnabledFlowDocument>();
-            boxes.Add(new EnabledFlowDocument());
-            boxes.Add(new EnabledFlowDocument());
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
         }
 
         public override double width
@@ -34,19 +33,6 @@ namespace MathEdit.Models
             }
         }
 
-        public override List<EnabledFlowDocument> boxes
-        {
-            get
-            {
-                return this._boxes;
-            }
-            set
-            {
-                this._boxes = value;
-            }
-            
-        }
-
         public override double outerWidth
         {
             get
@@ -57,6 +43,19 @@ namespace MathEdit.Models
             set
             {
                 this._outerWidth = value;
+            }
+        }
+
+        public override ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
     }
