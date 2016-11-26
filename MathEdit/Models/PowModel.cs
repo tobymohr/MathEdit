@@ -8,42 +8,53 @@ using System.Threading.Tasks;
 namespace MathEdit.Models
 {
     [Serializable]
-    public class PowModel : IOperation
+    public class PowModel : Operation
     {
-        public List<EnabledFlowDocument> boxes;
-        public double width;
+        public ListOfEnabledDocs _boxes;
+        public double _outerWidth, _width;
 
         public PowModel()
         {
-            boxes = new List<EnabledFlowDocument>();
-            boxes.Add(new EnabledFlowDocument());
-            boxes.Add(new EnabledFlowDocument());
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
         }
 
-        double IOperation.width
+        public override double width
         {
             get
             {
-                return width;
+                return this._width;
             }
 
             set
             {
-                this.width = value;
+                this._width = value;
             }
         }
 
-        List<EnabledFlowDocument> IOperation.boxes
+        public override ListOfEnabledDocs boxes
         {
             get
             {
-                return boxes;
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override double outerWidth
         {
-            throw new NotImplementedException();
+            get
+            {
+                return this._outerWidth;
+            }
+
+            set
+            {
+                this._outerWidth = value;
+            }
         }
     }
 }

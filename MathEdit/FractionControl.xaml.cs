@@ -46,8 +46,9 @@ namespace MathEdit
                 model.width = getTotalWidth(flowDoc) ;
                 tb.Width = model.width + 20;
                 double outerWidth = Math.Max(getTotalWidth(model.boxes.ElementAt(0)), getTotalWidth(model.boxes.ElementAt(1)));
-                Console.WriteLine(this.Name + " " +  outerWidth);
-                TrackSurface.Width = outerWidth+40;
+                model.outerWidth = outerWidth + 40;
+                TrackSurface.Width = model.outerWidth;
+               
             }
         }
 
@@ -56,9 +57,9 @@ namespace MathEdit
             double maxValue = 0;
             double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
             double sumWidth = 0;
-            foreach (IOperation op in model.childrenOperations)
+            foreach (Operation op in model.childrenOperations)
             {
-                sumWidth += op.width;
+                sumWidth += op.outerWidth;
             }
             
             if (sumWidth > textWidth)

@@ -5,48 +5,58 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace MathEdit.Models
 {
     [Serializable]
-    public class FractionModel : IOperation
+    public class FractionModel : Operation
     {
-        public List<EnabledFlowDocument> boxes;
-        public double width;
+        public ListOfEnabledDocs _boxes;
+        public double _outerWidth, _width;
 
-        double IOperation.width
+        public FractionModel()
+        {
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
+        }
+
+        public override double width
         {
             get
             {
-                return width;
+                return this._width;
             }
 
             set
             {
-                this.width = value;
+                this._width = value;
             }
         }
 
-        List<EnabledFlowDocument> IOperation.boxes
+        public override double outerWidth
         {
             get
             {
-                return boxes;
+                return this._outerWidth;
+            }
+
+            set
+            {
+                this._outerWidth = value;
             }
         }
 
-        public FractionModel()
+        public override ListOfEnabledDocs boxes
         {
-            boxes = new List<EnabledFlowDocument>();
-            boxes.Add(new EnabledFlowDocument());
-            boxes.Add(new EnabledFlowDocument());
-        }
+            get
+            {
+                return _boxes;
+            }
 
-
-       
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
+            set
+            {
+                _boxes = value;
+            }
         }
     }
 }

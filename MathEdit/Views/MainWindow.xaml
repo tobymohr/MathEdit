@@ -10,8 +10,10 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
-        Title="MainWindow" Height="350" Width="525" >
+        Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
+    
     <Window.InputBindings>
+        <MouseBinding Gesture="Control+WheelClick" Command="{Binding ScrollZoom}" ></MouseBinding>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
@@ -55,11 +57,15 @@
             <ToggleButton Width="20" IsChecked="{Binding IsItalicChecked, Mode=TwoWay}" FontStyle="Italic" Command="{Binding ToggleItalic}">
                 I
             </ToggleButton>
+            <Slider x:Name="Zoom" DockPanel.Dock="Bottom" Minimum="1" Maximum="10" Width="70" Value="{Binding ZoomValue, Mode=TwoWay}"/>
         </Menu>
         <Grid>
-            <ScrollViewer  VerticalScrollBarVisibility="Visible">
+            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid x:Name="gridParent">
-                    <RichTextBox  AcceptsReturn="True" Name="FirstBox">
+                    <RichTextBox  AcceptsReturn="True" Name="FirstBox" Width="800">
+                        <RichTextBox.LayoutTransform>
+                            <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"/>
+                        </RichTextBox.LayoutTransform>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction Command="{Binding TextBoxMainSelectionChanged, Mode=OneWay}"/>
