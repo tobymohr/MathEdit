@@ -85,8 +85,9 @@
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FlowDocumentExtensions.cs" />
-    <Compile Include="Models\IOperation.cs" />
     <Compile Include="Models\FractionModel.cs" />
+    <Compile Include="Models\ListOfEnabledDocs.cs" />
+    <Compile Include="Models\ListOfOperations.cs" />
     <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\PowModel.cs" />
     <Compile Include="Models\SquareModel.cs" />
