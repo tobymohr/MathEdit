@@ -72,6 +72,7 @@
             <Slider x:Name="Zoom" DockPanel.Dock="Bottom" Minimum="1" Maximum="10" Width="70" Value="{Binding ZoomValue, Mode=TwoWay}"/>
         </Menu>
         <Grid>
+           
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid x:Name="gridParent">
                     <RichTextBox  AcceptsReturn="True" Name="FirstBox" Width="800" >
