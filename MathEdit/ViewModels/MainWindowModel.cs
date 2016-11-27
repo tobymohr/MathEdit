@@ -395,16 +395,16 @@ namespace MathEdit.ViewModels
         private void saveDoc(object sender)
         {
             MainFlowDocument = (FlowDocument)sender;
-            writeToMemory(MainFlowDocument, false);
+            serializeDocument(MainFlowDocument, false);
         }
 
         private void saveAsDoc(object sender)
         {
             MainFlowDocument = (FlowDocument)sender;
-            writeToMemory(MainFlowDocument, true);
+            serializeDocument(MainFlowDocument, true);
         }
 
-        private void writeToMemory(FlowDocument document, bool isSaveAsCaller)
+        private void serializeDocument(FlowDocument document, bool isSaveAsCaller)
         {
             using (MemoryStream stream = new MemoryStream())
             {
