@@ -7,18 +7,13 @@
         xmlns:local="clr-namespace:MathEdit"
         xmlns:my="clr-namespace:MathEdit"
         xmlns:vm="clr-namespace:MathEdit.ViewModels"
-        xmlns:h="clr-namespace:MathEdit.Helpers"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
         Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
     
     <Window.InputBindings>
-        <MouseBinding Command="{Binding ScrollZoom}">
-            <MouseBinding.Gesture>
-                <h:MouseWheelUp/>
-            </MouseBinding.Gesture>
-        </MouseBinding>
+        <MouseBinding Gesture="Control+WheelClick" Command="{Binding ScrollZoom}" ></MouseBinding>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
@@ -48,7 +43,7 @@
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
                 <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"/>
             </MenuItem>
-            <ComboBox x:Name="fontSizeBox" IsEditable="True" IsTextSearchEnabled="False" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" IsDropDownOpen="{Binding FontDropOpen}">
+            <ComboBox x:Name="fontSizeBox" IsEditable="True" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" IsDropDownOpen="{Binding FontDropOpen}">
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="12"/>
                 <ComboBoxItem Content="16"/>
@@ -59,6 +54,9 @@
                 <ComboBoxItem Content="40"/>
                 <ComboBoxItem Content="55"/>
                 <ComboBoxItem Content="72"/>
+                <ComboBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding CloseFontSizeBox}"></KeyBinding>
+                </ComboBox.InputBindings>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="DropDownClosed">
                         <i:InvokeCommandAction Command="{Binding ChangeFontSize, Mode=OneWay}"/>
@@ -85,13 +83,6 @@
                                 <i:InvokeCommandAction Command="{Binding TextBoxMainSelectionChanged, Mode=OneWay}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <RichTextBox.InputBindings>
-                            <MouseBinding Command="{Binding ScrollZoom}">
-                                <MouseBinding.Gesture>
-                                    <h:MouseWheelUp/>
-                                </MouseBinding.Gesture>
-                            </MouseBinding>
-                        </RichTextBox.InputBindings>
                     </RichTextBox>
                 </Grid>
             </ScrollViewer>
