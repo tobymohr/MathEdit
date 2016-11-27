@@ -29,6 +29,7 @@ namespace MathEdit.Models
                 reader.ReadEndElement();
             }
             reader.ReadEndElement();
+
         }
 
         public void WriteXml(XmlWriter writer)
