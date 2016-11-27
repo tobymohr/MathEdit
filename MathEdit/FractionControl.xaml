@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MathEdit"
              MinHeight="10">
-    <Grid x:Name="TrackSurface" Background="White" MinWidth="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid x:Name="TrackSurface" Background="White" MinWidth="10" Width="{Binding outerWidth}"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <RichTextBox  x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2" Width="Auto"  MinWidth="5"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
+        <RichTextBox  x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2" Width="{Binding numenatorWidth}" BorderThickness="{Binding numborder}"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
             <FlowDocument>
                 <Paragraph>
                     <Run Text=" "/>
@@ -29,7 +29,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="denumenatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0" Width="Auto" MinWidth="5" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
+        <RichTextBox x:Name="denumenatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0" Width="{Binding denumenatorWidth}" BorderThickness="{Binding denumborder}"  MinWidth="15" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
             <FlowDocument>
                 <Paragraph>
                     <Run Text=" "/>
