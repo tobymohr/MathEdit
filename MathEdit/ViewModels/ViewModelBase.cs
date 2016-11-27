@@ -20,7 +20,6 @@ namespace MathEdit.ViewModels
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
-
         public void SetProperty<T>(ref T member, T value, [CallerMemberName] string propertyName = null)
         {
             if (member == null || !member.Equals(value))
