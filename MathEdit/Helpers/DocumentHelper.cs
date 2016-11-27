@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +68,9 @@ namespace MathEdit.Helpers
 
                 using (MemoryStream stream = new MemoryStream(content))
                 {
-                    doc = XamlReader.Load(stream) as FlowDocument;
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    //doc = XamlReader.Load(stream) as FlowDocument;
+                    doc = formatter.Deserialize(stream) as FlowDocument;
                 }
                 return doc;
             }
