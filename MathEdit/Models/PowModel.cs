@@ -16,7 +16,7 @@ namespace MathEdit.Models
     {
         public double _outerWidth;
         private int minWidth = 50;
-        private int margin =25;
+        private int margin =10;
         public override event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
@@ -32,12 +32,12 @@ namespace MathEdit.Models
 
         public PowModel()
         {
-            outerWidth = 70;
+            outerWidth = minWidth;
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
         }
 
-        public double powWidth { get { return getTotalWidth(boxes.ElementAt(0)); } }
-        public double numberWidth { get { return getTotalWidth(boxes.ElementAt(1)); } }
+        public double powWidth { get { return getTotalWidth(boxes.ElementAt(0)) + margin; } }
+        public double numberWidth { get { return getTotalWidth(boxes.ElementAt(1)) + margin; } }
 
         public override double outerWidth
         {

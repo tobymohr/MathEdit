@@ -13,7 +13,7 @@ namespace MathEdit
             InitializeComponent();
 
             DocumentHelper helper = new DocumentHelper();
-            FirstBox.Document = helper.openFile();
+          //  FirstBox.Document = helper.openFile();
         }
     }
 }

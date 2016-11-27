@@ -61,7 +61,6 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        private int count = 0;
         public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
