@@ -43,8 +43,8 @@ namespace MathEdit.ViewModels
         public ICommand CloseFontSizeBox { get; set; }
 
         public ICommand UndoCommand { get; set; }
-        public ICommand RedoCommand { get; }
-        public ICommand AddFormulaCommand { get; }
+        public ICommand RedoCommand { get; set; }
+        public ICommand AddFormulaCommand { get; set; }
 
         public FlowDocumentModel documentModel;
         public string fileName { get; set; }
@@ -261,7 +261,7 @@ namespace MathEdit.ViewModels
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
             latestOperation = fControl.model;
-            AddFormula();
+            AddFormula(null);
         }
 
         private void createNewPowControl()
