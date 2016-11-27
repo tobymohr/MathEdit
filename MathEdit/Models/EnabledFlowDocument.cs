@@ -16,14 +16,25 @@ namespace MathEdit.Models
     public class EnabledFlowDocument : FlowDocument
     {
         #region Fields
-        [XmlIgnore]
-        public ListOfOperations childrenOperations;
+        public ListOfOperations _childrenOperations;
         #endregion
 
         public EnabledFlowDocument()
         {
             childrenOperations = new ListOfOperations();
         }
+         public ListOfOperations childrenOperations
+        {
+            get
+            {
+                return _childrenOperations;
+            }
+            set
+            {
+                _childrenOperations = value;
+            }
+        }
+     
 
         #region public methods
         #endregion
