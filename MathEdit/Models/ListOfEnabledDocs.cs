@@ -53,7 +53,6 @@ namespace MathEdit.Models
 
             }
             writer.WriteEndElement();
-
         }
         #endregion
     }
