@@ -42,7 +42,7 @@ namespace MathEdit.ViewModels
         public ICommand ScrollZoom { get; set; }
         public ICommand CloseFontSizeBox { get; set; }
 
-        public ICommand UndoCommand { get; }
+        public ICommand UndoCommand { get; set; }
         public ICommand RedoCommand { get; }
         public ICommand AddFormulaCommand { get; }
 
@@ -83,6 +83,9 @@ namespace MathEdit.ViewModels
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
             this.CloseFontSizeBox = new RelayCommand<object>(this.closeFontSizeBox);
+            this.UndoCommand = new RelayCommand<object>(this.undoOperation);
+            this.RedoCommand = new RelayCommand<object>(this.redoOperation);
+            this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
             documentModel = new FlowDocumentModel();
             fileName = "";
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
@@ -93,18 +96,8 @@ namespace MathEdit.ViewModels
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
             zoomValue = 1;
-
-            UndoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Undo, undoRedoController.CanUndo);
-            RedoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Redo, undoRedoController.CanRedo);
-
-            AddFormulaCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(AddFormula);
         }
-
-        private void AddFormula()
-        {
-            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
-        }
-
+    
         #region PropertyFields
         public FlowDocument MainFlowDocument
         {
@@ -160,12 +153,6 @@ namespace MathEdit.ViewModels
             get { return this.zoomValue; }
             set { this.SetProperty(ref this.zoomValue, value); }
         }
-
-
-
-        #endregion
-
-        #region Generic calls
         #endregion
 
         #region hotKey calls
@@ -210,6 +197,25 @@ namespace MathEdit.ViewModels
             Console.WriteLine("woop");
             dropDownOpen = false;
         }
+        #endregion
+
+        #region Generic calls
+
+        public void undoOperation(object sender)
+        {
+            undoRedoController.Undo();
+        }
+
+        public void redoOperation(object sender)
+        {
+            undoRedoController.Redo();
+        }
+
+        private void AddFormula(object sender)
+        {
+            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
+        }
+
         #endregion
 
         #region Menu Item calls
