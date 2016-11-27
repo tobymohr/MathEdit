@@ -69,8 +69,6 @@ namespace MathEdit.ViewModels
         public MainWindowModel()
         {
             formulas = new ObservableCollection<Operation>();
-            this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
-            
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
