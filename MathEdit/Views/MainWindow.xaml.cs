@@ -11,9 +11,6 @@ namespace MathEdit
         {
             DataContext = new MainWindowModel();
             InitializeComponent();
-
-            DocumentHelper helper = new DocumentHelper();
-            FirstBox.Document = helper.openFile();
         }
     }
 }
