@@ -414,6 +414,7 @@ namespace MathEdit.ViewModels
             using (MemoryStream stream = new MemoryStream())
             {
                 document.childrenOperations.WriteXml(XmlWriter.Create(stream));
+            
                 BinaryFlowDocument = stream.ToArray();
             }
 

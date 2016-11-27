@@ -14,7 +14,8 @@ namespace MathEdit.Models
     [Serializable]
     public class PowModel : Operation
     {
-        public double _outerWidth;
+        private double _outerWidth;
+        private ListOfEnabledDocs _boxes;
         private int minWidth = 50;
         private int margin =10;
         public override event PropertyChangedEventHandler PropertyChanged;
@@ -85,6 +86,19 @@ namespace MathEdit.Models
                 {
                     return new Thickness(0);
                 }
+            }
+        }
+
+        public ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 

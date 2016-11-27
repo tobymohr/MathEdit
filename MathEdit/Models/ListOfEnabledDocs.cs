@@ -1,5 +1,4 @@
-﻿using MathEdit.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,15 +12,17 @@ namespace MathEdit.Models
 {
     public class ListOfEnabledDocs : List<EnabledFlowDocument>, IXmlSerializable
     {
+
         public ListOfEnabledDocs() : base() { }
+        public string myStr = null;
+        
 
         #region IXmlSerializable
         public System.Xml.Schema.XmlSchema GetSchema() { return null; }
 
         public void ReadXml(XmlReader reader)
         {
-            reader.ReadStartElement("ListOfEnabledFlowDocument");
-            while (reader.IsStartElement("EnabledFlowDocument"))
+            while (reader.IsStartElement("ListOfEnabledFlowDocument"))
             {
                 Type type = Type.GetType(reader.GetAttribute("AssemblyQualifiedName"));
                 XmlSerializer serial = new XmlSerializer(type);
@@ -35,7 +36,7 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
-            string myStr = null;
+            myStr = null;
             writer.WriteStartElement("ListOfEnabledFlowDocument");
             foreach (EnabledFlowDocument doc in this)
             {
@@ -44,10 +45,15 @@ namespace MathEdit.Models
                 MemoryStream stream = new MemoryStream();
                 XamlWriter.Save(doc, stream);
                 stream.Position = 0;
-
                 var sr = new StreamReader(stream);
-                myStr = myStr + sr.ReadToEnd();
+                myStr = sr.ReadToEnd();
+                writer.WriteElementString("Info",myStr);
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+
             }
+            writer.WriteEndElement();
+
         }
         #endregion
     }

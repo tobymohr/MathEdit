@@ -15,7 +15,8 @@ namespace MathEdit.Models
     [Serializable]
     public class FractionModel : Operation
     {
-        public double _outerWidth;
+        private double _outerWidth;
+        private ListOfEnabledDocs _boxes;
         public override event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
@@ -31,10 +32,14 @@ namespace MathEdit.Models
 
         public FractionModel()
         {
+            
+        }
+
+        public FractionModel(string id)
+        {
             outerWidth = 70;
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
         }
-
         public Thickness numborder
         {
             get
@@ -81,6 +86,18 @@ namespace MathEdit.Models
             set
             {
                 this._outerWidth = value;
+            }
+        }
+        public ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 

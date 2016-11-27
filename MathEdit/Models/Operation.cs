@@ -17,19 +17,8 @@ namespace MathEdit.Models
     {
         abstract public double outerWidth { get; set; }
         abstract public event PropertyChangedEventHandler PropertyChanged;
-        public ListOfEnabledDocs _boxes;
-        public ListOfEnabledDocs boxes
-        {
-            get
-            {
-                return _boxes;
-            }
-
-            set
-            {
-                _boxes = value;
-            }
-        }
+      
+        
         public virtual double getTotalWidth(EnabledFlowDocument model)
         {
             double maxValue = 0;

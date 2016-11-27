@@ -25,7 +25,7 @@ namespace MathEdit
 
         public FractionControl()
         {
-            model = new FractionModel();
+            model = new FractionModel("hello");
             DataContext = model;
             InitializeComponent();
             numenatorTextBox.Document = model.boxes.ElementAt(0);

@@ -14,10 +14,10 @@ namespace MathEdit.Models
     [Serializable]
     public class SquareModel : Operation
     {
+        private ListOfEnabledDocs _boxes;
         private double minWidth = 50;
         private Thickness t;
-     
-        public double _outerWidth;
+        private double _outerWidth;
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
@@ -74,6 +74,19 @@ namespace MathEdit.Models
             set
             {
                 t = value;
+            }
+        }
+
+        public ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 

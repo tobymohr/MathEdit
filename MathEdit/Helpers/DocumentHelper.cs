@@ -81,23 +81,7 @@ namespace MathEdit.Helpers
             }
         }
 
-        private static byte[] FlowDocumentToByteArray(FlowDocument flowDocument)
-        {
-            using (var stream = new MemoryStream())
-            {
-                XamlWriter.Save(flowDocument, stream);
-                stream.Position = 0;
-                return stream.ToArray();
-            }
-        }
-
-        private static FlowDocument FlowDocumentFromByteArray(byte[] bytes)
-        {
-            using (var stream = new MemoryStream(bytes))
-            {
-                return (EnabledFlowDocument)XamlReader.Load(stream);
-            }
-        }
+       
     }
 
 }
