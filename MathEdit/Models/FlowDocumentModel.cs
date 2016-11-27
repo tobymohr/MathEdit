@@ -11,7 +11,7 @@ namespace MathEdit.Models
     {
         public FlowDocumentModel() { }
 
-        public FlowDocument mainFlowDocument {get; set;}
+        public EnabledFlowDocument mainFlowDocument {get; set;}
         public byte[] binaryFlowDocument { get; set; }
     }
 }

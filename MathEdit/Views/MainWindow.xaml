@@ -14,7 +14,7 @@
     
     <Window.InputBindings>
         <MouseBinding Gesture="Control+WheelClick" Command="{Binding ScrollZoom}" ></MouseBinding>
-        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>

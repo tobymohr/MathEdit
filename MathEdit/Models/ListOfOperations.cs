@@ -31,6 +31,7 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
+            writer.WriteStartElement("ListOfOperations");
             foreach (Operation op in this)
             {
                 writer.WriteStartElement("Operation");

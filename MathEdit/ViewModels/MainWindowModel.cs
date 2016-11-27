@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace MathEdit.ViewModels
@@ -98,7 +99,7 @@ namespace MathEdit.ViewModels
         }
     
         #region PropertyFields
-        public FlowDocument MainFlowDocument
+        public EnabledFlowDocument MainFlowDocument
         {
             get { return documentModel.mainFlowDocument; }
             set { documentModel.mainFlowDocument = value; }
@@ -384,35 +385,39 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Services
-        private void openDoc(object sender)
+        public void openDoc(object sender)
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-            MainFlowDocument = helper.openFile();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                MainFlowDocument = helper.openFile();
+                
+            }
         }
 
         private void saveDoc(object sender)
         {
-            MainFlowDocument = (FlowDocument)sender;
+            MainFlowDocument = sender as EnabledFlowDocument;
             serializeDocument(MainFlowDocument, false);
         }
 
         private void saveAsDoc(object sender)
         {
-            MainFlowDocument = (FlowDocument)sender;
+            MainFlowDocument = sender as EnabledFlowDocument;
             serializeDocument(MainFlowDocument, true);
         }
 
-        private void serializeDocument(FlowDocument document, bool isSaveAsCaller)
+        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, document);
+                document.childrenOperations.WriteXml(XmlWriter.Create(stream));
                 BinaryFlowDocument = stream.ToArray();
             }
 
-                if (isSaveAsCaller)
+            if (isSaveAsCaller)
                 {
                     var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
                     command.Execute(BinaryFlowDocument);

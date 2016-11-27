@@ -30,8 +30,8 @@ namespace MathEdit.Helpers
             {
                 SaveFileDialog saveDialog = new SaveFileDialog();
                 saveDialog.FileName = "Sheet";
-                saveDialog.DefaultExt = ".dat";
-                saveDialog.Filter = "Data Files|*.dat";
+                saveDialog.DefaultExt = ".xml";
+                saveDialog.Filter = "XML Files|*.xml";
 
                 bool? result = saveDialog.ShowDialog();
                 if (result == true)
@@ -41,12 +41,14 @@ namespace MathEdit.Helpers
             }
         }
 
+
+
         public void saveAsDoc(byte[] binaryFlowDocument)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
-            saveDialog.DefaultExt = ".dat";
-            saveDialog.Filter = "Data Files|*.dat";
+            saveDialog.DefaultExt = ".xml";
+            saveDialog.Filter = "XML Files|*.xml";
 
             bool? result = saveDialog.ShowDialog();
             if (result == true)
@@ -55,28 +57,45 @@ namespace MathEdit.Helpers
             }
         }
 
-        public FlowDocument openFile()
+        public EnabledFlowDocument openFile()
         {
-            FlowDocument doc;
+            EnabledFlowDocument doc = new EnabledFlowDocument();
             OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "dat";
-            openDialog.Filter = "Data Files|*.dat";
+            openDialog.DefaultExt = ".xml";
+            openDialog.Filter = "XML Files|*.xml";
             Nullable<bool> result = openDialog.ShowDialog();
             if (result == true)
             {
+                
                 byte[] content = File.ReadAllBytes(openDialog.FileName);
 
-                using (MemoryStream stream = new MemoryStream(content))
+                using (var stream = new MemoryStream(content))
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    //doc = XamlReader.Load(stream) as FlowDocument;
-                    doc = formatter.Deserialize(stream) as FlowDocument;
+                    doc.childrenOperations.ReadXml(XmlReader.Create(stream));
                 }
                 return doc;
             }
             else
             {
                 return null;
+            }
+        }
+
+        private static byte[] FlowDocumentToByteArray(FlowDocument flowDocument)
+        {
+            using (var stream = new MemoryStream())
+            {
+                XamlWriter.Save(flowDocument, stream);
+                stream.Position = 0;
+                return stream.ToArray();
+            }
+        }
+
+        private static FlowDocument FlowDocumentFromByteArray(byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+            {
+                return (EnabledFlowDocument)XamlReader.Load(stream);
             }
         }
     }

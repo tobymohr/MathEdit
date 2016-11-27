@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathEdit.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace MathEdit.Models
         public void WriteXml(XmlWriter writer)
         {
             string myStr = null;
+            writer.WriteStartElement("ListOfEnabledFlowDocument");
             foreach (EnabledFlowDocument doc in this)
             {
                 writer.WriteStartElement("EnabledFlowDocument");
@@ -42,14 +44,10 @@ namespace MathEdit.Models
                 MemoryStream stream = new MemoryStream();
                 XamlWriter.Save(doc, stream);
                 stream.Position = 0;
+
                 var sr = new StreamReader(stream);
                 myStr = myStr + sr.ReadToEnd();
-               
             }
-
-            Console.WriteLine(myStr);
-
-
         }
         #endregion
     }
