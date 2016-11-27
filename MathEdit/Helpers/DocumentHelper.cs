@@ -54,31 +54,6 @@ namespace MathEdit.Helpers
             }
         }
 
-    
-
-        // No cigar, only ost.
-        public FlowDocument openFile2()
-        {
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "dat";
-            openDialog.Filter = "Data Files|*.dat";
-
-            Nullable<bool> result = openDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = openDialog.FileName;
-                EnabledFlowDocument fd = new EnabledFlowDocument();
-
-                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-                {
-                    TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                    textRange.Load(fs, DataFormats.Xaml);
-                }
-                return fd;
-            }
-            return null;
-        }
-
         public FlowDocument openFile()
         {
             FlowDocument doc;

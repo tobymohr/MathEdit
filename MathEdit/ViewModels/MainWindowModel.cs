@@ -408,8 +408,8 @@ namespace MathEdit.ViewModels
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                XamlWriter.Save(document, stream);
-                stream.Position = 0;
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, document);
                 BinaryFlowDocument = stream.ToArray();
             }
 
