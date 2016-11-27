@@ -1,7 +1,9 @@
-﻿using MathEdit.Helpers;
+﻿using MathEdit.Command;
+using MathEdit.Helpers;
 using MathEdit.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -22,6 +24,7 @@ namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
+        private UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ICommand SaveCommand { get; set; }
         public ICommand CreateFractionCommand { get; set; }
         public ICommand CreatePowCommand { get; set; }
@@ -37,6 +40,11 @@ namespace MathEdit.ViewModels
         public ICommand ChangeFontSize { get; set; }
         public ICommand TextBoxMainSelectionChanged { get; set; }
         public ICommand ScrollZoom { get; set; }
+        public ICommand CloseFontSizeBox { get; set; }
+
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
+        public ICommand AddFormulaCommand { get; }
 
         public FlowDocumentModel documentModel;
         public string fileName { get; set; }
@@ -49,15 +57,19 @@ namespace MathEdit.ViewModels
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
+        private Operation latestOperation;
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
         private int count = 0;
+        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
        
         public MainWindowModel()
         {
+            formulas = new ObservableCollection<Operation>();
+            this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
             
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
@@ -72,6 +84,7 @@ namespace MathEdit.ViewModels
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
+            this.CloseFontSizeBox = new RelayCommand<object>(this.closeFontSizeBox);
             documentModel = new FlowDocumentModel();
             fileName = "";
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
@@ -82,6 +95,16 @@ namespace MathEdit.ViewModels
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
             zoomValue = 1;
+
+            UndoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Undo, undoRedoController.CanUndo);
+            RedoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Redo, undoRedoController.CanRedo);
+
+            AddFormulaCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(AddFormula);
+        }
+
+        private void AddFormula()
+        {
+            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
         }
 
         #region PropertyFields
@@ -140,6 +163,8 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.zoomValue, value); }
         }
 
+
+
         #endregion
 
         #region Generic calls
@@ -180,6 +205,12 @@ namespace MathEdit.ViewModels
 
             }
             
+        }
+
+        private void closeFontSizeBox(object sender)
+        {
+            Console.WriteLine("woop");
+            dropDownOpen = false;
         }
         #endregion
 
@@ -225,6 +256,8 @@ namespace MathEdit.ViewModels
             FractionControl fControl = new FractionControl();
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
+            latestOperation = fControl.model;
+            AddFormula();
         }
 
         private void createNewPowControl()
@@ -253,13 +286,10 @@ namespace MathEdit.ViewModels
 
         private void changeFontSize(object sender)
         {
-            if (dropDownOpen)
-            {
                 parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
                 TextSelection text = parentTb.Selection;
                 parentTb.Focus();
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, fontSize);
-            }
         }
 
         private void textBoxMain_SelectionChanged(object sender)

@@ -33,20 +33,32 @@
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Redo" x:Name="Redo" ></MenuItem> <!-- bind til command -->
-                <MenuItem Header="_Undo" x:Name="Undo" ></MenuItem> <!-- bind til command -->
+                <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
+                <MenuItem Header="_Copy"  Command="ApplicationCommands.Copy"  FocusManager.IsFocusScope="True"></MenuItem>
+                <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"  FocusManager.IsFocusScope="True"></MenuItem>
+                <MenuItem Header="_Redo" x:Name="Redo"  Command="{Binding RedoCommand}"></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo"  Command="{Binding UndoCommand}" ></MenuItem> 
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
                 <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"/>
             </MenuItem>
-            <ComboBox x:Name="fontSizeBox" Width="40" SelectedValue="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" IsDropDownOpen="{Binding FontDropOpen}">
+            <ComboBox x:Name="fontSizeBox" IsEditable="True" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" SelectedValuePath="Content" IsDropDownOpen="{Binding FontDropOpen}">
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="12"/>
                 <ComboBoxItem Content="16"/>
+                <ComboBoxItem Content="18"/>
                 <ComboBoxItem Content="20"/>
+                <ComboBoxItem Content="24"/>
+                <ComboBoxItem Content="30"/>
+                <ComboBoxItem Content="40"/>
+                <ComboBoxItem Content="55"/>
+                <ComboBoxItem Content="72"/>
+                <ComboBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding CloseFontSizeBox}"></KeyBinding>
+                </ComboBox.InputBindings>
                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
+                    <i:EventTrigger EventName="DropDownClosed">
                         <i:InvokeCommandAction Command="{Binding ChangeFontSize, Mode=OneWay}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>

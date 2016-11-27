@@ -29,7 +29,6 @@ namespace MathEdit
         {
             model = new FractionModel();
             DataContext = model;
-            model._outerWidth = 30;
             InitializeComponent();
             TrackSurface.Width = minParentWidth;
             numenatorTextBox.Document = model.boxes.ElementAt(0);

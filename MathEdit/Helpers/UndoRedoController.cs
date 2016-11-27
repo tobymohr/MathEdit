@@ -36,6 +36,7 @@ namespace MathEdit.Helpers
         
         public void Undo()
         {
+            Console.WriteLine("UNDO");
             if (!undoStack.Any()) throw new InvalidOperationException();
            
             var command = undoStack.Pop();
@@ -48,6 +49,7 @@ namespace MathEdit.Helpers
 
         public void Redo()
         {
+            Console.WriteLine("REDO");
             if (!redoStack.Any()) throw new InvalidOperationException();
             var command = redoStack.Pop();
             undoStack.Push(command);

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +58,20 @@ namespace MathEdit.Models
             {
                 this._outerWidth = value;
             }
+        }
+
+        public override event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
+        {
+            // This uses 'var' which is an implicit type variable (https://msdn.microsoft.com/en-us/library/bb383973.aspx).
+            var propertyName = (propertyExpression?.Body as MemberExpression)?.Member?.Name;
+            NotifyPropertyChanged(propertyName);
+        }
+
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if (propertyName != null && PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
