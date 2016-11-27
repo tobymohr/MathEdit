@@ -3,7 +3,9 @@ using MathEdit.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,8 +13,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 
 namespace MathEdit.ViewModels
 {
@@ -34,8 +38,8 @@ namespace MathEdit.ViewModels
         public ICommand TextBoxMainSelectionChanged { get; set; }
         public ICommand ScrollZoom { get; set; }
 
+        public FlowDocumentModel documentModel;
         public string fileName { get; set; }
-        public EnabledFlowDocument flowDoc;
         public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
         public RichTextBox parentTb { get; set; }
@@ -51,10 +55,11 @@ namespace MathEdit.ViewModels
         private int count = 0;
         private double zoomValue;
 
-
+       
         public MainWindowModel()
         {
-            this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
+            
+            this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
@@ -67,6 +72,8 @@ namespace MathEdit.ViewModels
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
+            documentModel = new FlowDocumentModel();
+            fileName = "";
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
@@ -78,10 +85,16 @@ namespace MathEdit.ViewModels
         }
 
         #region PropertyFields
-        public EnabledFlowDocument MainFlowDocument
+        public FlowDocument MainFlowDocument
         {
-            get { return this.flowDoc; }
-            set { this.SetProperty(ref this.flowDoc, value); }
+            get { return documentModel.mainFlowDocument; }
+            set { documentModel.mainFlowDocument = value; }
+        }
+
+        public byte[] BinaryFlowDocument
+        {
+            get { return documentModel.binaryFlowDocument; }
+            set { documentModel.binaryFlowDocument = value; }
         }
 
         public Visibility Visibility
@@ -342,28 +355,55 @@ namespace MathEdit.ViewModels
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-            flowDoc = helper.openFile();
+            MainFlowDocument = helper.openFile();
         }
 
         private void saveDoc(object sender)
         {
-            
-            DocumentHelper helper = new DocumentHelper();
-            if (fileName == null || fileName == "")
-            {
-                fileName = helper.saveDoc((EnabledFlowDocument)sender);
-            }
-            else
-            {
-                helper.saveDoc((EnabledFlowDocument)sender, fileName);
-            }
+            MainFlowDocument = (FlowDocument)sender;
+            writeToMemory(MainFlowDocument, false);
         }
 
         private void saveAsDoc(object sender)
         {
+            MainFlowDocument = (FlowDocument)sender;
+            writeToMemory(MainFlowDocument, true);
+        }
+
+        private void writeToMemory(FlowDocument document, bool isSaveAsCaller)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                XamlWriter.Save(document, stream);
+                stream.Position = 0;
+                BinaryFlowDocument = stream.ToArray();
+            }
+
+                if (isSaveAsCaller)
+                {
+                    var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+                    command.Execute(BinaryFlowDocument);
+                }
+                else
+                {
+                    var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                    command.Execute(BinaryFlowDocument);
+                }
+        }
+
+        private void saveAsync(object sender)
+        {
             DocumentHelper helper = new DocumentHelper();
-            helper.saveDocAs(flowDoc);
+            helper.saveDoc(BinaryFlowDocument, fileName);
+        }
+
+        private void saveAsAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveAsDoc(BinaryFlowDocument);
         }
         #endregion
+
+
     }
 }

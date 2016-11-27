@@ -11,55 +11,57 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
+using System.Xml;
 
 namespace MathEdit.Helpers
 {
     /* Filesystem IO */
     class DocumentHelper
     {
-        public string saveDoc(EnabledFlowDocument fd)
+        public void saveDoc(byte[] binaryFlowDocument, string fileName)
+        {
+            // build document while preparing
+            if (fileName != "")
+            {
+                File.WriteAllBytes(fileName, binaryFlowDocument);
+            }
+            else
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.FileName = "Sheet";
+                saveDialog.DefaultExt = ".dat";
+                saveDialog.Filter = "Data Files|*.dat";
+
+                bool? result = saveDialog.ShowDialog();
+                if (result == true)
+                {
+                    File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
+                }
+            }
+        }
+
+        public void saveAsDoc(byte[] binaryFlowDocument)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
-            saveDialog.DefaultExt = ".xml";
-            saveDialog.Filter = "XML Files|*.xml";
-            
+            saveDialog.DefaultExt = ".dat";
+            saveDialog.Filter = "Data Files|*.dat";
+
             bool? result = saveDialog.ShowDialog();
             if (result == true)
             {
-                // no working right now
-                string filename = saveDialog.FileName;
-                System.Diagnostics.Debug.WriteLine(filename);
-                using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                    textRange.Save(fs, DataFormats.Xaml);
-                }
-                return filename;
-            }
-            return null;
-        }
-
-        public void saveDoc(EnabledFlowDocument fd, string filename)
-        {
-            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                textRange.Save(fs, DataFormats.Xaml);
+                File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
             }
         }
 
-        public void saveDocAs(EnabledFlowDocument fd)
-        {
-
-        }
+    
 
         // No cigar, only ost.
-        public EnabledFlowDocument openFile()
+        public FlowDocument openFile2()
         {
             OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "xml";
-            openDialog.Filter = "XML Files|*.xml";
+            openDialog.DefaultExt = "dat";
+            openDialog.Filter = "Data Files|*.dat";
 
             Nullable<bool> result = openDialog.ShowDialog();
             if (result == true)
@@ -75,6 +77,29 @@ namespace MathEdit.Helpers
                 return fd;
             }
             return null;
+        }
+
+        public FlowDocument openFile()
+        {
+            FlowDocument doc;
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.DefaultExt = "dat";
+            openDialog.Filter = "Data Files|*.dat";
+            Nullable<bool> result = openDialog.ShowDialog();
+            if (result == true)
+            {
+                byte[] content = File.ReadAllBytes(openDialog.FileName);
+
+                using (MemoryStream stream = new MemoryStream(content))
+                {
+                    doc = XamlReader.Load(stream) as FlowDocument;
+                }
+                return doc;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
