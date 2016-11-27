@@ -10,14 +10,12 @@ namespace MathEdit.Models
     [Serializable]
     public class PowModel : Operation
     {
-        public List<EnabledFlowDocument> _boxes;
+        public ListOfEnabledDocs _boxes;
         public double _outerWidth, _width;
 
         public PowModel()
         {
-            boxes = new List<EnabledFlowDocument>();
-            boxes.Add(new EnabledFlowDocument());
-            boxes.Add(new EnabledFlowDocument());
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
         }
 
         public override double width
@@ -33,17 +31,17 @@ namespace MathEdit.Models
             }
         }
 
-        public override List<EnabledFlowDocument> boxes
+        public override ListOfEnabledDocs boxes
         {
             get
             {
-                return this._boxes;
-            }
-            set
-            {
-                this._boxes = value;
+                return _boxes;
             }
 
+            set
+            {
+                _boxes = value;
+            }
         }
 
         public override double outerWidth

@@ -7,20 +7,22 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace MathEdit.Models
 {
     [Serializable]
-
     public class EnabledFlowDocument : FlowDocument
     {
         #region Fields
-        public List<Operation> childrenOperations { get; set; }
+        [XmlIgnore]
+        public ListOfOperations childrenOperations;
         #endregion
 
         public EnabledFlowDocument()
         {
-            childrenOperations = new List<Operation>();
+            childrenOperations = new ListOfOperations();
         }
 
         #region public methods
@@ -36,6 +38,6 @@ namespace MathEdit.Models
             }
         }
 
-
+        
     }
 }

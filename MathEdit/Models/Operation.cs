@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace MathEdit.Models
 {
-
     [Serializable]
-    [XmlInclude(typeof(FractionModel))]
-    [XmlInclude(typeof(PowModel))]
-    [XmlInclude(typeof(SquareModel))]
     public abstract class Operation
     {
-        [XmlAttribute("width")]
         abstract public double width { get; set; }
-        [XmlAttribute("boxes")]
-        abstract public List<EnabledFlowDocument> boxes { get; set; }
-        [XmlAttribute("outerWidth")]
+        abstract public ListOfEnabledDocs boxes { get; set; }
         abstract public double outerWidth { get; set; }
     }
+
+    
 }
