@@ -5,76 +5,98 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
+using System.Xml;
 
 namespace MathEdit.Helpers
 {
     /* Filesystem IO */
     class DocumentHelper
     {
-        public string saveDoc(EnabledFlowDocument fd)
+        public void saveDoc(byte[] binaryFlowDocument, string fileName)
+        {
+            // build document while preparing
+            if (fileName != "")
+            {
+                File.WriteAllBytes(fileName, binaryFlowDocument);
+            }
+            else
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.FileName = "Sheet";
+                saveDialog.DefaultExt = ".xml";
+                saveDialog.Filter = "XML Files|*.xml";
+
+                bool? result = saveDialog.ShowDialog();
+                if (result == true)
+                {
+                    File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
+                }
+            }
+        }
+
+
+
+        public void saveAsDoc(byte[] binaryFlowDocument)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
             saveDialog.DefaultExt = ".xml";
             saveDialog.Filter = "XML Files|*.xml";
-            
+
             bool? result = saveDialog.ShowDialog();
             if (result == true)
             {
-                // no working right now
-                string filename = saveDialog.FileName;
-                System.Diagnostics.Debug.WriteLine(filename);
-                using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                    textRange.Save(fs, DataFormats.Xaml);
-                }
-                return filename;
-            }
-            return null;
-        }
-
-        public void saveDoc(EnabledFlowDocument fd, string filename)
-        {
-            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                textRange.Save(fs, DataFormats.Xaml);
+                File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
             }
         }
 
-        public void saveDocAs(EnabledFlowDocument fd)
-        {
-
-        }
-
-        // No cigar, only ost.
         public EnabledFlowDocument openFile()
         {
+            EnabledFlowDocument doc = new EnabledFlowDocument();
             OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = "xml";
+            openDialog.DefaultExt = ".xml";
             openDialog.Filter = "XML Files|*.xml";
-
             Nullable<bool> result = openDialog.ShowDialog();
             if (result == true)
             {
-                string filename = openDialog.FileName;
-                EnabledFlowDocument fd = new EnabledFlowDocument();
+                
+                byte[] content = File.ReadAllBytes(openDialog.FileName);
 
-                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (var stream = new MemoryStream(content))
                 {
-                    TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
-                    textRange.Load(fs, DataFormats.Xaml);
+                    doc.childrenOperations.ReadXml(XmlReader.Create(stream));
                 }
-                return fd;
+                return doc;
             }
-            return null;
+            else
+            {
+                return null;
+            }
+        }
+
+        private static byte[] FlowDocumentToByteArray(FlowDocument flowDocument)
+        {
+            using (var stream = new MemoryStream())
+            {
+                XamlWriter.Save(flowDocument, stream);
+                stream.Position = 0;
+                return stream.ToArray();
+            }
+        }
+
+        private static FlowDocument FlowDocumentFromByteArray(byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+            {
+                return (EnabledFlowDocument)XamlReader.Load(stream);
+            }
         }
     }
 

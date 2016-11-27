@@ -1,9 +1,13 @@
-﻿using MathEdit.Helpers;
+﻿using MathEdit.Command;
+using MathEdit.Helpers;
 using MathEdit.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,13 +15,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
+        private UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ICommand SaveCommand { get; set; }
         public ICommand CreateFractionCommand { get; set; }
         public ICommand CreatePowCommand { get; set; }
@@ -35,8 +43,12 @@ namespace MathEdit.ViewModels
         public ICommand ScrollZoom { get; set; }
         public ICommand CloseFontSizeBox { get; set; }
 
+        public ICommand UndoCommand { get; set; }
+        public ICommand RedoCommand { get; set; }
+        public ICommand AddFormulaCommand { get; set; }
+
+        public FlowDocumentModel documentModel;
         public string fileName { get; set; }
-        public EnabledFlowDocument flowDoc;
         public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
         public RichTextBox parentTb { get; set; }
@@ -46,16 +58,18 @@ namespace MathEdit.ViewModels
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
+        private Operation latestOperation;
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        private int count = 0;
+        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
-
+       
         public MainWindowModel()
         {
-            this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
+            formulas = new ObservableCollection<Operation>();
+            this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
@@ -69,6 +83,11 @@ namespace MathEdit.ViewModels
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
             this.CloseFontSizeBox = new RelayCommand<object>(this.closeFontSizeBox);
+            this.UndoCommand = new RelayCommand<object>(this.undoOperation);
+            this.RedoCommand = new RelayCommand<object>(this.redoOperation);
+            this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
+            documentModel = new FlowDocumentModel();
+            fileName = "";
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
@@ -78,12 +97,18 @@ namespace MathEdit.ViewModels
             visibility = Visibility.Collapsed;
             zoomValue = 1;
         }
-
+    
         #region PropertyFields
         public EnabledFlowDocument MainFlowDocument
         {
-            get { return this.flowDoc; }
-            set { this.SetProperty(ref this.flowDoc, value); }
+            get { return documentModel.mainFlowDocument; }
+            set { documentModel.mainFlowDocument = value; }
+        }
+
+        public byte[] BinaryFlowDocument
+        {
+            get { return documentModel.binaryFlowDocument; }
+            set { documentModel.binaryFlowDocument = value; }
         }
 
         public Visibility Visibility
@@ -128,12 +153,6 @@ namespace MathEdit.ViewModels
             get { return this.zoomValue; }
             set { this.SetProperty(ref this.zoomValue, value); }
         }
-
-
-
-        #endregion
-
-        #region Generic calls
         #endregion
 
         #region hotKey calls
@@ -180,6 +199,25 @@ namespace MathEdit.ViewModels
         }
         #endregion
 
+        #region Generic calls
+
+        public void undoOperation(object sender)
+        {
+            undoRedoController.Undo();
+        }
+
+        public void redoOperation(object sender)
+        {
+            undoRedoController.Redo();
+        }
+
+        private void AddFormula(object sender)
+        {
+            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
+        }
+
+        #endregion
+
         #region Menu Item calls
 
 
@@ -222,6 +260,8 @@ namespace MathEdit.ViewModels
             FractionControl fControl = new FractionControl();
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
+            latestOperation = fControl.model;
+            AddFormula(null);
         }
 
         private void createNewPowControl()
@@ -345,31 +385,63 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Services
-        private void openDoc(object sender)
+        public void openDoc(object sender)
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-            flowDoc = helper.openFile();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                MainFlowDocument = helper.openFile();
+                
+            }
         }
 
         private void saveDoc(object sender)
         {
-            DocumentHelper helper = new DocumentHelper();
-            if (fileName == null || fileName == "")
-            {
-                fileName = helper.saveDoc(flowDoc);
-            }
-            else
-            {
-                helper.saveDoc(flowDoc, fileName);
-            }
+            MainFlowDocument = sender as EnabledFlowDocument;
+            serializeDocument(MainFlowDocument, false);
         }
 
         private void saveAsDoc(object sender)
         {
+            MainFlowDocument = sender as EnabledFlowDocument;
+            serializeDocument(MainFlowDocument, true);
+        }
+
+        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                document.childrenOperations.WriteXml(XmlWriter.Create(stream));
+                BinaryFlowDocument = stream.ToArray();
+            }
+
+            if (isSaveAsCaller)
+                {
+                    var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+                    command.Execute(BinaryFlowDocument);
+                }
+                else
+                {
+                    var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                    command.Execute(BinaryFlowDocument);
+                }
+        }
+
+        private void saveAsync(object sender)
+        {
             DocumentHelper helper = new DocumentHelper();
-            helper.saveDocAs(flowDoc);
+            helper.saveDoc(BinaryFlowDocument, fileName);
+        }
+
+        private void saveAsAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveAsDoc(BinaryFlowDocument);
         }
         #endregion
+
+
     }
 }

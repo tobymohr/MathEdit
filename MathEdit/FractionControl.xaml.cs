@@ -21,17 +21,13 @@ namespace MathEdit
     /// </summary>
     public partial class FractionControl : UserControl
     {
-        private double minParentWidth = 70;
-        private double prevWidth = 0;
         public FractionModel model { get; set; }
 
         public FractionControl()
         {
             model = new FractionModel();
             DataContext = model;
-            model._outerWidth = 30;
             InitializeComponent();
-            TrackSurface.Width = minParentWidth;
             numenatorTextBox.Document = model.boxes.ElementAt(0);
             denumenatorTextBox.Document = model.boxes.ElementAt(1);
             numenatorTextBox.TextChanged += onChange;
@@ -40,48 +36,11 @@ namespace MathEdit
 
         public void onChange(object sender, RoutedEventArgs e)
         {
-            RichTextBox tb = sender as RichTextBox;
-            EnabledFlowDocument flowDoc = tb.Document as EnabledFlowDocument;
-            if (tb.Name != "FirstBox")
-            {
-                model.width = getTotalWidth(flowDoc) ;
-                tb.Width = model.width + 20;
-                double outerWidth = Math.Max(getTotalWidth(model.boxes.ElementAt(0)), getTotalWidth(model.boxes.ElementAt(1)));
-                model.outerWidth = outerWidth + 40;
-                TrackSurface.Width = model.outerWidth;
-                if (model.width > 0)
-                {
-                    tb.BorderThickness = new Thickness(0);
-                }
-                else
-                {
-                    tb.BorderThickness = new Thickness(1);
-                }
-            }
-        }
-
-        private double getTotalWidth(EnabledFlowDocument model)
-        {
-            double maxValue = 0;
-            double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
-            double sumWidth = 0;
-            foreach (Operation op in model.childrenOperations)
-            {
-                sumWidth += op.outerWidth;
-            }
-            
-            if (sumWidth > textWidth)
-            {
-                maxValue = sumWidth;
-            }
-            else
-            {
-                maxValue = textWidth;
-            }
-
-            return maxValue;
+            denumenatorTextBox.Width = model.denumenatorWidth;
+            numenatorTextBox.Width = model.numenatorWidth;
+            numenatorTextBox.BorderThickness = model.numborder;
+            denumenatorTextBox.BorderThickness = model.denumborder;
+            TrackSurface.Width = model.outerWidth;
         }
     }
-
-
 }

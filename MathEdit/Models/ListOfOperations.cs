@@ -17,12 +17,12 @@ namespace MathEdit.Models
 
         public void ReadXml(XmlReader reader)
         {
-            reader.ReadStartElement("ListOfEnabledFlowDocument");
-            while (reader.IsStartElement("EnabledFlowDocument"))
+            reader.ReadStartElement("ListOfOperations");
+            while (reader.IsStartElement("Operation"))
             {
                 Type type = Type.GetType(reader.GetAttribute("AssemblyQualifiedName"));
                 XmlSerializer serial = new XmlSerializer(type);
-                reader.ReadStartElement("EnabledFlowDocument");
+                reader.ReadStartElement("Operation");
                 this.Add((Operation)serial.Deserialize(reader));
                 reader.ReadEndElement();
             }
@@ -31,14 +31,16 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
+            writer.WriteStartElement("ListOfOperations");
             foreach (Operation op in this)
             {
-                writer.WriteStartElement("EnabledFlowDocument");
+                writer.WriteStartElement("Operation");
                 writer.WriteAttributeString("AssemblyQualifiedName", op.GetType().AssemblyQualifiedName);
                 XmlSerializer xmlSerializer = new XmlSerializer(op.GetType());
                 xmlSerializer.Serialize(writer, op);
                 writer.WriteEndElement();
             }
+            
         }
         #endregion
     }

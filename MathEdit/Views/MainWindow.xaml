@@ -15,20 +15,20 @@
     <Window.InputBindings>
         <MouseBinding Gesture="Control+WheelClick" Command="{Binding ScrollZoom}" ></MouseBinding>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
-        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
         <KeyBinding Key="D" Modifiers="Alt" Command="{Binding CreateSqrtCommand}"></KeyBinding>
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
-        <KeyBinding Key="S" Modifiers="Control+Alt" Command="SaveAs"></KeyBinding>
+        <KeyBinding Key="S" Modifiers="Control+Alt" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
     </Window.InputBindings>
     <DockPanel x:Name="menuPanel">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" />
                 <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenCommand}"/>
-                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox}"/>
-                <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="SaveAs"/>
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
+                <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <Separator />
                 <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
             </MenuItem>
@@ -36,8 +36,8 @@
                 <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Copy"  Command="ApplicationCommands.Copy"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"  FocusManager.IsFocusScope="True"></MenuItem>
-                <MenuItem Header="_Redo" x:Name="Redo"  Command="ApplicationCommands.Redo"></MenuItem> 
-                <MenuItem Header="_Undo" x:Name="Undo" Command="ApplicationCommands.Undo" ></MenuItem> 
+                <MenuItem Header="_Redo" x:Name="Redo"  Command="{Binding RedoCommand}"></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo"  Command="{Binding UndoCommand}" ></MenuItem> 
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
@@ -72,9 +72,10 @@
             <Slider x:Name="Zoom" DockPanel.Dock="Bottom" Minimum="1" Maximum="10" Width="70" Value="{Binding ZoomValue, Mode=TwoWay}"/>
         </Menu>
         <Grid>
+           
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid x:Name="gridParent">
-                    <RichTextBox  AcceptsReturn="True" Name="FirstBox" Width="800">
+                    <RichTextBox  AcceptsReturn="True" Name="FirstBox" Width="800" >
                         <RichTextBox.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"/>
                         </RichTextBox.LayoutTransform>
