@@ -1,7 +1,9 @@
-﻿using MathEdit.Helpers;
+﻿using MathEdit.Command;
+using MathEdit.Helpers;
 using MathEdit.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,7 @@ namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
+        private UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ICommand SaveCommand { get; set; }
         public ICommand CreateFractionCommand { get; set; }
         public ICommand CreatePowCommand { get; set; }
@@ -34,6 +37,10 @@ namespace MathEdit.ViewModels
         public ICommand TextBoxMainSelectionChanged { get; set; }
         public ICommand ScrollZoom { get; set; }
 
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
+        public ICommand AddFormulaCommand { get; }
+
         public string fileName { get; set; }
         public EnabledFlowDocument flowDoc;
         public HotkeyMenu hotKeys { get; set; }
@@ -45,15 +52,18 @@ namespace MathEdit.ViewModels
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
+        private Operation latestOperation;
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
         private int count = 0;
+        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
 
         public MainWindowModel()
         {
+            formulas = new ObservableCollection<Operation>();
             this.SaveCommand = new AsyncRelayCommand<object>(this.saveDoc, (a) => { return !this.isSaving; });
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
@@ -67,6 +77,7 @@ namespace MathEdit.ViewModels
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
+     
             focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
@@ -75,6 +86,16 @@ namespace MathEdit.ViewModels
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
             zoomValue = 1;
+
+            UndoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Undo, undoRedoController.CanUndo);
+            RedoCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(undoRedoController.Redo, undoRedoController.CanRedo);
+
+            AddFormulaCommand = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(AddFormula);
+        }
+
+        private void AddFormula()
+        {
+            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
         }
 
         #region PropertyFields
@@ -212,6 +233,8 @@ namespace MathEdit.ViewModels
             FractionControl fControl = new FractionControl();
             parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
+            latestOperation = fControl.model;
+            AddFormula();
         }
 
         private void createNewPowControl()

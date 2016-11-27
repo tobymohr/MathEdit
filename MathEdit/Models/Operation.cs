@@ -13,11 +13,13 @@ using System.Xml.Serialization;
 namespace MathEdit.Models
 {
     [Serializable]
-    public abstract class Operation
+    public abstract class Operation :  INotifyPropertyChanged
     {
         abstract public double width { get; set; }
         abstract public ListOfEnabledDocs boxes { get; set; }
         abstract public double outerWidth { get; set; }
+
+        abstract public event PropertyChangedEventHandler PropertyChanged;
     }
 
     

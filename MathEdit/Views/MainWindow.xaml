@@ -36,8 +36,8 @@
                 <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Copy"  Command="ApplicationCommands.Copy"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"  FocusManager.IsFocusScope="True"></MenuItem>
-                <MenuItem Header="_Redo" x:Name="Redo"  Command="ApplicationCommands.Redo"></MenuItem> 
-                <MenuItem Header="_Undo" x:Name="Undo" Command="ApplicationCommands.Undo" ></MenuItem> 
+                <MenuItem Header="_Redo" x:Name="Redo"  Command="{Binding RedoCommand}"></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo"  Command="{Binding UndoCommand}" ></MenuItem> 
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
