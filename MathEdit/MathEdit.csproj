@@ -82,6 +82,7 @@
     <Compile Include="FractionControl.xaml.cs">
       <DependentUpon>FractionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\MouseWheelUp.cs" />
     <Compile Include="Helpers\Undoer.cs" />
     <Compile Include="HotkeyMenu.xaml.cs">
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
