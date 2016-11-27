@@ -41,7 +41,6 @@ namespace MathEdit.ViewModels
         public ICommand ChangeFontSize { get; set; }
         public ICommand TextBoxMainSelectionChanged { get; set; }
         public ICommand ScrollZoom { get; set; }
-        public ICommand CloseFontSizeBox { get; set; }
 
         public ICommand UndoCommand { get; set; }
         public ICommand RedoCommand { get; set; }
@@ -82,7 +81,6 @@ namespace MathEdit.ViewModels
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
-            this.CloseFontSizeBox = new RelayCommand<object>(this.closeFontSizeBox);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
@@ -192,11 +190,6 @@ namespace MathEdit.ViewModels
             
         }
 
-        private void closeFontSizeBox(object sender)
-        {
-            Console.WriteLine("woop");
-            dropDownOpen = false;
-        }
         #endregion
 
         #region Generic calls
@@ -290,10 +283,15 @@ namespace MathEdit.ViewModels
 
         private void changeFontSize(object sender)
         {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-                TextSelection text = parentTb.Selection;
-                parentTb.Focus();
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = parentTb.Selection;
+            parentTb.Focus();
+            double size;
+            if (Double.TryParse(fontSize, out size))
+            {
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, fontSize);
+            }
+
         }
 
         private void textBoxMain_SelectionChanged(object sender)
