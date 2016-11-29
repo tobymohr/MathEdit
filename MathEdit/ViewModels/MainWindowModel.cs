@@ -411,9 +411,17 @@ namespace MathEdit.ViewModels
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                document.childrenOperations.WriteXml(XmlWriter.Create(stream));
-            
-                BinaryFlowDocument = stream.ToArray();
+                
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.ConformanceLevel = ConformanceLevel.Document;
+                XmlWriter w = XmlWriter.Create(stream,settings);
+                document.childrenOperations.WriteXml(w);
+                stream.Position = 0;
+                var sr = new StreamReader(stream);
+                var myStr = sr.ReadToEnd();
+                myStr = myStr + "</Operation> </ListOfOperations>";
+                
+                BinaryFlowDocument = Encoding.ASCII.GetBytes(myStr);
             }
 
             if (isSaveAsCaller)

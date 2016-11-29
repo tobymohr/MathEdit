@@ -13,6 +13,7 @@ namespace MathEdit.Models
     public class ListOfOperations : List<Operation>, IXmlSerializable
     {
         public ListOfOperations() : base() { }
+        private XmlSerializer xmlSerializer;
 
         #region IXmlSerializable
         public System.Xml.Schema.XmlSchema GetSchema() { return null; }
@@ -33,6 +34,7 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
+            writer.WriteStartElement("ListOfOperations");
             foreach (Operation op in this)
             {
                 writer.WriteStartElement("Operation");
@@ -41,6 +43,7 @@ namespace MathEdit.Models
                 xmlSerializer.Serialize(writer, op);
                 writer.WriteEndElement();
             }
+            writer.WriteEndElement();
         }
         #endregion
     }

@@ -16,7 +16,7 @@ namespace MathEdit.Models
     public class FractionModel : Operation
     {
         private double _outerWidth;
-        public ListOfEnabledDocs _boxes;
+        private  ListOfEnabledDocs _boxes;
         public FractionModel()
         {
             
