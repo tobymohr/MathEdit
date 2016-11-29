@@ -85,7 +85,7 @@ namespace MathEdit.ViewModels
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
             documentModel = new FlowDocumentModel();
-            documentModel.mainFlowDocument = new EnabledFlowDocument();
+            documentModel.mainFlowDocument = new EnabledFlowDocument("");
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
@@ -412,9 +412,17 @@ namespace MathEdit.ViewModels
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                document.childrenOperations.WriteXml(XmlWriter.Create(stream));
-            
-                BinaryFlowDocument = stream.ToArray();
+                
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.ConformanceLevel = ConformanceLevel.Document;
+                XmlWriter w = XmlWriter.Create(stream,settings);
+                document.childrenOperations.WriteXml(w);
+                stream.Position = 0;
+                var sr = new StreamReader(stream);
+                var myStr = sr.ReadToEnd();
+                myStr = myStr + "</Operation> </ListOfOperations>";
+                
+                BinaryFlowDocument = Encoding.ASCII.GetBytes(myStr);
             }
 
             if (isSaveAsCaller)
