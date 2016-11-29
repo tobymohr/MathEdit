@@ -21,7 +21,6 @@ namespace MathEdit.Models
                 if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.ElementEnd)
                 {
                     Run run = position.Parent as Run;
-
                     if (run != null)
                     {
                         yield return run;
