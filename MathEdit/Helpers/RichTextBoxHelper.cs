@@ -13,29 +13,43 @@ namespace MathEdit.Helpers
 {
         public class RichTextBoxHelper : DependencyObject
         {
-            public static string GetDocumentXaml(DependencyObject obj)
+            public static FlowDocument GetDocumentXaml(DependencyObject obj)
             {
-                return (string)obj.GetValue(DocumentXamlProperty);
+                return (FlowDocument)obj.GetValue(DocumentXamlProperty);
             }
-            public static void SetDocumentXaml(DependencyObject obj, string value)
+            public static void SetDocumentXaml(DependencyObject obj, FlowDocument value)
             {
                 obj.SetValue(DocumentXamlProperty, value);
             }
-            public static readonly DependencyProperty DocumentXamlProperty =
-              DependencyProperty.RegisterAttached(
-                "DocumentXaml",
-                typeof(string),
-                typeof(RichTextBoxHelper),
-                new FrameworkPropertyMetadata
-                {
-                    BindsTwoWayByDefault = true,
-                    PropertyChangedCallback = (obj, e) =>
-                    {
-                        var richTextBox = (RichTextBox)obj;
+            //public static readonly DependencyProperty DocumentXamlProperty =
+            //  DependencyProperty.RegisterAttached(
+            //    "DocumentXaml",
+            //    typeof(string),
+            //    typeof(RichTextBoxHelper),
+            //    new FrameworkPropertyMetadata
+            //    {
+            //        BindsTwoWayByDefault = true,
+            //        PropertyChangedCallback = (obj, e) =>
+            //        {
+            //            var richTextBox = (RichTextBox)obj;
 
-              // Parse the XAML to a document (or use XamlReader.Parse())
-              // PARSE XAML FRA EGEN METODE E.G writexaml - load mem stream
-              var xaml = GetDocumentXaml(richTextBox);
+  public static readonly DependencyProperty DocumentXamlProperty =
+      DependencyProperty.RegisterAttached(
+        "DocumentRtf",
+        typeof(FlowDocument),
+        typeof(RichTextBoxHelper),
+        new FrameworkPropertyMetadata
+        {
+            BindsTwoWayByDefault = true,
+            PropertyChangedCallback = (obj, e) =>
+            {
+                var richTextBox = (RichTextBox)obj;
+                richTextBox.Document = e.NewValue as FlowDocument;
+       
+
+        // Parse the XAML to a document (or use XamlReader.Parse())
+        // PARSE XAML FRA EGEN METODE E.G writexaml - load mem stream
+        var xaml = GetDocumentXaml(richTextBox);
                         var doc = new EnabledFlowDocument();
                         var range = new TextRange(doc.ContentStart, doc.ContentEnd);
 
