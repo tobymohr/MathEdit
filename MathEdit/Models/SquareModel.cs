@@ -19,33 +19,20 @@ namespace MathEdit.Models
         private Thickness t;
         private double _outerWidth;
 
-        public override event PropertyChangedEventHandler PropertyChanged;
-
-        protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
-        {
-            var propertyName = (propertyExpression?.Body as MemberExpression)?.Member?.Name;
-            NotifyPropertyChanged(propertyName);
-        }
-
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName != null && PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public SquareModel()
         {
             t = new Thickness(1);
             outerWidth = minWidth;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument()};
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
         }
 
-        public double numberWidth { get { return getTotalWidth(boxes.ElementAt(0)); } }
+        public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
 
         public override double outerWidth
         {
             get
             {
-                double calcedWidth = getTotalWidth(boxes.ElementAt(0)) + minWidth;
+                double calcedWidth = getTotalWidth(_boxes.ElementAt(0)) + minWidth;
                 return calcedWidth;
             }
 
@@ -60,7 +47,7 @@ namespace MathEdit.Models
         {
             get
             {
-                double length = boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     t= new Thickness(1);
@@ -77,7 +64,7 @@ namespace MathEdit.Models
             }
         }
 
-        public ListOfEnabledDocs boxes
+        public override ListOfEnabledDocs boxes
         {
             get
             {
@@ -90,5 +77,6 @@ namespace MathEdit.Models
             }
         }
 
+        
     }
 }
