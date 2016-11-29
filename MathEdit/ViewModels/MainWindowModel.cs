@@ -64,7 +64,7 @@ namespace MathEdit.ViewModels
         public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
-       
+
         public MainWindowModel()
         {
             formulas = new ObservableCollection<Operation>();
@@ -85,8 +85,9 @@ namespace MathEdit.ViewModels
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
             documentModel = new FlowDocumentModel();
+            documentModel.mainFlowDocument = new EnabledFlowDocument();
             fileName = "";
-            focusedObj =(MainWindow) System.Windows.Application.Current.MainWindow;
+            focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 1;
@@ -94,8 +95,8 @@ namespace MathEdit.ViewModels
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
             zoomValue = 1;
+
         }
-    
         #region PropertyFields
         public EnabledFlowDocument MainFlowDocument
         {
