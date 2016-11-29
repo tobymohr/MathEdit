@@ -85,7 +85,7 @@ namespace MathEdit.ViewModels
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
             documentModel = new FlowDocumentModel();
-            documentModel.mainFlowDocument = new EnabledFlowDocument();
+            documentModel.mainFlowDocument = new EnabledFlowDocument("");
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
