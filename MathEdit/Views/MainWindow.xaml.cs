@@ -13,6 +13,7 @@ namespace MathEdit
             DataContext = new MainWindowModel();
             InitializeComponent();
             FirstBox.Document = new EnabledFlowDocument();
+            FirstBox.Focus(); //Temp fix
             //modeltest.openDoc(null);
             //FirstBox.Document = modeltest.MainFlowDocument;
 
