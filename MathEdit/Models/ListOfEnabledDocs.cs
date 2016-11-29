@@ -37,22 +37,19 @@ namespace MathEdit.Models
         public void WriteXml(XmlWriter writer)
         {
             myStr = null;
-            writer.WriteStartElement("ListOfEnabledFlowDocument");
             foreach (EnabledFlowDocument doc in this)
             {
                 writer.WriteStartElement("EnabledFlowDocument");
                 writer.WriteAttributeString("AssemblyQualifiedName", doc.GetType().AssemblyQualifiedName);
                 MemoryStream stream = new MemoryStream();
+
                 XamlWriter.Save(doc, stream);
                 stream.Position = 0;
                 var sr = new StreamReader(stream);
                 myStr = sr.ReadToEnd();
-                writer.WriteElementString("Info",myStr);
-                writer.WriteEndElement();
                 writer.WriteEndElement();
 
             }
-            writer.WriteEndElement();
         }
         #endregion
     }

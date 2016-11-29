@@ -33,16 +33,14 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("ListOfOperations");
             foreach (Operation op in this)
             {
                 writer.WriteStartElement("Operation");
                 writer.WriteAttributeString("AssemblyQualifiedName", op.GetType().AssemblyQualifiedName);
                 XmlSerializer xmlSerializer = new XmlSerializer(op.GetType());
                 xmlSerializer.Serialize(writer, op);
-            
+                writer.WriteEndElement();
             }
-
         }
         #endregion
     }

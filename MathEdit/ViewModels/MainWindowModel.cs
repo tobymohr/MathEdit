@@ -225,7 +225,7 @@ namespace MathEdit.ViewModels
             }
             else
             {
-                parentFd = new EnabledFlowDocument();
+                parentFd = new EnabledFlowDocument("");
                 parentTb.Document = parentFd;
             }
 
