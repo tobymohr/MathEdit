@@ -15,31 +15,23 @@ namespace MathEdit.Models
     [Serializable]
     public class FractionModel : Operation
     {
-        public double _outerWidth;
-        public override event PropertyChangedEventHandler PropertyChanged;
-
-        protected void NotifyPropertyChanged<T>(Expression<Func<T>> propertyExpression)
-        {
-            var propertyName = (propertyExpression?.Body as MemberExpression)?.Member?.Name;
-            NotifyPropertyChanged(propertyName);
-        }
-
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName != null && PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        private double _outerWidth;
+        public ListOfEnabledDocs _boxes;
         public FractionModel()
         {
-            outerWidth = 70;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(), new EnabledFlowDocument() };
+            
         }
 
+        public FractionModel(string id)
+        {
+            outerWidth = 70;
+            boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+        }
         public Thickness numborder
         {
             get
             {
-                double length = boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -54,7 +46,7 @@ namespace MathEdit.Models
         {
             get
             {
-                double length = boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = _boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -66,14 +58,15 @@ namespace MathEdit.Models
             }
         }
 
-        public double numenatorWidth { get { return getTotalWidth(boxes.ElementAt(0)) + 10; } }
-        public double denumenatorWidth { get { return getTotalWidth(boxes.ElementAt(1)) + 10; } }
+        public double numenatorWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + 10; } }
+        public double denumenatorWidth { get { return getTotalWidth(_boxes.ElementAt(1)) + 10; } }
 
+        [XmlElement("outerWidth")]
         public override double outerWidth
         {
             get
             {
-                double calcedWidth = Math.Max(getTotalWidth(boxes.ElementAt(0)), getTotalWidth(boxes.ElementAt(1)));
+                double calcedWidth = Math.Max(getTotalWidth(_boxes.ElementAt(0)), getTotalWidth(_boxes.ElementAt(1)));
                 calcedWidth = calcedWidth + 40;
                 return calcedWidth;
             }
@@ -81,6 +74,18 @@ namespace MathEdit.Models
             set
             {
                 this._outerWidth = value;
+            }
+        }
+        public override ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 

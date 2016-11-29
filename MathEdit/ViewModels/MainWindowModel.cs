@@ -225,7 +225,7 @@ namespace MathEdit.ViewModels
             }
             else
             {
-                parentFd = new EnabledFlowDocument();
+                parentFd = new EnabledFlowDocument("");
                 parentTb.Document = parentFd;
             }
 
@@ -412,6 +412,7 @@ namespace MathEdit.ViewModels
             using (MemoryStream stream = new MemoryStream())
             {
                 document.childrenOperations.WriteXml(XmlWriter.Create(stream));
+            
                 BinaryFlowDocument = stream.ToArray();
             }
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -31,7 +33,6 @@ namespace MathEdit.Models
 
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement("ListOfOperations");
             foreach (Operation op in this)
             {
                 writer.WriteStartElement("Operation");
@@ -40,7 +41,6 @@ namespace MathEdit.Models
                 xmlSerializer.Serialize(writer, op);
                 writer.WriteEndElement();
             }
-            
         }
         #endregion
     }

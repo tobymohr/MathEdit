@@ -13,23 +13,13 @@ using System.Xml.Serialization;
 namespace MathEdit.Models
 {
     [Serializable]
-    public abstract class Operation :  INotifyPropertyChanged
+    public abstract class Operation 
     {
+        [XmlElement("outerWidth")]
         abstract public double outerWidth { get; set; }
-        abstract public event PropertyChangedEventHandler PropertyChanged;
-        public ListOfEnabledDocs _boxes;
-        public ListOfEnabledDocs boxes
-        {
-            get
-            {
-                return _boxes;
-            }
-
-            set
-            {
-                _boxes = value;
-            }
-        }
+        abstract public ListOfEnabledDocs boxes { get; set; }
+      
+        
         public virtual double getTotalWidth(EnabledFlowDocument model)
         {
             double maxValue = 0;
