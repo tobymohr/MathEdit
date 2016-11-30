@@ -93,7 +93,7 @@
            
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid x:Name="gridParent">
-                    <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding MainFlowDocument}" AcceptsReturn="True" Name="FirstBox" Width="800" >
+                    <RichTextBox  AcceptsReturn="True" Name="FirstBox" Width="800" >
                         <RichTextBox.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"/>
                         </RichTextBox.LayoutTransform>
