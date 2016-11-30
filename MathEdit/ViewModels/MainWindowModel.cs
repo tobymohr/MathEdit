@@ -412,17 +412,13 @@ namespace MathEdit.ViewModels
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.ConformanceLevel = ConformanceLevel.Document;
-                XmlWriter w = XmlWriter.Create(stream,settings);
-                document.childrenOperations.WriteXml(w);
-                stream.Position = 0;
-                var sr = new StreamReader(stream);
-                var myStr = sr.ReadToEnd();
-                myStr = myStr + "</Operation> </ListOfOperations>";
-                
-                BinaryFlowDocument = Encoding.ASCII.GetBytes(myStr);
+                ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
+                var xmlSerializer = new XmlSerializer(docs.GetType());
+                var stringBuilder = new StringBuilder();
+                var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
+                xmlSerializer.Serialize(xmlTextWriter, docs);
+                var finalXml = stringBuilder.ToString();
+                BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
             }
 
             if (isSaveAsCaller)

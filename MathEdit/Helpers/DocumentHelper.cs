@@ -60,6 +60,7 @@ namespace MathEdit.Helpers
         public EnabledFlowDocument openFile()
         {
             EnabledFlowDocument doc = new EnabledFlowDocument();
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { doc };
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.DefaultExt = ".xml";
             openDialog.Filter = "XML Files|*.xml";
@@ -71,7 +72,7 @@ namespace MathEdit.Helpers
 
                 using (var stream = new MemoryStream(content))
                 {
-                    doc.childrenOperations.ReadXml(XmlReader.Create(stream));
+                    docs.ReadXml(XmlReader.Create(stream));
                 }
                 return doc;
             }

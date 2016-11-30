@@ -43,7 +43,6 @@ namespace MathEdit.Models
                 xmlSerializer.Serialize(writer, op);
                 writer.WriteEndElement();
             }
-            writer.WriteEndElement();
         }
         #endregion
     }
