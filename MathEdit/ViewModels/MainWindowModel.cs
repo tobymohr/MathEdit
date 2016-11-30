@@ -101,7 +101,7 @@ namespace MathEdit.ViewModels
         public EnabledFlowDocument MainFlowDocument
         {
             get { return documentModel.mainFlowDocument; }
-            set { documentModel.mainFlowDocument = value; RaisePropertyChanged("MainFlowDocument"); }
+            set { documentModel.mainFlowDocument = value; }
         }
 
         public byte[] BinaryFlowDocument
