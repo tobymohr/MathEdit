@@ -9,12 +9,13 @@ namespace MathEdit
     {
         public MainWindow()
         {
-            MainWindowModel modeltest = new MainWindowModel();
             DataContext = new MainWindowModel();
-
             InitializeComponent();
+
+
+            //MainWindowModel modeltest = new MainWindowModel();
             //modeltest.openDoc(null);
-            FirstBox.Document = new EnabledFlowDocument("");
+
         }
     }
 }
