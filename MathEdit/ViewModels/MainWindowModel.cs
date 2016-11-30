@@ -26,25 +26,26 @@ namespace MathEdit.ViewModels
     class MainWindowModel : ViewModelBase
     {
         private UndoRedoController undoRedoController = UndoRedoController.Instance;
-        public ICommand SaveCommand { get; set; }
-        public ICommand CreateFractionCommand { get; set; }
-        public ICommand CreatePowCommand { get; set; }
-        public ICommand CreateSqrtCommand { get; set; }
-        public ICommand OpenCommand { get; set; }
-        public ICommand SaveAsCommand { get; set; }
-        public ICommand OpenHotkeysCommand { get; set; }
-        public ICommand OpenSettingsCommand { get; set; }
-        public ICommand CreateNewRTBCommand { get; set; }
+        public ICommand SaveCommand { get; }
+        public ICommand CreateFractionCommand { get; }
+        public ICommand CreatePowCommand { get; }
+        public ICommand CreateSqrtCommand { get; }
+        public ICommand OpenCommand { get; }
+        public ICommand SaveAsCommand { get; }
+        public ICommand OpenHotkeysCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+        public ICommand CreateNewRTBCommand { get; }
  
-        public ICommand ToggleBold { get; set; }
-        public ICommand ToggleItalic { get; set; }
-        public ICommand ChangeFontSize { get; set; }
-        public ICommand TextBoxMainSelectionChanged { get; set; }
-        public ICommand ScrollZoom { get; set; }
+        public ICommand ToggleBold { get; }
+        public ICommand ToggleItalic { get; }
+        public ICommand ChangeFontSize { get; }
+        public ICommand TextBoxMainSelectionChanged { get; }
+        public ICommand ScrollIn { get; }
+        public ICommand ScrollOut { get; }
 
-        public ICommand UndoCommand { get; set; }
-        public ICommand RedoCommand { get; set; }
-        public ICommand AddFormulaCommand { get; set; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
+        public ICommand AddFormulaCommand { get; }
 
         public FlowDocumentModel documentModel;
         public string fileName { get; set; }
@@ -80,12 +81,12 @@ namespace MathEdit.ViewModels
             this.CreatePowCommand = new RelayCommand<object>(this.createPow);
             this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
-            this.ScrollZoom = new RelayCommand<object>(this.scrollZoom);
+            this.ScrollIn = new RelayCommand<object>(this.scrollIn);
+            this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
             documentModel = new FlowDocumentModel();
-            documentModel.mainFlowDocument = new EnabledFlowDocument("");
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
@@ -181,7 +182,7 @@ namespace MathEdit.ViewModels
             createNewSqrtControl();
         }
 
-        private void scrollZoom(object sender)
+        private void scrollIn(object sender)
         {
             if(ZoomValue < 10)
             {
@@ -189,6 +190,16 @@ namespace MathEdit.ViewModels
 
             }
             
+        }
+
+        private void scrollOut(object sender)
+        {
+            if (ZoomValue > 1)
+            {
+                ZoomValue = ZoomValue - 0.5;
+
+            }
+
         }
 
         #endregion

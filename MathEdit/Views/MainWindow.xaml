@@ -14,12 +14,9 @@
         Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
 
     <Window.InputBindings>
-        <MouseBinding Command="{Binding ScrollZoom}">
-            <MouseBinding.Gesture>
-                <h:MouseWheelUp/>
-            </MouseBinding.Gesture>
-        </MouseBinding>
-        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}"></KeyBinding>
+        <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
+        <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}" CommandParameter="{Binding ElementName=FirstBox}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
@@ -93,7 +90,7 @@
            
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid x:Name="gridParent">
-                    <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding MainRTB}" AcceptsReturn="True" Name="FirstBox" Width="800" >
+                    <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding MainFlowDocument}" AcceptsReturn="True" Name="FirstBox" Width="800" >
                         <RichTextBox.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"/>
                         </RichTextBox.LayoutTransform>
@@ -103,11 +100,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <RichTextBox.InputBindings>
-                            <MouseBinding Command="{Binding ScrollZoom}">
-                                <MouseBinding.Gesture>
-                                    <h:MouseWheelUp/>
-                                </MouseBinding.Gesture>
-                            </MouseBinding>
+                            <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
+                            <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
                         </RichTextBox.InputBindings>
                     </RichTextBox>
                 </Grid>

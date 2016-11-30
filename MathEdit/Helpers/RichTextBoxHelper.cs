@@ -11,54 +11,32 @@ using System.Windows.Documents;
 
 namespace MathEdit.Helpers
 {
-        public class RichTextBoxHelper : DependencyObject
+    public class RichTextBoxHelper : DependencyObject
+    {
+        public static EnabledFlowDocument GetDocumentXaml(DependencyObject obj)
         {
-            public static string GetDocumentXaml(DependencyObject obj)
-            {
-                return (string)obj.GetValue(DocumentXamlProperty);
-            }
-            public static void SetDocumentXaml(DependencyObject obj, string value)
-            {
-                obj.SetValue(DocumentXamlProperty, value);
-            }
-            public static readonly DependencyProperty DocumentXamlProperty =
-              DependencyProperty.RegisterAttached(
-                "DocumentXaml",
-                typeof(string),
-                typeof(RichTextBoxHelper),
-                new FrameworkPropertyMetadata
-                {
-                    BindsTwoWayByDefault = true,
-                    PropertyChangedCallback = (obj, e) =>
-                    {
-                        var richTextBox = (RichTextBox)obj;
-
-              // Parse the XAML to a document (or use XamlReader.Parse())
-              // PARSE XAML FRA EGEN METODE E.G writexaml - load mem stream
-              var xaml = GetDocumentXaml(richTextBox);
-                        var doc = new EnabledFlowDocument();
-                        var range = new TextRange(doc.ContentStart, doc.ContentEnd);
-
-                        range.Load(new MemoryStream(Encoding.UTF8.GetBytes(xaml)),
-                DataFormats.Xaml);
-
-              // Set the document
-              richTextBox.Document = doc;
-
-              // When the document changes update the source
-              range.Changed += (obj2, e2) =>
-                        {
-                            if (richTextBox.Document == doc)
-                            {
-                                MemoryStream buffer = new MemoryStream();
-                                range.Save(buffer, DataFormats.Xaml);
-                                SetDocumentXaml(richTextBox,
-                        Encoding.UTF8.GetString(buffer.ToArray()));
-                            }
-                        };
-                    }
-                });
+            return (EnabledFlowDocument)obj.GetValue(DocumentXamlProperty);
+        }
+        public static void SetDocumentXaml(DependencyObject obj, EnabledFlowDocument value)
+        {
+            obj.SetValue(DocumentXamlProperty, value);
         }
 
+        public static readonly DependencyProperty DocumentXamlProperty =
+            DependencyProperty.RegisterAttached(
+              "DocumentXaml",
+              typeof(EnabledFlowDocument),
+              typeof(RichTextBoxHelper),
+              new FrameworkPropertyMetadata
+              {
+                  BindsTwoWayByDefault = true,
+                  PropertyChangedCallback = (obj, e) =>
+                  {
+                      var  richTextBox = (RichTextBox)obj;
+                      richTextBox.Document = e.NewValue as EnabledFlowDocument;
+                  }
+              });
     }
+
+}
 
