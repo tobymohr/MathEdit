@@ -7,7 +7,7 @@
              d1p1:Ignorable="d"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model">
-    <Application.Resources>
+    <!--<Application.Resources>
         <DataTemplate DataType="{x:Type Model:Operation}">
             <Views:FractionControl/>
         </DataTemplate>
@@ -17,5 +17,5 @@
         <DataTemplate DataType="{x:Type Model:Operation}">
             <Views:SquareControl/>
         </DataTemplate>
-    </Application.Resources>
+    </Application.Resources>-->
 </Application>

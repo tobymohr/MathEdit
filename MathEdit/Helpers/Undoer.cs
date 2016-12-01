@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MathEdit.Model;
+using MathEdit.Views;
+using System;
 using System.Collections.Generic;
 
 namespace MathEdit.Helpers

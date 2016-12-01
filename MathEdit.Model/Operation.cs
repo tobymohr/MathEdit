@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
-
+using MathEdit.ModelHelpers;
 
 namespace MathEdit.Model
 {
