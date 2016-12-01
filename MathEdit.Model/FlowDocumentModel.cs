@@ -2,7 +2,6 @@
 {
     public class FlowDocumentModel
     {
-        private EnabledFlowDocument enabledFlowDocument;
         public FlowDocumentModel() {
             mainFlowDocument = new EnabledFlowDocument("");
         }

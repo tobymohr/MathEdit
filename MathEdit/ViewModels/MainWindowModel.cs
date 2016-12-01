@@ -420,10 +420,11 @@ namespace MathEdit.ViewModels
         private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
         {
             String finalXml;
+            var utf8NoBom = new UTF8Encoding(false);
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true});
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true, Encoding = utf8NoBom });
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
