@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace MathEdit.Model
 {
@@ -14,24 +15,24 @@ namespace MathEdit.Model
         public SquareModel()
         {
             t = new Thickness(1);
-            OuterWidth = minWidth;
-            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
+            Width = minWidth;
+            Boxes = new ListOfDocs { new FlowDocument()};
         }
 
-        public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(0)); } }
+        //public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(0)); } }
 
-        public override double OuterWidth
+        public override double Width
         {
             get
             {
-                double calcedWidth = getTotalWidth(Boxes.ElementAt(0)) + minWidth;
+                double calcedWidth = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace + minWidth;
                 return calcedWidth;
             }
 
             set
             {
 
-                this.SetProperty(ref outerWidth, value);
+                this.SetProperty(ref width, value);
             }
         }
 

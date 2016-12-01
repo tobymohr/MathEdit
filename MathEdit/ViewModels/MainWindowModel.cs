@@ -38,10 +38,6 @@ namespace MathEdit.ViewModels
 
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddFormulaCommand { get; }
-
-        public FlowDocumentModel documentModel;
-        public EnabledFlowDocument mainFlowDocument;
 
         public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
@@ -57,16 +53,19 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        public ObservableCollection<Operation> formulas { get; set; }
+        public ObservableCollection<FractionModel> formulas { get; set; }
         private double zoomValue;
 
 
         public MainWindowModel()
         {
-            formulas = new ObservableCollection<Operation>();
-            this.SaveCommand = new RelayCommand<object>(this.saveDoc);
-            this.OpenCommand = new RelayCommand<object>(this.openDoc);
-            this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
+            formulas = new ObservableCollection<FractionModel>()
+            {
+                new FractionModel() { Boxes = new ListOfDocs() {new FlowDocument(),new FlowDocument()},Width = 70,X=200,Y=200}
+            };
+            //this.SaveCommand = new RelayCommand<object>(this.saveDoc);
+            //this.OpenCommand = new RelayCommand<object>(this.openDoc);
+            //this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
@@ -80,10 +79,7 @@ namespace MathEdit.ViewModels
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
-            this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
-
-            documentModel = new FlowDocumentModel();
-            mainFlowDocument = documentModel.mainFlowDocument;
+            
 
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
@@ -97,18 +93,7 @@ namespace MathEdit.ViewModels
 
         }
         #region PropertyFields
-        public EnabledFlowDocument MainFlowDocument
-        {
-            get { return documentModel.mainFlowDocument; }
-            set { this.SetProperty(ref mainFlowDocument,  value); }
-        }
-
-        public byte[] BinaryFlowDocument
-        {
-            get { return documentModel.binaryFlowDocument; }
-            set { documentModel.binaryFlowDocument = value; }
-        }
-
+   
         public Visibility Visibility
         {
             get { return this.visibility; }
@@ -214,81 +199,33 @@ namespace MathEdit.ViewModels
             undoRedoController.Redo();
         }
 
-        private void AddFormula(object sender)
-        {
-            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
-        }
+        
 
         #endregion
 
         #region Menu Item calls
 
 
-        private Paragraph getCorrectParagraph(RichTextBox parentTb)
-        {
-           
-            FlowDocument parentFd;
-            Paragraph para = null;
-            if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
-            {
-                parentFd = parentTb.Document;
-            }
-            else
-            {
-                parentFd = new EnabledFlowDocument("");
-                parentTb.Document = parentFd;
-            }
-
-            if (parentFd.Blocks.Count == 0)
-            {
-                para = new Paragraph();
-                parentFd.Blocks.Add(para);
-                string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
-                para.Inlines.Add(text);
-            }
-            else if (parentFd.Blocks.Count > 0)
-            {
-                para = (Paragraph)parentFd.Blocks.LastBlock;
-            }
-            return para;
-        }
+       
 
         private void createNewFractionControl()
         {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
-            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            FractionControl fControl = new FractionControl();
-            parentFd.childrenOperations.Add(fControl);
-            para.Inlines.Add(fControl);
-            //latestOperation = fControl.model;
-            AddFormula(null);
+            addFormula(new FractionModel());
         }
 
         private void createNewPowControl()
         {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
-            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            PowControl pControl = new PowControl();
-            parentFd.childrenOperations.Add(pControl.model);
-            para.Inlines.Add(pControl);
+            //addFormula(new PowModel());
         }
 
         private void createNewSqrtControl()
         {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
-            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            SquareControl sControl = new SquareControl();
-            parentFd.childrenOperations.Add(sControl.model);
-            para.Inlines.Add(sControl);
+            //addFormula(new SquareModel());
+        }
+
+        private void addFormula(FractionModel formula)
+        {
+            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, formula));
         }
 
         private void changeFontSize(object sender)
@@ -393,66 +330,66 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Services
-        public void openDoc(object sender)
-        {
-            // needs work
-            DocumentHelper helper = new DocumentHelper();
+        //public void openDoc(object sender)
+        //{
+        //    // needs work
+        //    DocumentHelper helper = new DocumentHelper();
 
-            using (MemoryStream stream = new MemoryStream())
-            {
-                MainFlowDocument = helper.openFile();
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        MainFlowDocument = helper.openFile();
                 
-            }
-        }
+        //    }
+        //}
 
-        private void saveDoc(object sender)
-        {
-            MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, false);
-        }
+        //private void saveDoc(object sender)
+        //{
+        //    MainFlowDocument = sender as EnabledFlowDocument;
+        //    serializeDocument(MainFlowDocument, false);
+        //}
 
-        private void saveAsDoc(object sender)
-        {
-            MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, true);
-        }
+        //private void saveAsDoc(object sender)
+        //{
+        //    MainFlowDocument = sender as EnabledFlowDocument;
+        //    serializeDocument(MainFlowDocument, true);
+        //}
 
-        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-                var xmlSerializer = new XmlSerializer(docs.GetType());
-                var stringBuilder = new StringBuilder();
-                var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
-                xmlSerializer.Serialize(xmlTextWriter, docs);
-                var finalXml = stringBuilder.ToString();
-                BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-            }
+        //private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
+        //{
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
+        //        var xmlSerializer = new XmlSerializer(docs.GetType());
+        //        var stringBuilder = new StringBuilder();
+        //        var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
+        //        xmlSerializer.Serialize(xmlTextWriter, docs);
+        //        var finalXml = stringBuilder.ToString();
+        //        BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
+        //    }
 
-            if (isSaveAsCaller)
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
-                else
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
-        }
+        //    if (isSaveAsCaller)
+        //        {
+        //            var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+        //            command.Execute(BinaryFlowDocument);
+        //        }
+        //        else
+        //        {
+        //            var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+        //            command.Execute(BinaryFlowDocument);
+        //        }
+        //}
 
-        private void saveAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
-        }
+        //private void saveAsync(object sender)
+        //{
+        //    DocumentHelper helper = new DocumentHelper();
+        //    helper.saveDoc(BinaryFlowDocument, fileName);
+        //}
 
-        private void saveAsAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveAsDoc(BinaryFlowDocument);
-        }
+        //private void saveAsAsync(object sender)
+        //{
+        //    DocumentHelper helper = new DocumentHelper();
+        //    helper.saveAsDoc(BinaryFlowDocument);
+        //}
         #endregion
 
 

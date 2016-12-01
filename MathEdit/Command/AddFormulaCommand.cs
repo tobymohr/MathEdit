@@ -6,25 +6,17 @@ namespace MathEdit.Command
 {
     public class AddFormulaCommand : IUndoRedoCommand
     {
-        // Regions can be used to make code foldable (minus/plus sign to the left).
         #region Fields
 
-        // The 'shapes' field holds the current collection of shapes, 
-        //  and the reference points to the same collection as the one the MainViewModel point to, 
-        //  therefore when this collection is changed in a object of this class, 
-        //  it also changes the collection that the MainViewModel uses.
-        // For a description of an ObservableCollection see the MainViewModel class.
-        private ObservableCollection<Operation> formulas;
-        // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
-        //  and if undone, it is removed from the collection.
-        private Operation formula;
+        private ObservableCollection<FractionModel> formulas;
+        private FractionModel formula;
 
         #endregion
 
         #region Constructor
 
         // For changing the current state of the diagram.
-        public AddFormulaCommand(ObservableCollection<Operation> _formulas, Operation _formula)
+        public AddFormulaCommand(ObservableCollection<FractionModel> _formulas, FractionModel _formula)
         {
             formulas = _formulas;
             formula = _formula;

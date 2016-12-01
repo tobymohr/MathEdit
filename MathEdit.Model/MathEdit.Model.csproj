@@ -64,11 +64,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnabledFlowDocument.cs" />
-    <Compile Include="FlowDocumentModel.cs" />
     <Compile Include="FractionModel.cs" />
-    <Compile Include="ListOfEnabledDocs.cs" />
-    <Compile Include="ListOfOperations.cs" />
+    <Compile Include="ListOfDocs.cs" />
     <Compile Include="ModelHelpers\FlowDocumentExtensions.cs" />
     <Compile Include="ModelHelpers\NotifyBase.cs" />
     <Compile Include="Operation.cs" />

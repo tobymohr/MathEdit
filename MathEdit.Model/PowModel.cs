@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace MathEdit.Model
 {
@@ -13,18 +14,19 @@ namespace MathEdit.Model
         private int margin =10;
         public PowModel()
         {
-            OuterWidth = minWidth;
-            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            Width = minWidth;
+            Boxes = new ListOfDocs { new FlowDocument(), new FlowDocument() };
         }
 
-        public double powWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + margin; } }
-        public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + margin; } }
+        //public double powWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + margin; } }
+        //public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + margin; } }
 
-        public override double OuterWidth
+        public override double Width
         {
             get
             {
-                double calcedWidth = getTotalWidth(Boxes.ElementAt(0)) +  getTotalWidth(Boxes.ElementAt(1));
+                double calcedWidth = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace +
+                    Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if(calcedWidth < minWidth)
                 {
                     calcedWidth = minWidth;
@@ -34,7 +36,7 @@ namespace MathEdit.Model
 
             set
             {
-                this.SetProperty(ref outerWidth, value);
+                this.SetProperty(ref width, value);
             }
         }
 

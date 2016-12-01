@@ -12,6 +12,10 @@
         FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
         Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
 
+    <Window.DataContext>
+        <vm:MainWindowModel />
+    </Window.DataContext>
+
     <Window.InputBindings>
         <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
         <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
@@ -86,23 +90,9 @@
             <Slider x:Name="Zoom" DockPanel.Dock="Bottom" Minimum="1" Maximum="10" Width="70" Value="{Binding ZoomValue, Mode=TwoWay}"/>
         </Menu>
         <Grid>
-           
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
-                <Grid x:Name="gridParent">
-                    <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding MainFlowDocument}" AcceptsReturn="True" Name="FirstBox" Width="800" >
-                        <RichTextBox.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"/>
-                        </RichTextBox.LayoutTransform>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding TextBoxMainSelectionChanged, Mode=OneWay}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <RichTextBox.InputBindings>
-                            <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
-                            <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
-                        </RichTextBox.InputBindings>
-                    </RichTextBox>
+                <Grid>
+                    <ItemsControl ItemsSource="{Binding Operations}"></ItemsControl>
                 </Grid>
             </ScrollViewer>
             <view:HotkeyMenu DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"  x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, Mode=TwoWay}" >

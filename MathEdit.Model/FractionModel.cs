@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
@@ -17,8 +18,8 @@ namespace MathEdit.Model
 
         public FractionModel(string id)
         {
-            OuterWidth = 70;
-            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            Width = 70;
+            Boxes = new ListOfDocs { new FlowDocument(), new FlowDocument() };
         }
         public Thickness numborder
         {
@@ -51,22 +52,21 @@ namespace MathEdit.Model
             }
         }
 
-        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
-        public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
-
-        [XmlElement("outerWidth")]
-        public override double OuterWidth
+//        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
+        //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
+        
+        public override double Width
         {
             get
             {
-                double calcedWidth = Math.Max(getTotalWidth(Boxes.ElementAt(0)), getTotalWidth(Boxes.ElementAt(1)));
-                calcedWidth = calcedWidth + 40;
+                double calcedWidth = Math.Max(Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace,
+                    Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace);
                 return calcedWidth;
             }
 
             set
             {
-                this.SetProperty(ref outerWidth, value);
+                this.SetProperty(ref width, value);
             }
         }
 

@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
 {
-    public class ListOfEnabledDocs : List<EnabledFlowDocument>, IXmlSerializable
+    public class ListOfDocs : List<FlowDocument>, IXmlSerializable
     {
 
         private string dataFormat = DataFormats.XamlPackage;
         //private string dataFormat = DataFormats.Rtf;
-        public ListOfEnabledDocs() : base() { }
-        public string myStr = null;
+        public ListOfDocs() : base()
+        {
+
+        }
 
 
         #region IXmlSerializable
@@ -22,8 +25,7 @@ namespace MathEdit.Model
             while (reader.IsStartElement("EnabledFlowDocument"))
             {
 
-                EnabledFlowDocument doc = new EnabledFlowDocument("");
-                doc.childrenOperations.ReadXml(reader);
+                FlowDocument doc = new FlowDocument();
                 reader.ReadEndElement();
                 reader.ReadEndElement();
                 this.Add(doc);
@@ -34,12 +36,11 @@ namespace MathEdit.Model
 
         public void WriteXml(XmlWriter writer)
         {
-            myStr = null;
-            foreach (EnabledFlowDocument doc in this)
+
+            foreach (FlowDocument doc in this)
             {
                 writer.WriteStartElement("EnabledFlowDocument");
                 writer.WriteAttributeString("Data", "Hello");
-                doc.childrenOperations.WriteXml(writer);
                 writer.WriteEndElement();
                 writer.WriteEndElement();
             }

@@ -47,30 +47,30 @@ namespace MathEdit.Helpers
             }
         }
 
-        public EnabledFlowDocument openFile()
-        {
-            EnabledFlowDocument doc = new EnabledFlowDocument();
-            ListOfEnabledDocs docs = new ListOfEnabledDocs { doc };
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.DefaultExt = ".xml";
-            openDialog.Filter = "XML Files|*.xml";
-            Nullable<bool> result = openDialog.ShowDialog();
-            if (result == true)
-            {
+        //public EnabledFlowDocument openFile()
+        //{
+        //    EnabledFlowDocument doc = new EnabledFlowDocument();
+        //    ListOfDocs docs = new ListOfDocs { doc };
+        //    OpenFileDialog openDialog = new OpenFileDialog();
+        //    openDialog.DefaultExt = ".xml";
+        //    openDialog.Filter = "XML Files|*.xml";
+        //    Nullable<bool> result = openDialog.ShowDialog();
+        //    if (result == true)
+        //    {
                 
-                byte[] content = File.ReadAllBytes(openDialog.FileName);
+        //        byte[] content = File.ReadAllBytes(openDialog.FileName);
 
-                using (var stream = new MemoryStream(content))
-                {
-                    docs.ReadXml(XmlReader.Create(stream));
-                }
-                return doc;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //        using (var stream = new MemoryStream(content))
+        //        {
+        //            docs.ReadXml(XmlReader.Create(stream));
+        //        }
+        //        return doc;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
        
     }
