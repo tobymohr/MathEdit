@@ -1,10 +1,12 @@
 ﻿using MathEdit.Model;
+using MathEdit.ModelHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -30,6 +32,7 @@ namespace MathEdit.Model
             }
             reader.ReadEndElement();
 
+
         }
 
         public void WriteXml(XmlWriter writer)
@@ -37,7 +40,7 @@ namespace MathEdit.Model
             foreach (EnabledFlowDocument doc in this)
             {
                 writer.WriteStartElement("EnabledFlowDocument");
-                writer.WriteAttributeString("Data","asd");
+                writer.WriteAttributeString("Data", doc.GetFormattedText().Text);
                 doc.childrenOperations.WriteXml(writer);
                 writer.WriteEndElement();
                 writer.WriteEndElement();
