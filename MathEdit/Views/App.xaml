@@ -1,0 +1,21 @@
+<Application x:Class="MathEdit.Views.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Views="clr-namespace:MathEdit.Views"
+             StartupUri="Views/MainWindow.xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d1p1:Ignorable="d"
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model">
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type Model:Operation}">
+            <Views:FractionControl/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Model:Operation}">
+            <Views:PowControl/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Model:Operation}">
+            <Views:SquareControl/>
+        </DataTemplate>
+    </Application.Resources>
+</Application>

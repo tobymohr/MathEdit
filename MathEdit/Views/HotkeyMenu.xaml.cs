@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MathEdit
+namespace MathEdit.Views
 {
     /// <summary>
     /// Interaction logic for HotkeyMenu.xaml

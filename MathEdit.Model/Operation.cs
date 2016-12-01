@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Xml;
 using System.Xml.Serialization;
+using GalaSoft.MvvmLight;
 
-namespace MathEdit.Models
+
+namespace MathEdit.Model
 {
     [Serializable]
-    public abstract class Operation 
+    public abstract class Operation : NotifyBase
     {
         [XmlElement("outerWidth")]
         abstract public double outerWidth { get; set; }

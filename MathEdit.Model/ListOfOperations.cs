@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MathEdit.Models
+namespace MathEdit.Model
 {
     public class ListOfOperations : List<Operation>, IXmlSerializable
     {

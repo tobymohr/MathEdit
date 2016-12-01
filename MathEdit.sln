@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathEdit", "MathEdit\MathEdit.csproj", "{AF4C9496-5516-4E8E-846D-19E62B62CDA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathEdit.Model", "MathEdit.Model\MathEdit.Model.csproj", "{FF5BB268-5D74-4216-9CEC-4BCF52983B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AF4C9496-5516-4E8E-846D-19E62B62CDA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF4C9496-5516-4E8E-846D-19E62B62CDA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF4C9496-5516-4E8E-846D-19E62B62CDA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5BB268-5D74-4216-9CEC-4BCF52983B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5BB268-5D74-4216-9CEC-4BCF52983B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5BB268-5D74-4216-9CEC-4BCF52983B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5BB268-5D74-4216-9CEC-4BCF52983B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

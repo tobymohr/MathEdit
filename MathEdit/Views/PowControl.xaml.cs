@@ -14,29 +14,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MathEdit
+namespace MathEdit.Views
 {
     /// <summary>
-    /// Interaction logic for SquareControl.xaml
+    /// Interaction logic for PowControl.xaml
     /// </summary>
-    public partial class SquareControl : UserControl
+    public partial class PowControl : UserControl
     {
-        public SquareModel model { get; set; }
-        public SquareControl()
+        public PowModel model { get; set; }
+        public PowControl()
         {
-            model = new SquareModel();
+            model = new PowModel();
             DataContext = model;
             InitializeComponent();
-            numberBox.Document = model.boxes.ElementAt(0);
-            numberBox.TextChanged += onChange;
+            pow.Document = model.boxes.ElementAt(0);
+            number.Document = model.boxes.ElementAt(1);
+            pow.TextChanged += onChange;
+            number.TextChanged += onChange;
         }
 
         public void onChange(object sender, RoutedEventArgs e)
         {
-            numberBox.Width = model.numberWidth + 20;
-            numberBox.BorderThickness = model.numberborder;
+            pow.Width = model.powWidth;
+            number.Width = model.numberWidth;
             TrackSurface.Width = model.outerWidth;
+            number.BorderThickness = model.numborder;
+            pow.BorderThickness = model.powborder;
         }
-
     }
 }

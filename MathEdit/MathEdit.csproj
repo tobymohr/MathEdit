@@ -50,8 +50,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -60,6 +68,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,30 +86,23 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Views\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\AddFormulaCommand.cs" />
-    <Compile Include="FractionControl.xaml.cs">
+    <Compile Include="Views\FractionControl.xaml.cs">
       <DependentUpon>FractionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MouseWheel.cs" />
     <Compile Include="Helpers\MouseWheelGesture.cs" />
     <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="Helpers\Undoer.cs" />
-    <Compile Include="HotkeyMenu.xaml.cs">
+    <Compile Include="Views\HotkeyMenu.xaml.cs">
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FlowDocumentExtensions.cs" />
-    <Compile Include="Models\FlowDocumentModel.cs" />
-    <Compile Include="Models\FractionModel.cs" />
-    <Compile Include="Models\ListOfEnabledDocs.cs" />
-    <Compile Include="Models\ListOfOperations.cs" />
-    <Compile Include="Models\Operation.cs" />
-    <Compile Include="Models\PowModel.cs" />
-    <Compile Include="Models\SquareModel.cs" />
-    <Compile Include="PowControl.xaml.cs">
+    <Compile Include="Views\PowControl.xaml.cs">
       <DependentUpon>PowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Command\IUndoRedoCommand.cs" />
@@ -105,23 +110,23 @@
     <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Helpers\AsyncRelayCommand.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="SquareControl.xaml.cs">
+    <Compile Include="Views\SquareControl.xaml.cs">
       <DependentUpon>SquareControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainWindowModel.cs" />
-    <Page Include="FractionControl.xaml">
+    <Page Include="Views\FractionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HotkeyMenu.xaml">
+    <Page Include="Views\HotkeyMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PowControl.xaml">
+    <Page Include="Views\PowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SquareControl.xaml">
+    <Page Include="Views\SquareControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,11 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\EnabledFlowDocument.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -187,7 +191,15 @@
     <Resource Include="images\sqrrootbase.png" />
     <Resource Include="images\sqrrootextend.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MathEdit.Model\MathEdit.Model.csproj">
+      <Project>{ff5bb268-5d74-4216-9cec-4bcf52983b75}</Project>
+      <Name>MathEdit.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
