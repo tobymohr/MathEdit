@@ -2,9 +2,12 @@
 {
     public class FlowDocumentModel
     {
-        public FlowDocumentModel() { }
+        private EnabledFlowDocument enabledFlowDocument;
+        public FlowDocumentModel() {
+            mainFlowDocument = new EnabledFlowDocument("");
+        }
 
-        public EnabledFlowDocument mainFlowDocument {get; set;}
+        public EnabledFlowDocument mainFlowDocument { get;set;}
         public byte[] binaryFlowDocument { get; set; } //TODO slet senere når toby har fikset livet
     }
 }

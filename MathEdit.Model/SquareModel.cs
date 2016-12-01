@@ -37,28 +37,9 @@ namespace MathEdit.Model
             }
         }
 
-        public Thickness numberborder
-        {
-            get
-            {
-                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    t= new Thickness(1);
-                }
-                else
-                {
-                    t = new Thickness(0);
-                }
-                return t;
-            }
-            set
-            {
-                t = value;
-            }
-        }
 
-        public override ListOfEnabledDocs boxes
+
+        public override ListOfEnabledDocs ListOfEnabledDocs
         {
             get
             {

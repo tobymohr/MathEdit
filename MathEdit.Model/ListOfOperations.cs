@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MathEdit.Model;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -8,13 +12,13 @@ namespace MathEdit.Model
     public class ListOfOperations : List<Operation>, IXmlSerializable
     {
         public ListOfOperations() : base() { }
-        private XmlSerializer xmlSerializer;
 
         #region IXmlSerializable
         public System.Xml.Schema.XmlSchema GetSchema() { return null; }
 
         public void ReadXml(XmlReader reader)
         {
+            reader.ReadStartElement("EnabledFlowDocument");
             reader.ReadStartElement("ListOfOperations");
             while (reader.IsStartElement("Operation"))
             {
@@ -23,8 +27,9 @@ namespace MathEdit.Model
                 reader.ReadStartElement("Operation");
                 this.Add((Operation)serial.Deserialize(reader));
                 reader.ReadEndElement();
+                reader.ReadEndElement();
+
             }
-            reader.ReadEndElement();
         }
 
         public void WriteXml(XmlWriter writer)

@@ -10,7 +10,7 @@ namespace MathEdit.Model
     {
         [XmlElement("outerWidth")]
         abstract public double outerWidth { get; set; }
-        abstract public ListOfEnabledDocs boxes { get; set; }
+        abstract public ListOfEnabledDocs ListOfEnabledDocs { get; set; }
       
         
         public virtual double getTotalWidth(EnabledFlowDocument model)

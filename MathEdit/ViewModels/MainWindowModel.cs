@@ -28,7 +28,7 @@ namespace MathEdit.ViewModels
         public ICommand OpenHotkeysCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand CreateNewRTBCommand { get; }
- 
+
         public ICommand ToggleBold { get; }
         public ICommand ToggleItalic { get; }
         public ICommand ChangeFontSize { get; }
@@ -100,7 +100,7 @@ namespace MathEdit.ViewModels
         public EnabledFlowDocument MainFlowDocument
         {
             get { return documentModel.mainFlowDocument; }
-            set { this.SetProperty(ref mainFlowDocument,  value); }
+            set { this.SetProperty(ref mainFlowDocument, value); }
         }
 
         public byte[] BinaryFlowDocument
@@ -182,12 +182,12 @@ namespace MathEdit.ViewModels
 
         private void scrollIn(object sender)
         {
-            if(ZoomValue < 10)
+            if (ZoomValue < 10)
             {
                 ZoomValue = ZoomValue + 0.5;
 
             }
-            
+
         }
 
         private void scrollOut(object sender)
@@ -226,7 +226,7 @@ namespace MathEdit.ViewModels
 
         private Paragraph getCorrectParagraph(RichTextBox parentTb)
         {
-           
+
             FlowDocument parentFd;
             Paragraph para = null;
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
@@ -373,17 +373,17 @@ namespace MathEdit.ViewModels
 
         private void italic_Click(object sender)
         {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-                TextSelection text = parentTb.Selection;
-                parentTb.Focus();
-                if (IsItalicChecked)
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
-                }
-                else
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
-                }
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = parentTb.Selection;
+            parentTb.Focus();
+            if (IsItalicChecked)
+            {
+                text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
+            }
+            else
+            {
+                text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
+            }
         }
 
         private void openSettings(object sender)
@@ -401,7 +401,7 @@ namespace MathEdit.ViewModels
             using (MemoryStream stream = new MemoryStream())
             {
                 MainFlowDocument = helper.openFile();
-                
+
             }
         }
 
@@ -419,27 +419,25 @@ namespace MathEdit.ViewModels
 
         private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
         {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-                var xmlSerializer = new XmlSerializer(docs.GetType());
-                var stringBuilder = new StringBuilder();
-                var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
-                xmlSerializer.Serialize(xmlTextWriter, docs);
-                var finalXml = stringBuilder.ToString();
-                BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-            }
+            String finalXml;
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
+            var xmlSerializer = new XmlSerializer(docs.GetType());
+            var stringBuilder = new StringBuilder();
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
+            xmlSerializer.Serialize(xmlTextWriter, docs);
+            finalXml = stringBuilder.ToString();
+            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
 
             if (isSaveAsCaller)
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
-                else
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
+            {
+                var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
+            else
+            {
+                var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
         }
 
         private void saveAsync(object sender)
