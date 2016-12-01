@@ -7,15 +7,15 @@
              d1p1:Ignorable="d"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model">
-    <!--<Application.Resources>
-        <DataTemplate DataType="{x:Type Model:Operation}">
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type Model:FractionModel}">
             <Views:FractionControl/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type Model:Operation}">
+        <DataTemplate DataType="{x:Type Model:PowModel}">
             <Views:PowControl/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type Model:Operation}">
+        <DataTemplate DataType="{x:Type Model:SquareModel}">
             <Views:SquareControl/>
         </DataTemplate>
-    </Application.Resources>-->
+    </Application.Resources>
 </Application>

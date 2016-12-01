@@ -8,32 +8,30 @@ namespace MathEdit.Model
     [Serializable]
     public class SquareModel : Operation
     {
-        private ListOfEnabledDocs _boxes;
         private double minWidth = 50;
         private Thickness t;
-        private double _outerWidth;
 
         public SquareModel()
         {
             t = new Thickness(1);
-            outerWidth = minWidth;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
+            OuterWidth = minWidth;
+            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
         }
 
-        public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
+        public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(0)); } }
 
-        public override double outerWidth
+        public override double OuterWidth
         {
             get
             {
-                double calcedWidth = getTotalWidth(_boxes.ElementAt(0)) + minWidth;
+                double calcedWidth = getTotalWidth(Boxes.ElementAt(0)) + minWidth;
                 return calcedWidth;
             }
 
             set
             {
 
-                this._outerWidth = value;
+                this.SetProperty(ref outerWidth, value);
             }
         }
 
@@ -41,7 +39,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     t= new Thickness(1);
@@ -58,18 +56,6 @@ namespace MathEdit.Model
             }
         }
 
-        public override ListOfEnabledDocs boxes
-        {
-            get
-            {
-                return _boxes;
-            }
-
-            set
-            {
-                _boxes = value;
-            }
-        }
 
         
     }

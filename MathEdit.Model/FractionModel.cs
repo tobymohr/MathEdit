@@ -9,8 +9,7 @@ namespace MathEdit.Model
     [Serializable]
     public class FractionModel : Operation
     {
-        private double _outerWidth;
-        private  ListOfEnabledDocs _boxes;
+        
         public FractionModel()
         {
             
@@ -18,14 +17,14 @@ namespace MathEdit.Model
 
         public FractionModel(string id)
         {
-            outerWidth = 70;
-            boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            OuterWidth = 70;
+            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
         public Thickness numborder
         {
             get
             {
-                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -40,7 +39,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double length = _boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -52,36 +51,27 @@ namespace MathEdit.Model
             }
         }
 
-        public double numenatorWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + 10; } }
-        public double denumenatorWidth { get { return getTotalWidth(_boxes.ElementAt(1)) + 10; } }
+        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
+        public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
 
         [XmlElement("outerWidth")]
-        public override double outerWidth
+        public override double OuterWidth
         {
             get
             {
-                double calcedWidth = Math.Max(getTotalWidth(_boxes.ElementAt(0)), getTotalWidth(_boxes.ElementAt(1)));
+                double calcedWidth = Math.Max(getTotalWidth(Boxes.ElementAt(0)), getTotalWidth(Boxes.ElementAt(1)));
                 calcedWidth = calcedWidth + 40;
                 return calcedWidth;
             }
 
             set
             {
-                this._outerWidth = value;
+                this.SetProperty(ref outerWidth, value);
             }
         }
-        public override ListOfEnabledDocs boxes
-        {
-            get
-            {
-                return _boxes;
-            }
 
-            set
-            {
-                _boxes = value;
-            }
-        }
+       
+
 
     }
 }
