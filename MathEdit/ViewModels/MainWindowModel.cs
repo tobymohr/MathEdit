@@ -41,6 +41,8 @@ namespace MathEdit.ViewModels
         public ICommand AddFormulaCommand { get; }
 
         public FlowDocumentModel documentModel;
+        public EnabledFlowDocument mainFlowDocument;
+
         public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
@@ -79,7 +81,10 @@ namespace MathEdit.ViewModels
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
+
             documentModel = new FlowDocumentModel();
+            mainFlowDocument = documentModel.mainFlowDocument;
+
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
@@ -95,7 +100,7 @@ namespace MathEdit.ViewModels
         public EnabledFlowDocument MainFlowDocument
         {
             get { return documentModel.mainFlowDocument; }
-            set { documentModel.mainFlowDocument = value; }
+            set { this.SetProperty(ref mainFlowDocument,  value); }
         }
 
         public byte[] BinaryFlowDocument
