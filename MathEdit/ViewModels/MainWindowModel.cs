@@ -53,16 +53,13 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        public ObservableCollection<FractionModel> formulas { get; set; }
+        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
 
         public MainWindowModel()
         {
-            formulas = new ObservableCollection<FractionModel>()
-            {
-                new FractionModel() { Boxes = new ListOfDocs() {new FlowDocument(),new FlowDocument()},Width = 70,X=200,Y=200}
-            };
+            formulas = new ObservableCollection<Operation>() { };
             //this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             //this.OpenCommand = new RelayCommand<object>(this.openDoc);
             //this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
@@ -136,6 +133,7 @@ namespace MathEdit.ViewModels
             get { return this.zoomValue; }
             set { this.SetProperty(ref this.zoomValue, value); }
         }
+
         #endregion
 
         #region hotKey calls
@@ -210,20 +208,20 @@ namespace MathEdit.ViewModels
 
         private void createNewFractionControl()
         {
-            addFormula(new FractionModel());
+            addFormula(new FractionModel(""));
         }
 
         private void createNewPowControl()
         {
-            //addFormula(new PowModel());
+            addFormula(new PowModel(""));
         }
 
         private void createNewSqrtControl()
         {
-            //addFormula(new SquareModel());
+            addFormula(new SquareModel(""));
         }
 
-        private void addFormula(FractionModel formula)
+        private void addFormula(Operation formula)
         {
             undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, formula));
         }

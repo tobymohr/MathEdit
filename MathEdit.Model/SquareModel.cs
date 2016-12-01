@@ -9,55 +9,46 @@ namespace MathEdit.Model
     [Serializable]
     public class SquareModel : Operation
     {
-        private double minWidth = 50;
-        private Thickness t;
+        private FlowDocument number;
 
         public SquareModel()
         {
-            t = new Thickness(1);
-            Width = minWidth;
-            Boxes = new ListOfDocs { new FlowDocument()};
+
         }
 
-        //public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(0)); } }
+        public SquareModel(string id)
+        {
+            Width = 70;
+            Number = new FlowDocument();
+        }
+
+     
+
+        public FlowDocument Number
+        {
+            get { return number; }
+            set { this.SetProperty(ref number, value); }
+        }
+
+
+        //        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
+        //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
 
         public override double Width
         {
             get
             {
-                double calcedWidth = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace + minWidth;
+                double calcedWidth = Number.GetFormattedText().WidthIncludingTrailingWhitespace + 30;
                 return calcedWidth;
             }
 
             set
             {
-
                 this.SetProperty(ref width, value);
             }
         }
 
-        public Thickness numberborder
-        {
-            get
-            {
-                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    t= new Thickness(1);
-                }
-                else
-                {
-                    t = new Thickness(0);
-                }
-                return t;
-            }
-            set
-            {
-                t = value;
-            }
-        }
 
 
-        
     }
 }

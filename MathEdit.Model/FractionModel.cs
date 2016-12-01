@@ -10,6 +10,8 @@ namespace MathEdit.Model
     [Serializable]
     public class FractionModel : Operation
     {
+        private FlowDocument numerator;
+        private FlowDocument denominator;
         
         public FractionModel()
         {
@@ -19,38 +21,22 @@ namespace MathEdit.Model
         public FractionModel(string id)
         {
             Width = 70;
-            Boxes = new ListOfDocs { new FlowDocument(), new FlowDocument() };
+            Numerator = new FlowDocument();
+            Denominator = new FlowDocument();
         }
-        public Thickness numborder
+
+        public FlowDocument Numerator
         {
-            get
-            {
-                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
+            get { return numerator; }
+            set { this.SetProperty(ref numerator, value); }
         }
-        public Thickness denumborder
+
+        public FlowDocument Denominator
         {
-            get
-            {
-                double length = Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
+            get { return denominator; }
+            set { this.SetProperty(ref denominator, value); }
         }
+
 
 //        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
         //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
@@ -59,8 +45,8 @@ namespace MathEdit.Model
         {
             get
             {
-                double calcedWidth = Math.Max(Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace,
-                    Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace);
+                double calcedWidth = Math.Max(Numerator.GetFormattedText().WidthIncludingTrailingWhitespace,
+                    Denominator.GetFormattedText().WidthIncludingTrailingWhitespace) + 30;
                 return calcedWidth;
             }
 

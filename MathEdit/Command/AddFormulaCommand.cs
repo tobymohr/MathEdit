@@ -8,15 +8,15 @@ namespace MathEdit.Command
     {
         #region Fields
 
-        private ObservableCollection<FractionModel> formulas;
-        private FractionModel formula;
+        private ObservableCollection<Operation> formulas;
+        private Operation formula;
 
         #endregion
 
         #region Constructor
 
         // For changing the current state of the diagram.
-        public AddFormulaCommand(ObservableCollection<FractionModel> _formulas, FractionModel _formula)
+        public AddFormulaCommand(ObservableCollection<Operation> _formulas, Operation _formula)
         {
             formulas = _formulas;
             formula = _formula;

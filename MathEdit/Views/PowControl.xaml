@@ -2,12 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MathEdit.Model"
-             mc:Ignorable="d" 
-          >
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model"
+             xmlns:h="clr-namespace:MathEdit.Helpers"
+             mc:Ignorable="d"
+             Width="{Binding Width}">
 
-       
+
     <Grid x:Name="TrackSurface" Background="White" MinWidth="40"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -19,7 +20,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <RichTextBox x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10"  BorderThickness="{Binding numborder}" Grid.Row="0">
+        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Power}" x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10" Grid.Row="0">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
@@ -27,7 +28,7 @@
             </FlowDocument>
         </RichTextBox>
 
-        <RichTextBox x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20" BorderThickness="{Binding powborder}" Grid.Column="0" Grid.Row="1">
+        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Number}" x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20" Grid.Column="0" Grid.Row="1">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

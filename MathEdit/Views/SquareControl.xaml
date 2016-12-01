@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MathEdit"
+             xmlns:model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model"
+             xmlns:h="clr-namespace:MathEdit.Helpers"
              mc:Ignorable="d"
-             Name="parent">
+             Width="{Binding Width}">
 
+
+    
     <Grid x:Name="TrackSurface" MinWidth="40" Background="White"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -35,7 +38,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" BorderThickness="{Binding numberborder}" MinHeight="10"  MinWidth="20">
+        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Number}" x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" MinHeight="10"  MinWidth="20">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

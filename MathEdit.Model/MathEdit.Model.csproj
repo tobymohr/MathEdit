@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FractionModel.cs" />
-    <Compile Include="ListOfDocs.cs" />
     <Compile Include="ModelHelpers\FlowDocumentExtensions.cs" />
     <Compile Include="ModelHelpers\NotifyBase.cs" />
     <Compile Include="Operation.cs" />

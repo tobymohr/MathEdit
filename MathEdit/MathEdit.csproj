@@ -91,6 +91,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\AddFormulaCommand.cs" />
+    <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="Views\FractionControl.xaml.cs">
       <DependentUpon>FractionControl.xaml</DependentUpon>
     </Compile>

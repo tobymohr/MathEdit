@@ -10,28 +10,43 @@ namespace MathEdit.Model
     public class PowModel : Operation
     {
 
-        private int minWidth = 50;
-        private int margin =10;
+        private FlowDocument number;
+        private FlowDocument power;
+
         public PowModel()
         {
-            Width = minWidth;
-            Boxes = new ListOfDocs { new FlowDocument(), new FlowDocument() };
+
         }
 
-        //public double powWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + margin; } }
-        //public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + margin; } }
+        public PowModel(string id)
+        {
+            Width = 70;
+            Number = new FlowDocument();
+            Power = new FlowDocument();
+        }
+
+        public FlowDocument Number
+        {
+            get { return number; }
+            set { this.SetProperty(ref number, value); }
+        }
+
+        public FlowDocument Power
+        {
+            get { return power; }
+            set { this.SetProperty(ref power, value); }
+        }
+
+
+        //        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
+        //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
 
         public override double Width
         {
             get
             {
-                double calcedWidth = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace +
-                    Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if(calcedWidth < minWidth)
-                {
-                    calcedWidth = minWidth;
-                }
-                return calcedWidth + margin;
+                double calcedWidth = Number.GetFormattedText().WidthIncludingTrailingWhitespace + Power.GetFormattedText().WidthIncludingTrailingWhitespace + 30;
+                return calcedWidth;
             }
 
             set
@@ -40,37 +55,6 @@ namespace MathEdit.Model
             }
         }
 
-        public Thickness numborder
-        {
-            get
-            {
-                double length = Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
-        }
-        public Thickness powborder
-        {
-            get
-            {
-                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
-        }
 
-       
     }
 }
