@@ -9,14 +9,13 @@ namespace MathEdit.Model
         #region Fields
         private ListOfOperations _childrenOperations;
         #endregion
-
         public EnabledFlowDocument(string id)
         {
             childrenOperations = new ListOfOperations();
         }
         public EnabledFlowDocument()
         {
-         
+            childrenOperations = new ListOfOperations();
         }
        
         public ListOfOperations childrenOperations

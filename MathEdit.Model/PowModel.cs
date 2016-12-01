@@ -15,7 +15,7 @@ namespace MathEdit.Model
         public PowModel()
         {
             outerWidth = minWidth;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
 
         public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }
@@ -39,38 +39,7 @@ namespace MathEdit.Model
             }
         }
 
-        public Thickness numborder
-        {
-            get
-            {
-                double length = _boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
-        }
-        public Thickness powborder
-        {
-            get
-            {
-                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    return new Thickness(1);
-                }
-                else
-                {
-                    return new Thickness(0);
-                }
-            }
-        }
-
-        public override ListOfEnabledDocs boxes
+        public override ListOfEnabledDocs ListOfEnabledDocs
         {
             get
             {

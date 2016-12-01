@@ -17,8 +17,8 @@ namespace MathEdit.Views
             model = new FractionModel("hello");
             DataContext = model;
             InitializeComponent();
-            numenatorTextBox.Document = model.boxes.ElementAt(0);
-            denumenatorTextBox.Document = model.boxes.ElementAt(1);
+            numenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(0);
+            denumenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(1);
             numenatorTextBox.TextChanged += onChange;
             denumenatorTextBox.TextChanged += onChange;
         }

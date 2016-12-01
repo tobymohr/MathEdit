@@ -16,8 +16,8 @@ namespace MathEdit.Views
             model = new PowModel();
             DataContext = model;
             InitializeComponent();
-            pow.Document = model.boxes.ElementAt(0);
-            number.Document = model.boxes.ElementAt(1);
+            pow.Document = model.ListOfEnabledDocs.ElementAt(0);
+            number.Document = model.ListOfEnabledDocs.ElementAt(1);
             pow.TextChanged += onChange;
             number.TextChanged += onChange;
         }
@@ -27,8 +27,6 @@ namespace MathEdit.Views
             pow.Width = model.powWidth;
             number.Width = model.numberWidth;
             TrackSurface.Width = model.outerWidth;
-            number.BorderThickness = model.numborder;
-            pow.BorderThickness = model.powborder;
         }
     }
 }
