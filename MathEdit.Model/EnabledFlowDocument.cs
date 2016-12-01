@@ -15,7 +15,6 @@ namespace MathEdit.Model
         }
         public EnabledFlowDocument()
         {
-            childrenOperations = new ListOfOperations();
         }
        
         public ListOfOperations childrenOperations

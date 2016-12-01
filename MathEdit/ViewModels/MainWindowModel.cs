@@ -423,7 +423,7 @@ namespace MathEdit.ViewModels
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true});
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
