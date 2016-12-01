@@ -1,13 +1,6 @@
-﻿using MathEdit.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MathEdit.Model;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 
 namespace MathEdit.Helpers
 {

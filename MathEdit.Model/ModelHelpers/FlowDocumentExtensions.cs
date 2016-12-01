@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace MathEdit.Models
+namespace MathEdit.ModelHelpers
 {
     // Extension class for all Viewmodels.
     public static class FlowDocumentExtensions

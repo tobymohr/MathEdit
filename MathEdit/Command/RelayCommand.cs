@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace MathEdit.Helpers
+namespace MathEdit.Command
 {
     public class RelayCommand<T> : ICommand
     {

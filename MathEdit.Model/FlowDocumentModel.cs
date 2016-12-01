@@ -1,6 +1,6 @@
 ﻿namespace MathEdit.Model
 {
-    class FlowDocumentModel
+    public class FlowDocumentModel
     {
         public FlowDocumentModel() { }
 

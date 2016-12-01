@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MathEdit.ModelHelpers;
+using System;
 using System.Linq;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model

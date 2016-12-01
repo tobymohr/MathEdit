@@ -1,17 +1,7 @@
-﻿using MathEdit.Models;
+﻿using MathEdit.Model;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
 using System.Xml;
 
 namespace MathEdit.Helpers

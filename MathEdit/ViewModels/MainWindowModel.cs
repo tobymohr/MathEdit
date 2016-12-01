@@ -1,6 +1,8 @@
 ﻿using MathEdit.Command;
 using MathEdit.Helpers;
+using MathEdit.Model;
 using MathEdit.Models;
+using MathEdit.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

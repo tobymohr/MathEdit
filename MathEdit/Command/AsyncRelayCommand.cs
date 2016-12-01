@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Windows.Input;
 
-namespace MathEdit.Helpers
+namespace MathEdit.Command
 {
     public class AsyncRelayCommand<T> : ICommand
     {
