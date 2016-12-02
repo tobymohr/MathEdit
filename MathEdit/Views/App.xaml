@@ -9,13 +9,19 @@
              xmlns:Model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model">
     <Application.Resources>
         <DataTemplate DataType="{x:Type Model:FractionModel}">
-            <Views:FractionControl/>
+            <Canvas>
+                <Views:FractionControl/>
+            </Canvas>
         </DataTemplate>
         <DataTemplate DataType="{x:Type Model:PowModel}">
-            <Views:PowControl/>
+            <Canvas>
+                <Views:PowControl/>
+            </Canvas>
         </DataTemplate>
         <DataTemplate DataType="{x:Type Model:SquareModel}">
-            <Views:SquareControl/>
+            <Canvas>
+                <Views:SquareControl/>
+            </Canvas>
         </DataTemplate>
     </Application.Resources>
 </Application>

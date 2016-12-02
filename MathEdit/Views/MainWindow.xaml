@@ -92,17 +92,16 @@
         <Grid>
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" >
                 <Grid>
-                    
+                    <Grid.LayoutTransform>
+                        <ScaleTransform ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}"></ScaleTransform>
+                    </Grid.LayoutTransform>
                     <ItemsControl ItemsSource="{Binding formulas}"></ItemsControl>
+
                 </Grid>
             </ScrollViewer>
             <view:HotkeyMenu DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"  x:Name="hotkeyMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Visibility, Mode=TwoWay}" >
             </view:HotkeyMenu>
-            <Grid.InputBindings>
-                <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
-                <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
-            </Grid.InputBindings>
-            
+
         </Grid>
     </DockPanel>
 </Window>

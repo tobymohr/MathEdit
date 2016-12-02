@@ -67,6 +67,7 @@
     <Compile Include="FractionModel.cs" />
     <Compile Include="ModelHelpers\FlowDocumentExtensions.cs" />
     <Compile Include="ModelHelpers\NotifyBase.cs" />
+    <Compile Include="ModelHelpers\RelayCommand.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="PowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

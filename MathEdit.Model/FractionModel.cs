@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
@@ -10,6 +11,8 @@ namespace MathEdit.Model
     [Serializable]
     public class FractionModel : Operation
     {
+        public ICommand ChangeWidth { get; set; }
+        public ICommand MouseDown { get; set; }
         private FlowDocument numerator;
         private FlowDocument denominator;
         
@@ -23,7 +26,9 @@ namespace MathEdit.Model
             Width = 70;
             Numerator = new FlowDocument();
             Denominator = new FlowDocument();
-        }
+            ChangeWidth = new RelayCommand<object>(this.changeWidth);
+            MouseDown = new RelayCommand<object>(mouseDown);
+    }
 
         public FlowDocument Numerator
         {
@@ -45,9 +50,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double calcedWidth = Math.Max(Numerator.GetFormattedText().WidthIncludingTrailingWhitespace,
-                    Denominator.GetFormattedText().WidthIncludingTrailingWhitespace) + 30;
-                return calcedWidth;
+                return width;
             }
 
             set
@@ -56,7 +59,13 @@ namespace MathEdit.Model
             }
         }
 
-       
+        private void changeWidth(object sender)
+        {
+            Console.WriteLine("luluulul");
+            Console.WriteLine(Numerator.GetFormattedText().Text);
+            Width = Math.Max(Numerator.GetFormattedText().WidthIncludingTrailingWhitespace,
+                    Denominator.GetFormattedText().WidthIncludingTrailingWhitespace) + 20;
+        }
 
 
     }
