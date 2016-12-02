@@ -7,6 +7,7 @@
              xmlns:h="clr-namespace:MathEdit.Helpers"
              xmlns:model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              MinHeight="10"
              mc:Ignorable="d"
              Width="{Binding Width}" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}">
@@ -52,10 +53,10 @@
                 <i:InvokeCommandAction Command="{Binding MouseDown}"/>
             </i:EventTrigger>
             <i:EventTrigger EventName="MouseMove">
-                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+                <command:EventToCommand Command="{Binding MouseMove}" PassEventArgsToCommand="True"/>
             </i:EventTrigger>
             <i:EventTrigger EventName="MouseUp">
-                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+                <i:InvokeCommandAction Command="{Binding MouseUp}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
     </Grid>

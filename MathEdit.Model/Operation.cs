@@ -5,6 +5,9 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using MathEdit.ModelHelpers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MathEdit.Model
 {
@@ -14,28 +17,43 @@ namespace MathEdit.Model
     [Serializable]
     public abstract class Operation : NotifyBase
     {
-        
-        
 
+
+        private bool moving = false;
         protected double width;
-        protected int x = 100;
-        protected int y = 100;
+        protected double x = 100;
+        protected double y = 100;
         abstract public ListOfDocs ListOfDocs { get; set; }
 
         abstract public double Width { get; set; }
-        public int X { get { return x; } set { this.SetProperty(ref x, value); } }
-        public int Y { get { return y; } set { this.SetProperty(ref y, value); } }
+        public double X { get { return x; } set { this.SetProperty(ref x, value); } }
+        public double Y { get { return y; } set { this.SetProperty(ref y, value); } }
 
         protected void mouseDown(Object sender)
         {
+            moving = true;
             Console.WriteLine("Down");
         }
-        protected void mouseMove(Object sender)
+        protected void mouseMove(Object o)
         {
-            Console.WriteLine("Move");
+            if (moving)
+            {
+                var args = (MouseEventArgs) o;
+                var shapeVisualElement = (FrameworkElement) args.MouseDevice.Target;
+                var canvas = FindParentOfType<Canvas>(shapeVisualElement);
+                var mp = Mouse.GetPosition(canvas);
+                X = X + (mp.X - X)-33;
+                Y = Y + (mp.Y - Y)-23;
+            }
+        }
+        private static T FindParentOfType<T>(DependencyObject o)
+        {
+            dynamic parent = VisualTreeHelper.GetParent(o);
+            return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
         }
         protected void mouseUp(Object sender)
         {
+            moving = false;
             Console.WriteLine("Up");
         }
 
