@@ -12,9 +12,6 @@ namespace MathEdit.Model
     public class SquareModel : Operation
     {
         public ICommand ChangeWidth { get; set; }
-        public ICommand MouseDown { get; set; }
-        public ICommand MouseMove { get; set; }
-        public ICommand MouseUp { get; set; }
         private CustomFlowdoc number;
         private ListOfDocs docs;
 
@@ -23,9 +20,6 @@ namespace MathEdit.Model
             Width = 70;
             Number = new CustomFlowdoc();
             docs = new ListOfDocs() { Number };
-            MouseDown = new RelayCommand<object>(mouseDown);
-            MouseMove = new RelayCommand<MouseEventArgs>(mouseMove);
-            MouseUp = new RelayCommand<object>(mouseUp);
         }
 
         public override ListOfDocs ListOfDocs

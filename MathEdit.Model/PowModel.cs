@@ -12,9 +12,6 @@ namespace MathEdit.Model
     public class PowModel : Operation
     {
         public ICommand ChangeWidth { get; set; }
-        public ICommand MouseDown { get; set; }
-        public ICommand MouseMove { get; set; }
-        public ICommand MouseUp { get; set; }
         private ListOfDocs docs;
         private CustomFlowdoc number;
         private CustomFlowdoc power;
@@ -25,9 +22,6 @@ namespace MathEdit.Model
             Number = new CustomFlowdoc();
             Power = new CustomFlowdoc();
             docs = new ListOfDocs() { Number, Power };
-            MouseDown = new RelayCommand<object>(mouseDown);
-            MouseMove = new RelayCommand<MouseEventArgs>(mouseMove);
-            MouseUp = new RelayCommand<object>(mouseUp);
         }
 
         public override ListOfDocs ListOfDocs

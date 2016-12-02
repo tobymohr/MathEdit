@@ -49,13 +49,13 @@
         </RichTextBox>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDown">
-                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+                <command:EventToCommand Command="{Binding DataContext.MouseDown, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
             </i:EventTrigger>
             <i:EventTrigger EventName="MouseMove">
-                <command:EventToCommand Command="{Binding MouseMove}" PassEventArgsToCommand="True"/>
+                <command:EventToCommand Command="{Binding DataContext.MouseMove, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
             </i:EventTrigger>
             <i:EventTrigger EventName="MouseUp">
-                <i:InvokeCommandAction Command="{Binding MouseUp}"/>
+                <command:EventToCommand Command="{Binding DataContext.MouseUp, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
     </Grid>

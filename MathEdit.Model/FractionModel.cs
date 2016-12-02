@@ -14,9 +14,6 @@ namespace MathEdit.Model
         [XmlIgnore]
         public ICommand ChangeWidth { get; set; }
         [XmlIgnore]
-        public ICommand MouseDown { get; set; }
-        public ICommand MouseMove { get; set; }
-        public ICommand MouseUp { get; set; }
         private CustomFlowdoc numerator;
         private CustomFlowdoc denominator;
         private ListOfDocs docs;
@@ -28,9 +25,7 @@ namespace MathEdit.Model
             Denominator = new CustomFlowdoc();
             docs = new ListOfDocs() { Numerator, Denominator };
             ChangeWidth = new RelayCommand<object>(this.changeWidth);
-            MouseDown = new RelayCommand<object>(mouseDown);
-            MouseMove = new RelayCommand<MouseEventArgs>(mouseMove);
-            MouseUp = new RelayCommand<object>(mouseUp);
+            
         }
         public override ListOfDocs ListOfDocs
         {

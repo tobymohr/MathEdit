@@ -19,7 +19,7 @@ namespace MathEdit.Model
     {
 
 
-        private bool moving = false;
+        public bool moving = false;
         protected double width;
         protected double x = 100;
         protected double y = 100;
@@ -29,30 +29,6 @@ namespace MathEdit.Model
         public double X { get { return x; } set { this.SetProperty(ref x, value); } }
         public double Y { get { return y; } set { this.SetProperty(ref y, value); } }
 
-        protected void mouseDown(Object sender)
-        {
-            moving = true;
-        }
-        protected void mouseMove(Object o)
-        {
-            if (moving)
-            {
-                var args = (MouseEventArgs) o;
-                var shapeVisualElement = (FrameworkElement) args.MouseDevice.Target;
-                var canvas = FindParentOfType<Canvas>(shapeVisualElement);
-                var mp = Mouse.GetPosition(canvas);
-                X = X + (mp.X - X)-33; //Hard coded fix, real bad TODO FIX
-                Y = Y + (mp.Y - Y)-23; //Hard coded fix, real bad TODO FIX
-            }
-        }
-        private static T FindParentOfType<T>(DependencyObject o)
-        {
-            dynamic parent = VisualTreeHelper.GetParent(o);
-            return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
-        }
-        protected void mouseUp(Object sender)
-        {
-            moving = false;
-        }
+        
     }
 }
