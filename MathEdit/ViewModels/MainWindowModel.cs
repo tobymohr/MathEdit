@@ -329,10 +329,9 @@ namespace MathEdit.ViewModels
         #region Services
         public void openDoc(object sender)
         {
+            formulas = new ObservableCollection<Operation>();
             DocumentHelper helper = new DocumentHelper();
             ObservableCollection<Operation> tempformulas = helper.openFile();
-
-
             foreach(Operation o in tempformulas)
             {
                 addFormula(o);
