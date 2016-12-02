@@ -51,6 +51,7 @@ namespace MathEdit.Model
         {
             get
             {
+                return width;
                 double calcedWidth = Number.GetFormattedText().WidthIncludingTrailingWhitespace + Power.GetFormattedText().WidthIncludingTrailingWhitespace + 30;
                 return calcedWidth;
             }

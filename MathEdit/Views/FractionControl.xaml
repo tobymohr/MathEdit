@@ -6,17 +6,24 @@
              xmlns:local="clr-namespace:MathEdit"
              xmlns:h="clr-namespace:MathEdit.Helpers"
              xmlns:model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              MinHeight="10"
-             Width="{Binding Width}">
-
+             mc:Ignorable="d"
+             Width="{Binding Width}" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}">
+    
     <Grid x:Name="TrackSurface" Background="White" MinWidth="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Numerator, Mode=TwoWay}" x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
+        
+        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Numerator, Mode=TwoWay}" x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding ChangeWidth, Mode=OneWay}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <FlowDocument>
                 <Paragraph>
                     <Run Text=" "/>
@@ -40,6 +47,16 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDown">
+                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseMove">
+                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseUp">
+                <i:InvokeCommandAction Command="{Binding MouseDown}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </Grid>
 </UserControl>
