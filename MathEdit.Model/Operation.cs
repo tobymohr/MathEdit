@@ -32,7 +32,6 @@ namespace MathEdit.Model
         protected void mouseDown(Object sender)
         {
             moving = true;
-            Console.WriteLine("Down");
         }
         protected void mouseMove(Object o)
         {
@@ -42,8 +41,8 @@ namespace MathEdit.Model
                 var shapeVisualElement = (FrameworkElement) args.MouseDevice.Target;
                 var canvas = FindParentOfType<Canvas>(shapeVisualElement);
                 var mp = Mouse.GetPosition(canvas);
-                X = X + (mp.X - X)-33;
-                Y = Y + (mp.Y - Y)-23;
+                X = X + (mp.X - X)-33; //Hard coded fix, real bad TODO FIX
+                Y = Y + (mp.Y - Y)-23; //Hard coded fix, real bad TODO FIX
             }
         }
         private static T FindParentOfType<T>(DependencyObject o)
@@ -54,7 +53,6 @@ namespace MathEdit.Model
         protected void mouseUp(Object sender)
         {
             moving = false;
-            Console.WriteLine("Up");
         }
 
 
