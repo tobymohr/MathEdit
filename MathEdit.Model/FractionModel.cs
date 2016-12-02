@@ -10,8 +10,9 @@ namespace MathEdit.Model
     [Serializable]
     public class FractionModel : Operation
     {
-        private FlowDocument numerator;
-        private FlowDocument denominator;
+        private CustomFlowdoc numerator;
+        private CustomFlowdoc denominator;
+        private ListOfDocs docs;
         
         public FractionModel()
         {
@@ -21,25 +22,38 @@ namespace MathEdit.Model
         public FractionModel(string id)
         {
             Width = 70;
-            Numerator = new FlowDocument();
-            Denominator = new FlowDocument();
+            Numerator = new CustomFlowdoc();
+            Denominator = new CustomFlowdoc();
+            docs = new ListOfDocs() { Numerator, Denominator };
         }
 
-        public FlowDocument Numerator
+        public override ListOfDocs ListOfDocs
+        {
+            get
+            {
+                return docs;
+            }
+
+            set
+            {
+                docs = value;
+            }
+        }
+        [XmlIgnore]
+        public CustomFlowdoc Numerator
         {
             get { return numerator; }
             set { this.SetProperty(ref numerator, value); }
         }
 
-        public FlowDocument Denominator
+        [XmlIgnore]
+        public CustomFlowdoc Denominator
         {
             get { return denominator; }
             set { this.SetProperty(ref denominator, value); }
         }
 
 
-//        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
-        //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
         
         public override double Width
         {
@@ -55,9 +69,5 @@ namespace MathEdit.Model
                 this.SetProperty(ref width, value);
             }
         }
-
-       
-
-
     }
 }

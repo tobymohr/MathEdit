@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -44,6 +45,7 @@ namespace MathEdit.ViewModels
         public bool isSaving { get; set; }
         public RichTextBox parentTb { get; set; }
         public int rtbCount { get; set; }
+        byte[] BinaryFlowDocument;
         public double minWidth { get; set; }
         public MainWindow focusedObj;
         private string fontSize;
@@ -60,9 +62,8 @@ namespace MathEdit.ViewModels
         public MainWindowModel()
         {
             formulas = new ObservableCollection<Operation>() { };
-            //this.SaveCommand = new RelayCommand<object>(this.saveDoc);
-            //this.OpenCommand = new RelayCommand<object>(this.openDoc);
-            //this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
+            this.SaveCommand = new RelayCommand<object>(this.saveDoc);
+            this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
@@ -336,58 +337,78 @@ namespace MathEdit.ViewModels
         //    using (MemoryStream stream = new MemoryStream())
         //    {
         //        MainFlowDocument = helper.openFile();
-                
+
         //    }
         //}
 
-        //private void saveDoc(object sender)
-        //{
-        //    MainFlowDocument = sender as EnabledFlowDocument;
-        //    serializeDocument(MainFlowDocument, false);
-        //}
+        private void saveDoc(object sender)
+        {
+            SerializeObjectToXML(formulas, false);
+        }
 
-        //private void saveAsDoc(object sender)
-        //{
-        //    MainFlowDocument = sender as EnabledFlowDocument;
-        //    serializeDocument(MainFlowDocument, true);
-        //}
+        private void saveAsDoc(object sender)
+        {
+            SerializeObjectToXML(formulas, true);
+        }
 
-        //private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
-        //{
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-        //        var xmlSerializer = new XmlSerializer(docs.GetType());
-        //        var stringBuilder = new StringBuilder();
-        //        var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
-        //        xmlSerializer.Serialize(xmlTextWriter, docs);
-        //        var finalXml = stringBuilder.ToString();
-        //        BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-        //    }
+        public static byte[] ReadFully(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
 
-        //    if (isSaveAsCaller)
-        //        {
-        //            var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-        //            command.Execute(BinaryFlowDocument);
-        //        }
-        //        else
-        //        {
-        //            var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-        //            command.Execute(BinaryFlowDocument);
-        //        }
-        //}
+        private void SerializeObjectToXML<T>(T item , bool isSaveAsCaller)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                var xmlSerializer = new XmlSerializer(item.GetType());
+                var stringBuilder = new StringBuilder();
+                var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
+                xmlSerializer.Serialize(xmlTextWriter, item);
+                var finalXml = stringBuilder.ToString();
+                BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
+            }
 
-        //private void saveAsync(object sender)
-        //{
-        //    DocumentHelper helper = new DocumentHelper();
-        //    helper.saveDoc(BinaryFlowDocument, fileName);
-        //}
+            if (isSaveAsCaller)
+            {
+                var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
+            else
+            {
+                var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
+        }
 
-        //private void saveAsAsync(object sender)
-        //{
-        //    DocumentHelper helper = new DocumentHelper();
-        //    helper.saveAsDoc(BinaryFlowDocument);
-        //}
+        public static void SerializeObjectToXML<T>(T item, string FilePath)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(T));
+            using (StreamWriter wr = new StreamWriter(FilePath))
+            {
+                xs.Serialize(wr, item);
+            }
+        }
+
+        private void saveAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDoc(BinaryFlowDocument, fileName);
+        }
+
+        private void saveAsAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveAsDoc(BinaryFlowDocument);
+        }
         #endregion
 
 
