@@ -23,7 +23,7 @@ namespace MathEdit.Model
         {
             Width = 70;
             ChangeWidth = new RelayCommand<object>(this.changeWidth);
-            MouseDown = new RelayCommand<object>(mouseDown);
+            
         }
        
 
@@ -43,12 +43,12 @@ namespace MathEdit.Model
         public string ContentBottom
         {
             get
-            {
+        {
                 return denominator;
-            }
+        }
 
             set
-            {
+        {
                 this.SetProperty(ref denominator, value);
             }
         }

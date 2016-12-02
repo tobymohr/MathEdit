@@ -6,7 +6,9 @@
              xmlns:model="clr-namespace:MathEdit.Model;assembly=MathEdit.Model"
              xmlns:h="clr-namespace:MathEdit.Helpers"
              mc:Ignorable="d"
-             Width="{Binding Width}">
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             Width="{Binding Width}" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}">
 
 
     
@@ -40,5 +42,16 @@
 
         <TextBox Text="{Binding Number, Mode=TwoWay}" x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" MinHeight="10"  MinWidth="20">
         </TextBox>
+            <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDown">
+                <command:EventToCommand Command="{Binding DataContext.MouseDown, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseMove">
+                <command:EventToCommand Command="{Binding DataContext.MouseMove, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseUp">
+                <command:EventToCommand Command="{Binding DataContext.MouseUp, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>   
     </Grid>
 </UserControl>

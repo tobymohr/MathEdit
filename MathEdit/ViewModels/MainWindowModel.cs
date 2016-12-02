@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -40,6 +41,9 @@ namespace MathEdit.ViewModels
 
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
+        public ICommand MouseDown { get; set; }
+        public ICommand MouseMove { get; set; }
+        public ICommand MouseUp { get; set; }
 
         public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
@@ -79,6 +83,9 @@ namespace MathEdit.ViewModels
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.NewDocCommand = new RelayCommand<object>(this.createNewDocument);
+            this.MouseDown = new RelayCommand<MouseButtonEventArgs>(mouseDown);
+            this.MouseMove = new RelayCommand<MouseEventArgs>(mouseMove);
+            this.MouseUp = new RelayCommand<MouseButtonEventArgs>(mouseUp);
 
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
@@ -410,6 +417,54 @@ namespace MathEdit.ViewModels
         }
         #endregion
 
+        #region ModelCommands
+
+
+        protected void mouseDown(Object sender)
+        {
+            var args = (MouseButtonEventArgs) sender;
+            var operation = TargetOperation(args);
+            operation.moving = true;
+        }
+        protected void mouseMove(Object sender)
+        {
+            try
+            {
+                var args = (MouseEventArgs)sender;
+                var operation = TargetOperation(args);
+                if (operation.moving)
+                {
+                    var shapeVisualElement = (FrameworkElement)args.MouseDevice.Target;
+                    var canvas = FindParentOfType<Canvas>(shapeVisualElement);
+                    var mp = Mouse.GetPosition(canvas);
+                    operation.X = operation.X + (mp.X - operation.X) - 33; //Hard coded fix, real bad TODO FIX
+                    operation.Y = operation.Y + (mp.Y - operation.Y) - 23; //Hard coded fix, real bad TODO FIX
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+        private static T FindParentOfType<T>(DependencyObject o)
+        {
+            dynamic parent = VisualTreeHelper.GetParent(o);
+            return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
+        }
+        protected void mouseUp(Object sender)
+        {
+            var args = (MouseButtonEventArgs)sender;
+            var operation = TargetOperation(args);
+            operation.moving = false;
+        }
+        private Operation TargetOperation(MouseEventArgs e)
+        {
+            // Here the visual element that the mouse is captured by is retrieved.
+            var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            // From the shapes visual element, the Shape object which is the DataContext is retrieved.
+            return (Operation)shapeVisualElement.DataContext;
+        }
+        #endregion
 
     }
 }

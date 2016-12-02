@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
@@ -10,6 +11,8 @@ namespace MathEdit.Model
     [Serializable]
     public class SquareModel : Operation
     {
+        [XmlIgnore]
+        public ICommand ChangeWidth { get; set; }
         private string number;
 
         public SquareModel()

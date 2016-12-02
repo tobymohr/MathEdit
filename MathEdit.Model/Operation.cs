@@ -5,6 +5,9 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using MathEdit.ModelHelpers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MathEdit.Model
 {
@@ -14,25 +17,15 @@ namespace MathEdit.Model
     [Serializable]
     public abstract class Operation : NotifyBase
     {
+        public bool moving = false;
         protected double width;
-        protected int x = 100;
-        protected int y = 100;
+        protected double x = 100;
+        protected double y = 100;
 
         abstract public double Width { get; set; }
-        public int X { get { return x; } set { this.SetProperty(ref x, value); } }
-        public int Y { get { return y; } set { this.SetProperty(ref y, value); } }
+        public double X { get { return x; } set { this.SetProperty(ref x, value); } }
+        public double Y { get { return y; } set { this.SetProperty(ref y, value); } }
 
-        protected void mouseDown(Object sender)
-        {
-            Console.WriteLine("Down");
-        }
-        protected void mouseMove(Object sender)
-        {
-            Console.WriteLine("Move");
-        }
-        protected void mouseUp(Object sender)
-        {
-            Console.WriteLine("Up");
-        }
+
     }
 }

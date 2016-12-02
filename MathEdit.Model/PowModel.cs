@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
@@ -12,7 +13,8 @@ namespace MathEdit.Model
     {
         private string number;
         private string power;
-
+        [XmlIgnore]
+        public ICommand ChangeWidth { get; set; }
         public PowModel()
         {
             Width = 70;
