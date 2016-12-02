@@ -54,9 +54,5 @@ namespace MathEdit.Model
         {
             moving = false;
         }
-
-
     }
-
-    
 }

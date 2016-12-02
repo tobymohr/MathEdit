@@ -23,6 +23,8 @@
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"></KeyBinding>
+        <KeyBinding Key="Y" Modifiers="Control" Command="{Binding RedoCommand}"></KeyBinding>
         <KeyBinding Key="D" Modifiers="Alt" Command="{Binding CreateSqrtCommand}"></KeyBinding>
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
@@ -30,7 +32,7 @@
     <DockPanel x:Name="menuPanel">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" InputGestureText="Ctrl+N" />
+                <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewDocCommand}" />
                 <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="{Binding OpenCommand}"/>
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>

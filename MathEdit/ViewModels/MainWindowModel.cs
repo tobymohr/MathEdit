@@ -26,6 +26,7 @@ namespace MathEdit.ViewModels
         public ICommand CreateSqrtCommand { get; }
         public ICommand OpenCommand { get; }
         public ICommand SaveAsCommand { get; }
+        public ICommand NewDocCommand { get; }
         public ICommand OpenHotkeysCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand CreateNewRTBCommand { get; }
@@ -51,7 +52,6 @@ namespace MathEdit.ViewModels
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
-        private Operation latestOperation;
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
@@ -78,7 +78,7 @@ namespace MathEdit.ViewModels
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
-            
+            this.NewDocCommand = new RelayCommand<object>(this.createNewDocument);
 
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
@@ -198,8 +198,10 @@ namespace MathEdit.ViewModels
         {
             undoRedoController.Redo();
         }
-
-        
+        public void createNewDocument(object sender)
+        {
+            formulas.Clear();
+        }
 
         #endregion
 
@@ -329,10 +331,9 @@ namespace MathEdit.ViewModels
         #region Services
         public void openDoc(object sender)
         {
+            formulas.Clear();
             DocumentHelper helper = new DocumentHelper();
             ObservableCollection<Operation> tempformulas = helper.openFile();
-
-
             foreach(Operation o in tempformulas)
             {
                 addFormula(o);
