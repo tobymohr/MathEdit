@@ -14,9 +14,6 @@ namespace MathEdit.Model
     [Serializable]
     public abstract class Operation : NotifyBase
     {
-        
-        
-
         protected double width;
         protected int x = 100;
         protected int y = 100;
@@ -38,9 +35,5 @@ namespace MathEdit.Model
         {
             Console.WriteLine("Up");
         }
-
-
     }
-
-    
 }

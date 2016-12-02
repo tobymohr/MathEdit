@@ -11,7 +11,9 @@ namespace MathEdit.Model
     [Serializable]
     public class FractionModel : Operation
     {
+        [XmlIgnore]
         public ICommand ChangeWidth { get; set; }
+        [XmlIgnore]
         public ICommand MouseDown { get; set; }
         private CustomFlowdoc numerator;
         private CustomFlowdoc denominator;
