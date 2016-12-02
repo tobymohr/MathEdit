@@ -16,15 +16,10 @@ namespace MathEdit.Model
 
         public PowModel()
         {
-
-        }
-
-        public PowModel(string id)
-        {
             Width = 70;
             Number = new CustomFlowdoc();
             Power = new CustomFlowdoc();
-            docs = new ListOfDocs() { Number , Power};
+            docs = new ListOfDocs() { Number, Power };
         }
 
         public override ListOfDocs ListOfDocs

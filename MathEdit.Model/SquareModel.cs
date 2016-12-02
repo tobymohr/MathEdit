@@ -15,16 +15,10 @@ namespace MathEdit.Model
 
         public SquareModel()
         {
-
-        }
-
-        public SquareModel(string id)
-        {
             Width = 70;
             Number = new CustomFlowdoc();
             docs = new ListOfDocs() { Number };
         }
-        
 
         public override ListOfDocs ListOfDocs
         {

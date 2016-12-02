@@ -1,8 +1,10 @@
 ﻿using MathEdit.Model;
 using Microsoft.Win32;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace MathEdit.Helpers
 {
@@ -47,32 +49,30 @@ namespace MathEdit.Helpers
             }
         }
 
-        //public EnabledFlowDocument openFile()
-        //{
-        //    EnabledFlowDocument doc = new EnabledFlowDocument();
-        //    ListOfDocs docs = new ListOfDocs { doc };
-        //    OpenFileDialog openDialog = new OpenFileDialog();
-        //    openDialog.DefaultExt = ".xml";
-        //    openDialog.Filter = "XML Files|*.xml";
-        //    Nullable<bool> result = openDialog.ShowDialog();
-        //    if (result == true)
-        //    {
-                
-        //        byte[] content = File.ReadAllBytes(openDialog.FileName);
+        public ObservableCollection<Operation> openFile()
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.DefaultExt = ".xml";
+            openDialog.Filter = "XML Files|*.xml";
+            Nullable<bool> result = openDialog.ShowDialog();
+            ObservableCollection<Operation> formulas = new ObservableCollection<Operation>();
+            if (result == true)
+            {
 
-        //        using (var stream = new MemoryStream(content))
-        //        {
-        //            docs.ReadXml(XmlReader.Create(stream));
-        //        }
-        //        return doc;
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
+                XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Operation>));
+                using (StreamReader rd = new StreamReader(openDialog.FileName))
+                {
+                    formulas = xs.Deserialize(rd) as ObservableCollection<Operation>;
+                }
+                return formulas;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
-       
+
     }
 
 }

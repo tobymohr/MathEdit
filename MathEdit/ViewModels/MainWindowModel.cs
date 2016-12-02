@@ -64,6 +64,7 @@ namespace MathEdit.ViewModels
             formulas = new ObservableCollection<Operation>() { };
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
+            this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
@@ -204,22 +205,19 @@ namespace MathEdit.ViewModels
 
         #region Menu Item calls
 
-
-       
-
         private void createNewFractionControl()
         {
-            addFormula(new FractionModel(""));
+            addFormula(new FractionModel());
         }
 
         private void createNewPowControl()
         {
-            addFormula(new PowModel(""));
+            addFormula(new PowModel());
         }
 
         private void createNewSqrtControl()
         {
-            addFormula(new SquareModel(""));
+            addFormula(new SquareModel());
         }
 
         private void addFormula(Operation formula)
@@ -329,17 +327,17 @@ namespace MathEdit.ViewModels
         #endregion
 
         #region Services
-        //public void openDoc(object sender)
-        //{
-        //    // needs work
-        //    DocumentHelper helper = new DocumentHelper();
+        public void openDoc(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            ObservableCollection<Operation> tempformulas = helper.openFile();
 
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        MainFlowDocument = helper.openFile();
 
-        //    }
-        //}
+            foreach(Operation o in tempformulas)
+            {
+                addFormula(o);
+            }
+        }
 
         private void saveDoc(object sender)
         {

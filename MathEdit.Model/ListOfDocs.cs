@@ -25,9 +25,9 @@ namespace MathEdit.Model
             while (reader.IsStartElement("CustomFlowdoc"))
             {
                 CustomFlowdoc doc = new CustomFlowdoc() ;
+                reader.ReadStartElement("CustomFlowdoc");
                 string text = reader.GetAttribute("Data");
                 this.Add(doc);
-                reader.ReadEndElement();
             }
             reader.ReadEndElement();
         }

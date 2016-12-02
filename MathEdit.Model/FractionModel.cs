@@ -16,17 +16,11 @@ namespace MathEdit.Model
         
         public FractionModel()
         {
-            
-        }
-
-        public FractionModel(string id)
-        {
             Width = 70;
             Numerator = new CustomFlowdoc();
             Denominator = new CustomFlowdoc();
             docs = new ListOfDocs() { Numerator, Denominator };
         }
-
         public override ListOfDocs ListOfDocs
         {
             get
