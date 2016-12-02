@@ -37,11 +37,12 @@ namespace MathEdit.Helpers
         public void Undo()
         {
             Console.WriteLine("UNDO");
-            if (!undoStack.Any()) throw new InvalidOperationException();
-           
-            var command = undoStack.Pop();
-            redoStack.Push(command);
-            command.UnExecute();
+            if (undoStack.Any())
+            {
+                var command = undoStack.Pop();
+                redoStack.Push(command);
+                command.UnExecute();
+            }
         }
 
        
@@ -50,10 +51,13 @@ namespace MathEdit.Helpers
         public void Redo()
         {
             Console.WriteLine("REDO");
-            if (!redoStack.Any()) throw new InvalidOperationException();
-            var command = redoStack.Pop();
-            undoStack.Push(command);
-            command.Execute();
+            if (redoStack.Any())
+            {
+                var command = redoStack.Pop();
+                undoStack.Push(command);
+                command.Execute();
+            } 
+    
         }
 
         #endregion
