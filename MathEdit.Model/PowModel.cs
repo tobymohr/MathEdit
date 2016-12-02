@@ -10,38 +10,20 @@ namespace MathEdit.Model
     [Serializable]
     public class PowModel : Operation
     {
-        private ListOfDocs docs;
-        private CustomFlowdoc number;
-        private CustomFlowdoc power;
+        private string number;
+        private string power;
 
         public PowModel()
         {
             Width = 70;
-            Number = new CustomFlowdoc();
-            Power = new CustomFlowdoc();
-            docs = new ListOfDocs() { Number, Power };
         }
 
-        public override ListOfDocs ListOfDocs
-        {
-            get
-            {
-                return docs;
-            }
-
-            set
-            {
-                docs = value;
-            }
-        }
-        [XmlIgnore]
-        public CustomFlowdoc Number
+        public string Number
         {
             get { return number; }
             set { this.SetProperty(ref number, value); }
         }
-        [XmlIgnore]
-        public CustomFlowdoc Power
+        public string Power
         {
             get { return power; }
             set { this.SetProperty(ref power, value); }
@@ -52,7 +34,7 @@ namespace MathEdit.Model
             get
             {
                 return width;
-                double calcedWidth = Number.GetFormattedText().WidthIncludingTrailingWhitespace + Power.GetFormattedText().WidthIncludingTrailingWhitespace + 30;
+                double calcedWidth = 80;
                 return calcedWidth;
             }
 
@@ -61,7 +43,5 @@ namespace MathEdit.Model
                 this.SetProperty(ref width, value);
             }
         }
-
-
     }
 }

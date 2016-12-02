@@ -44,7 +44,7 @@ namespace MathEdit.ViewModels
         public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
-        public RichTextBox parentTb { get; set; }
+        public TextBox parentTb { get; set; }
         public int rtbCount { get; set; }
         byte[] BinaryFlowDocument;
         public double minWidth { get; set; }
@@ -229,8 +229,8 @@ namespace MathEdit.ViewModels
 
         private void changeFontSize(object sender)
         {
-            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-            TextSelection text = parentTb.Selection;
+            parentTb = (TextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = null;
             parentTb.Focus();
             double size;
             if (Double.TryParse(fontSize, out size))
@@ -243,8 +243,8 @@ namespace MathEdit.ViewModels
         private void textBoxMain_SelectionChanged(object sender)
         {
             //Changes combobox to
-            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-            TextSelection text = parentTb.Selection;
+            parentTb = (TextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = null;
             object trsize = text.GetPropertyValue(RichTextBox.FontSizeProperty);
             int fs;
             if (Int32.TryParse(trsize.ToString(), out fs))
@@ -294,9 +294,9 @@ namespace MathEdit.ViewModels
 
         private void bold_Click(object sender)
         {
-            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-            TextSelection text = parentTb.Selection;
+            parentTb = (TextBox)FocusManager.GetFocusedElement(focusedObj);
             parentTb.Focus();
+            TextSelection text = null;
             if (IsBoldChecked)
             {
                 text.ApplyPropertyValue(RichTextBox.FontWeightProperty, FontWeights.UltraBold);
@@ -309,8 +309,8 @@ namespace MathEdit.ViewModels
 
         private void italic_Click(object sender)
         {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-                TextSelection text = parentTb.Selection;
+                parentTb = (TextBox)FocusManager.GetFocusedElement(focusedObj);
+                TextSelection text = null;
                 parentTb.Focus();
                 if (IsItalicChecked)
                 {

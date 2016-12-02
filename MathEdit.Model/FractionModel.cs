@@ -1,9 +1,11 @@
 ﻿using MathEdit.ModelHelpers;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Xml.Serialization;
 
 namespace MathEdit.Model
@@ -15,47 +17,42 @@ namespace MathEdit.Model
         public ICommand ChangeWidth { get; set; }
         [XmlIgnore]
         public ICommand MouseDown { get; set; }
-        private CustomFlowdoc numerator;
-        private CustomFlowdoc denominator;
-        private ListOfDocs docs;
+        private string numerator, denominator;
         
         public FractionModel()
         {
             Width = 70;
-            Numerator = new CustomFlowdoc();
-            Denominator = new CustomFlowdoc();
-            docs = new ListOfDocs() { Numerator, Denominator };
             ChangeWidth = new RelayCommand<object>(this.changeWidth);
             MouseDown = new RelayCommand<object>(mouseDown);
         }
-        public override ListOfDocs ListOfDocs
+       
+
+        public string ContentTop
         {
             get
             {
-                return docs;
+                return numerator;
             }
 
             set
             {
-                docs = value;
+                this.SetProperty(ref numerator, value);
             }
         }
-        [XmlIgnore]
-        public CustomFlowdoc Numerator
+
+        public string ContentBottom
         {
-            get { return numerator; }
-            set { this.SetProperty(ref numerator, value); }
+            get
+            {
+                return denominator;
+            }
+
+            set
+            {
+                this.SetProperty(ref denominator, value);
+            }
         }
 
-        [XmlIgnore]
-        public CustomFlowdoc Denominator
-        {
-            get { return denominator; }
-            set { this.SetProperty(ref denominator, value); }
-        }
-
-
-        
         public override double Width
         {
             get
@@ -71,12 +68,7 @@ namespace MathEdit.Model
 
         private void changeWidth(object sender)
         {
-            Console.WriteLine("luluulul");
-            Console.WriteLine(Numerator.GetFormattedText().Text);
-            Width = Math.Max(Numerator.GetFormattedText().WidthIncludingTrailingWhitespace,
-                    Denominator.GetFormattedText().WidthIncludingTrailingWhitespace) + 20;
+            Console.WriteLine("luluulul" );
         }
-
-
     }
 }

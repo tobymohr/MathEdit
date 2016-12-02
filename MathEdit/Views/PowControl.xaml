@@ -20,21 +20,10 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Power}" x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10" Grid.Row="0">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <TextBox Text="{Binding Number, Mode=TwoWay}" x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10" Grid.Row="0">
+        </TextBox>
 
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Number}" x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20" Grid.Column="0" Grid.Row="1">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <TextBox Text="{Binding Power, Mode=TwoWay}" x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20" Grid.Column="0" Grid.Row="1"></TextBox>
 
     </Grid>
 </UserControl>

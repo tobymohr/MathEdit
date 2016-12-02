@@ -17,19 +17,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Numerator, Mode=TwoWay}" x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+
+        <TextBox Text="{Binding ContentTop, Mode=TwoWay}" x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="TextChanged">
-                    <i:InvokeCommandAction Command="{Binding ChangeWidth, Mode=OneWay}"/>
+                <i:EventTrigger>
+                    <i:InvokeCommandAction Command="{Binding ChangeWidth}"></i:InvokeCommandAction>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=" "/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        </TextBox>
         <Path Stretch="Fill" Stroke="Black" StrokeThickness="1" Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Width="Auto"  HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Path.Data>
                 <PathGeometry>
@@ -40,13 +35,9 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Denominator, Mode=TwoWay}" x:Name="denumenatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0"  MinWidth="15" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=" "/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <TextBox Text="{Binding ContentBottom, Mode=TwoWay}"  x:Name="denumenatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0"  MinWidth="15" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
+           
+        </TextBox>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDown">
                 <i:InvokeCommandAction Command="{Binding MouseDown}"/>

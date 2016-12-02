@@ -10,31 +10,15 @@ namespace MathEdit.Model
     [Serializable]
     public class SquareModel : Operation
     {
-        private CustomFlowdoc number;
-        private ListOfDocs docs;
+        private string number;
 
         public SquareModel()
         {
             Width = 70;
-            Number = new CustomFlowdoc();
-            docs = new ListOfDocs() { Number };
         }
 
-        public override ListOfDocs ListOfDocs
-        {
-            get
-            {
-                return docs;
-            }
 
-            set
-            {
-                docs = value;
-            }
-        }
-
-        [XmlIgnore]
-        public CustomFlowdoc Number
+        public string Number
         {
             get { return number; }
             set { this.SetProperty(ref number, value); }
@@ -44,7 +28,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double calcedWidth = Number.GetFormattedText().WidthIncludingTrailingWhitespace + 30;
+                double calcedWidth = 40;
                 return calcedWidth;
             }
 
@@ -53,5 +37,6 @@ namespace MathEdit.Model
                 this.SetProperty(ref width, value);
             }
         }
+
     }
 }

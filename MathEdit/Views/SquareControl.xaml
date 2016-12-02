@@ -38,12 +38,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox h:RichTextBoxHelper.DocumentXaml="{Binding Number}" x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" MinHeight="10"  MinWidth="20">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <TextBox Text="{Binding Number, Mode=TwoWay}" x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" MinHeight="10"  MinWidth="20">
+        </TextBox>
     </Grid>
 </UserControl>
