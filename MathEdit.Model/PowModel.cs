@@ -3,43 +3,49 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Xml.Serialization;
 
 namespace MathEdit.Model
 {
     [Serializable]
     public class PowModel : Operation
     {
-
-        private FlowDocument number;
-        private FlowDocument power;
+        private ListOfDocs docs;
+        private CustomFlowdoc number;
+        private CustomFlowdoc power;
 
         public PowModel()
         {
-
-        }
-
-        public PowModel(string id)
-        {
             Width = 70;
-            Number = new FlowDocument();
-            Power = new FlowDocument();
+            Number = new CustomFlowdoc();
+            Power = new CustomFlowdoc();
+            docs = new ListOfDocs() { Number, Power };
         }
 
-        public FlowDocument Number
+        public override ListOfDocs ListOfDocs
+        {
+            get
+            {
+                return docs;
+            }
+
+            set
+            {
+                docs = value;
+            }
+        }
+        [XmlIgnore]
+        public CustomFlowdoc Number
         {
             get { return number; }
             set { this.SetProperty(ref number, value); }
         }
-
-        public FlowDocument Power
+        [XmlIgnore]
+        public CustomFlowdoc Power
         {
             get { return power; }
             set { this.SetProperty(ref power, value); }
         }
-
-
-        //        public double numenatorWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + 10; } }
-        //public double denumenatorWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + 10; } }
 
         public override double Width
         {
