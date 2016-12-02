@@ -36,8 +36,6 @@ namespace MathEdit.Model
             get
             {
                 return width;
-                double calcedWidth = 80;
-                return calcedWidth;
             }
 
             set
