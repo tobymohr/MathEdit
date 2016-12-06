@@ -15,7 +15,7 @@ namespace MathEdit.Views
         public PowModel model { get; set; }
         public PowControl()
         {
-            model = new PowModel();
+            model = new PowModel("");
             DataContext = model;
             InitializeComponent();
             pow.Document = model.ListOfEnabledDocs.ElementAt(0);

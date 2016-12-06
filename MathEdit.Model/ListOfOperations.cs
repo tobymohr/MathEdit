@@ -18,7 +18,7 @@ namespace MathEdit.Model
 
         public void ReadXml(XmlReader reader)
         {
-            reader.ReadStartElement("EnabledFlowDocument");
+           
             reader.ReadStartElement("ListOfOperations");
             while (reader.IsStartElement("Operation"))
             {
@@ -28,7 +28,6 @@ namespace MathEdit.Model
                 this.Add((Operation)serial.Deserialize(reader));
                 reader.ReadEndElement();
                 reader.ReadEndElement();
-
             }
         }
 

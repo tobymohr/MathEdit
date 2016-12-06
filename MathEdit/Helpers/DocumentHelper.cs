@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using MathEdit.Model;
 using System.Linq;
+using System.Text;
 
 namespace MathEdit.Helpers
 {
@@ -68,7 +69,8 @@ namespace MathEdit.Helpers
                     string text = reader.ReadToEnd();
                     var xmlSerializer = new XmlSerializer(typeof(ListOfEnabledDocs));
                     var xmlReader = XmlReader.Create(new StringReader(text));
-                    ListOfEnabledDocs docs = (ListOfEnabledDocs)xmlSerializer.Deserialize(xmlReader);
+                    ListOfEnabledDocs docs = new ListOfEnabledDocs();
+                    docs.ReadXml(xmlReader);
                     doc = docs.ElementAt(0);
 
                 }
