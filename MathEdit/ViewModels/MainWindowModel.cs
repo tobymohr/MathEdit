@@ -204,21 +204,19 @@ namespace MathEdit.ViewModels
         public void undoOperation(object sender)
         {
             //undoRedoController.Undo();
-            Uro uro = undoRedo.Undo();
-            if (uro!=null)
-            {
-                deleteOrRecreate(uro);
-            }
+            UndoRedoObject uro = undoRedo.Undo();
+            if (uro == null) return;
+            deleteOrRecreate(uro);
+            uro.Deleted = !uro.Deleted;
         }
 
         public void redoOperation(object sender)
         {
             //undoRedoController.Redo();
-            Uro uro = undoRedo.Redo();
-            if (uro != null)
-            {
-                deleteOrRecreate(uro);
-            }
+            UndoRedoObject uro = undoRedo.Redo();
+            if (uro == null) return;
+            deleteOrRecreate(uro);
+            uro.Deleted = !uro.Deleted;
         }
 
         private void addFormula(UserControl uc, string type)
@@ -228,12 +226,24 @@ namespace MathEdit.ViewModels
             undoRedo.Add(uc,false);
         }
 
-        private void deleteOrRecreate(Uro uro)
+        private void deleteOrRecreate(UndoRedoObject uro)
         {
             if (uro.Deleted)
             {
                 //recreate
+                if (uro.Uc.GetType() == typeof(FractionControl))
+                {
+                    FractionControl fControl = (FractionControl)uro.Uc;
+                    fControl.model.getParent().childrenOperations.Add(fControl.model);
+                    Paragraph par = new Paragraph();
+                    par.Inlines.Add(fControl);
+                    //Mangler bestemt position
+                    fControl.model.getParent().Blocks.Add(par);
+                }
+                else if (uro.Uc.GetType() == typeof(PowControl))
+                {
 
+                }
             }
             else
             {
@@ -241,7 +251,8 @@ namespace MathEdit.ViewModels
                 if (uro.Uc.GetType() == typeof(FractionControl))
                 {
                     FractionControl fControl = (FractionControl)uro.Uc;
-                    fControl.model.Parent.
+                    fControl.model.getParent().childrenOperations.Remove(fControl.model);
+                    //Dette fjerner the child fra parents liste, men ikke UserControlen fra flowdokumentet
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
                 {

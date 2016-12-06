@@ -11,7 +11,7 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
-        public EnabledFlowDocument Parent { get; set; }
+        private EnabledFlowDocument parent;
         public FractionModel()
         {
 
@@ -19,9 +19,14 @@ namespace MathEdit.Model
 
         public FractionModel(EnabledFlowDocument parent)
         {
-            Parent = parent;
+            this.parent = parent;
             outerWidth = 70;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+        }
+
+        public EnabledFlowDocument getParent()
+        {
+            return parent;
         }
         public Thickness numborder
         {

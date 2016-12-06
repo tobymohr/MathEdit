@@ -9,12 +9,12 @@ namespace MathEdit.Helpers
 {
     //The undoRedoObject for recreating/delete
     //UserControls by the UndoRedo class
-    class Uro
+    class UndoRedoObject
     {
         public UserControl Uc { get; set; }
         public bool Deleted { get; set; }
 
-        public Uro(UserControl uc, bool delete)
+        public UndoRedoObject(UserControl uc, bool delete)
         {
             Uc = uc;
             Deleted = delete;

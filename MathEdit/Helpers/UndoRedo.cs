@@ -11,8 +11,8 @@ namespace MathEdit.Helpers
     class UndoRedo
     {
         #region Fields
-        private Stack<Uro> undoStack = new Stack<Uro>();
-        private Stack<Uro> redoStack = new Stack<Uro>();
+        private Stack<UndoRedoObject> undoStack = new Stack<UndoRedoObject>();
+        private Stack<UndoRedoObject> redoStack = new Stack<UndoRedoObject>();
         #endregion
 
         public UndoRedo()
@@ -23,43 +23,23 @@ namespace MathEdit.Helpers
         public void Add(UserControl uc, bool delete)
         {
             redoStack.Clear();
-            undoStack.Push(new Uro(uc,delete));
+            undoStack.Push(new UndoRedoObject(uc,delete));
         }
 
-        public Uro Undo()
+        public UndoRedoObject Undo()
         {
             if (!undoStack.Any()) return null;
             var uro = undoStack.Pop();
-            if (uro.Deleted)
-            {
-                uro.Deleted = false;
-                redoStack.Push(uro);
-                return uro;
-            }
-            else
-            {
-                uro.Deleted = true;
-                redoStack.Push(uro);
-                return uro;
-            }
+            redoStack.Push(uro);
+            return uro;
         }
 
-        public Uro Redo()
+        public UndoRedoObject Redo()
         {
             if (!redoStack.Any()) return null;
             var uro = redoStack.Pop();
-            if (uro.Deleted)
-            {
-                uro.Deleted = false;
-                redoStack.Push(uro);
-                return uro;
-            }
-            else
-            {
-                uro.Deleted = true;
-                redoStack.Push(uro);
-                return uro;
-            }
+            undoStack.Push(uro);
+            return uro;
         }
 
     }
