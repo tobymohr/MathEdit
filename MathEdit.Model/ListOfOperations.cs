@@ -27,8 +27,13 @@ namespace MathEdit.Model
                 reader.ReadStartElement("Operation");
                 this.Add((Operation)serial.Deserialize(reader));
                 reader.ReadEndElement();
+                
+            }
+            if(this.Count >0)
+            {
                 reader.ReadEndElement();
             }
+          
         }
 
         public void WriteXml(XmlWriter writer)
