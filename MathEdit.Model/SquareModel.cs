@@ -15,9 +15,14 @@ namespace MathEdit.Model
 
         public SquareModel()
         {
+ 
+        }
+
+        public SquareModel(string id)
+        {
             t = new Thickness(1);
             outerWidth = minWidth;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }
 
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
@@ -37,28 +42,9 @@ namespace MathEdit.Model
             }
         }
 
-        public Thickness numberborder
-        {
-            get
-            {
-                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
-                if (length <= 0)
-                {
-                    t= new Thickness(1);
-                }
-                else
-                {
-                    t = new Thickness(0);
-                }
-                return t;
-            }
-            set
-            {
-                t = value;
-            }
-        }
 
-        public override ListOfEnabledDocs boxes
+
+        public override ListOfEnabledDocs ListOfEnabledDocs
         {
             get
             {

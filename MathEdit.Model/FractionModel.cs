@@ -10,16 +10,16 @@ namespace MathEdit.Model
     public class FractionModel : Operation
     {
         private double _outerWidth;
-        private  ListOfEnabledDocs _boxes;
+        private ListOfEnabledDocs _boxes;
         public FractionModel()
         {
-            
+
         }
 
         public FractionModel(string id)
         {
             outerWidth = 70;
-            boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
         public Thickness numborder
         {
@@ -70,7 +70,7 @@ namespace MathEdit.Model
                 this._outerWidth = value;
             }
         }
-        public override ListOfEnabledDocs boxes
+        public override ListOfEnabledDocs ListOfEnabledDocs
         {
             get
             {

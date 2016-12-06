@@ -13,19 +13,17 @@ namespace MathEdit.Views
         public SquareModel model { get; set; }
         public SquareControl()
         {
-            model = new SquareModel();
+            model = new SquareModel("");
             DataContext = model;
             InitializeComponent();
-            numberBox.Document = model.boxes.ElementAt(0);
+            numberBox.Document = model.ListOfEnabledDocs.ElementAt(0);
             numberBox.TextChanged += onChange;
         }
 
         public void onChange(object sender, RoutedEventArgs e)
         {
             numberBox.Width = model.numberWidth + 20;
-            numberBox.BorderThickness = model.numberborder;
             TrackSurface.Width = model.outerWidth;
         }
-
     }
 }

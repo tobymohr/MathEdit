@@ -82,7 +82,7 @@ namespace MathEdit.ModelHelpers
             return output;
         }
 
-        private static string GetText(FlowDocument doc)
+        public static string GetText(FlowDocument doc)
         {
             StringBuilder sb = new StringBuilder();
 

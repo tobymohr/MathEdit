@@ -35,7 +35,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5" BorderThickness="{Binding numberborder}" MinHeight="10"  MinWidth="20">
+        <RichTextBox x:Name="numberBox" Grid.Column="1" Grid.Row="0" Margin="5,10,5,5"  MinHeight="10"  MinWidth="20">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

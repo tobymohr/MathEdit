@@ -28,7 +28,7 @@ namespace MathEdit.ViewModels
         public ICommand OpenHotkeysCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand CreateNewRTBCommand { get; }
- 
+
         public ICommand ToggleBold { get; }
         public ICommand ToggleItalic { get; }
         public ICommand ChangeFontSize { get; }
@@ -100,7 +100,7 @@ namespace MathEdit.ViewModels
         public EnabledFlowDocument MainFlowDocument
         {
             get { return documentModel.mainFlowDocument; }
-            set { this.SetProperty(ref mainFlowDocument,  value); }
+            set { this.SetProperty(ref mainFlowDocument, value); }
         }
 
         public byte[] BinaryFlowDocument
@@ -182,12 +182,12 @@ namespace MathEdit.ViewModels
 
         private void scrollIn(object sender)
         {
-            if(ZoomValue < 10)
+            if (ZoomValue < 10)
             {
                 ZoomValue = ZoomValue + 0.5;
 
             }
-            
+
         }
 
         private void scrollOut(object sender)
@@ -226,7 +226,7 @@ namespace MathEdit.ViewModels
 
         private Paragraph getCorrectParagraph(RichTextBox parentTb)
         {
-           
+
             FlowDocument parentFd;
             Paragraph para = null;
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
@@ -301,7 +301,6 @@ namespace MathEdit.ViewModels
             {
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, fontSize);
             }
-
         }
 
         private void textBoxMain_SelectionChanged(object sender)
@@ -373,17 +372,17 @@ namespace MathEdit.ViewModels
 
         private void italic_Click(object sender)
         {
-                parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
-                TextSelection text = parentTb.Selection;
-                parentTb.Focus();
-                if (IsItalicChecked)
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
-                }
-                else
-                {
-                    text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
-                }
+            parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
+            TextSelection text = parentTb.Selection;
+            parentTb.Focus();
+            if (IsItalicChecked)
+            {
+                text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Oblique);
+            }
+            else
+            {
+                text.ApplyPropertyValue(RichTextBox.FontStyleProperty, FontStyles.Normal);
+            }
         }
 
         private void openSettings(object sender)
@@ -397,11 +396,71 @@ namespace MathEdit.ViewModels
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-
+            EnabledFlowDocument newDoc = null;
             using (MemoryStream stream = new MemoryStream())
             {
-                MainFlowDocument = helper.openFile();
-                
+                newDoc = helper.openFile();
+
+            }
+            openDocInGUI(mainFlowDocument, newDoc);
+        }
+
+        private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
+        {
+            foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
+            {
+                UIElement element = GetUIElementForType(op);
+                Paragraph par = new Paragraph();
+                par.Inlines.Add(element);
+                currentDocument.Blocks.Add(par);
+                currentDocument.childrenOperations.Add(op);
+
+                for(int i = 0; i<op.ListOfEnabledDocs.Count; i++)
+                {
+                    EnabledFlowDocument operationDocument = op.ListOfEnabledDocs.ElementAt(i);
+                    string text = operationDocument.text;
+                    Paragraph tempParagraph = new Paragraph();
+                    Run run = new Run(text);
+                    tempParagraph.Inlines.Add(run);
+                    operationDocument.Blocks.Add(tempParagraph);
+                    //openDocInGUI(op.ListOfEnabledDocs.ElementAt(i), op.ListOfEnabledDocs.ElementAt(i));
+                }
+            }
+        }
+
+        private void setupChildDocs(Operation childModel, Operation loadModel)
+        {
+            for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
+            {
+                string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
+                Paragraph tempParagraph = new Paragraph();
+                Run run = new Run(text);
+                tempParagraph.Inlines.Add(run);
+                childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
+            }
+        }
+
+        private UIElement GetUIElementForType(Operation op)
+        {
+            if(op.GetType() == typeof(FractionModel))
+            {
+                FractionControl f = new FractionControl();
+                setupChildDocs(f.model, op);
+                return f;
+            }else if (op.GetType() == typeof(SquareModel))
+            {
+                SquareControl f = new SquareControl();
+                setupChildDocs(f.model, op);
+                return f;
+            } else if (op.GetType() == typeof(PowModel))
+            {
+                PowControl f = new PowControl();
+                setupChildDocs(f.model, op);
+                return f;
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -419,27 +478,26 @@ namespace MathEdit.ViewModels
 
         private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
         {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-                var xmlSerializer = new XmlSerializer(docs.GetType());
-                var stringBuilder = new StringBuilder();
-                var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true });
-                xmlSerializer.Serialize(xmlTextWriter, docs);
-                var finalXml = stringBuilder.ToString();
-                BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-            }
+            String finalXml;
+            var utf8NoBom = new UTF8Encoding(false);
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
+            var xmlSerializer = new XmlSerializer(docs.GetType());
+            var stringBuilder = new StringBuilder();
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true, Encoding = utf8NoBom });
+            xmlSerializer.Serialize(xmlTextWriter, docs);
+            finalXml = stringBuilder.ToString();
+            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
 
             if (isSaveAsCaller)
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
-                else
-                {
-                    var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                    command.Execute(BinaryFlowDocument);
-                }
+            {
+                var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
+            else
+            {
+                var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                command.Execute(BinaryFlowDocument);
+            }
         }
 
         private void saveAsync(object sender)

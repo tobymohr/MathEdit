@@ -3,6 +3,9 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Serialization;
+using MathEdit.Model;
+using System.Linq;
 
 namespace MathEdit.Helpers
 {
@@ -49,21 +52,27 @@ namespace MathEdit.Helpers
 
         public EnabledFlowDocument openFile()
         {
-            EnabledFlowDocument doc = new EnabledFlowDocument();
-            ListOfEnabledDocs docs = new ListOfEnabledDocs { doc };
+            EnabledFlowDocument doc = null;
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.DefaultExt = ".xml";
             openDialog.Filter = "XML Files|*.xml";
             Nullable<bool> result = openDialog.ShowDialog();
             if (result == true)
             {
-                
+
                 byte[] content = File.ReadAllBytes(openDialog.FileName);
 
                 using (var stream = new MemoryStream(content))
                 {
-                    docs.ReadXml(XmlReader.Create(stream));
+                    StreamReader reader = new StreamReader(stream);
+                    string text = reader.ReadToEnd();
+                    var xmlSerializer = new XmlSerializer(typeof(ListOfEnabledDocs));
+                    var xmlReader = XmlReader.Create(new StringReader(text));
+                    ListOfEnabledDocs docs = (ListOfEnabledDocs)xmlSerializer.Deserialize(xmlReader);
+                    doc = docs.ElementAt(0);
+
                 }
+
                 return doc;
             }
             else
@@ -72,7 +81,7 @@ namespace MathEdit.Helpers
             }
         }
 
-       
+
     }
 
 }

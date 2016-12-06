@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <RichTextBox x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10"  BorderThickness="{Binding numborder}" Grid.Row="0">
+        <RichTextBox x:Name="pow" Width="Auto"   MinWidth="20" Grid.Column="1" MinHeight="10"   Grid.Row="0">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
@@ -27,7 +27,7 @@
             </FlowDocument>
         </RichTextBox>
 
-        <RichTextBox x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20" BorderThickness="{Binding powborder}" Grid.Column="0" Grid.Row="1">
+        <RichTextBox x:Name="number" Width="Auto"  Margin="0,0,0,0"  MinWidth="20"  Grid.Column="0" Grid.Row="1">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
