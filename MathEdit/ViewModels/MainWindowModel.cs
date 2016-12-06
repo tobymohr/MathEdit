@@ -261,9 +261,9 @@ namespace MathEdit.ViewModels
             para = getCorrectParagraph(parentBox);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl();
-            parentFd.childrenOperations.Add(fControl);
+            parentFd.childrenOperations.Add(fControl.model);
             para.Inlines.Add(fControl);
-            //latestOperation = fControl.model;
+            latestOperation = fControl.model;
             AddFormula(null);
         }
 

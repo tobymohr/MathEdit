@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MathEdit"
              MinHeight="10">
     
-    <Grid x:Name="TrackSurface" Background="White" MinWidth="10" Width="{Binding OuterWidth}"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid x:Name="TrackSurface" Background="White" MinWidth="10" Width="{Binding outerWidth}"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

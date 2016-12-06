@@ -7,7 +7,7 @@ namespace MathEdit.Helpers
 {
     public class Undoer
     {
-        protected FractionModel txtBox;
+        protected FractionControl txtBox;
         protected List<Operation> LastData = new List<Operation>();
         protected int undoCount = 0;
 
@@ -15,10 +15,10 @@ namespace MathEdit.Helpers
         protected bool redoing = false;
 
 
-        public Undoer(FractionModel txtBox)
+        public Undoer(FractionControl txtBox)
         {
             this.txtBox = txtBox;
-            LastData.Add(txtBox);
+            LastData.Add(txtBox.model);
         }
 
         public void undo_Click(object sender, EventArgs e)

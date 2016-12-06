@@ -8,23 +8,24 @@ namespace MathEdit.Model
     [Serializable]
     public class PowModel : Operation
     {
-
+        private double _outerWidth;
+        private ListOfEnabledDocs _boxes;
         private int minWidth = 50;
         private int margin =10;
         public PowModel()
         {
-            OuterWidth = minWidth;
-            Boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+            outerWidth = minWidth;
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
 
-        public double powWidth { get { return getTotalWidth(Boxes.ElementAt(0)) + margin; } }
-        public double numberWidth { get { return getTotalWidth(Boxes.ElementAt(1)) + margin; } }
+        public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }
+        public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(1)) + margin; } }
 
-        public override double OuterWidth
+        public override double outerWidth
         {
             get
             {
-                double calcedWidth = getTotalWidth(Boxes.ElementAt(0)) +  getTotalWidth(Boxes.ElementAt(1));
+                double calcedWidth = getTotalWidth(_boxes.ElementAt(0)) +  getTotalWidth(_boxes.ElementAt(1));
                 if(calcedWidth < minWidth)
                 {
                     calcedWidth = minWidth;
@@ -34,7 +35,7 @@ namespace MathEdit.Model
 
             set
             {
-                this.SetProperty(ref outerWidth, value);
+                this._outerWidth = value;
             }
         }
 
@@ -42,7 +43,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double length = Boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = _boxes.ElementAt(1).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -57,7 +58,7 @@ namespace MathEdit.Model
         {
             get
             {
-                double length = Boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
+                double length = _boxes.ElementAt(0).GetFormattedText().WidthIncludingTrailingWhitespace;
                 if (length <= 0)
                 {
                     return new Thickness(1);
@@ -66,6 +67,19 @@ namespace MathEdit.Model
                 {
                     return new Thickness(0);
                 }
+            }
+        }
+
+        public override ListOfEnabledDocs boxes
+        {
+            get
+            {
+                return _boxes;
+            }
+
+            set
+            {
+                _boxes = value;
             }
         }
 

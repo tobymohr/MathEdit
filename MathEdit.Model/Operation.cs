@@ -9,24 +9,18 @@ namespace MathEdit.Model
     public abstract class Operation : NotifyBase
     {
         [XmlElement("outerWidth")]
-        public double outerWidth;
-        public int placement;
-        public EnabledFlowDocument parent;
-        public ListOfEnabledDocs boxes;
-
-        abstract public double OuterWidth { get; set; }
-        public int Placement { get { return placement; } set { this.SetProperty(ref placement, value); } }
-        public EnabledFlowDocument Parent { get { return parent; } set { this.SetProperty(ref parent, value); } }
-        public ListOfEnabledDocs Boxes { get { return boxes; } set { this.SetProperty(ref boxes, value); } }
-
-        protected double getTotalWidth(EnabledFlowDocument model)
+        abstract public double outerWidth { get; set; }
+        abstract public ListOfEnabledDocs boxes { get; set; }
+      
+        
+        public virtual double getTotalWidth(EnabledFlowDocument model)
         {
             double maxValue = 0;
             double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
             double sumWidth = 0;
             foreach (Operation op in model.childrenOperations)
             {
-                sumWidth += op.OuterWidth;
+                sumWidth += op.outerWidth;
             }
 
             if (sumWidth > textWidth)
