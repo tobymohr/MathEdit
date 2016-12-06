@@ -26,13 +26,12 @@ namespace MathEdit.Model
             {
                 EnabledFlowDocument doc = new EnabledFlowDocument("");
                 doc.text = reader.GetAttribute("Data");
+                reader.ReadStartElement("EnabledFlowDocument");
                 doc.childrenOperations.ReadXml(reader);
                 this.Add(doc);
                 reader.ReadEndElement();
             }
             reader.ReadEndElement();
-
-
         }
 
         public void WriteXml(XmlWriter writer)
@@ -46,7 +45,6 @@ namespace MathEdit.Model
                 writer.WriteEndElement();
             }
         }
-
         #endregion
 
     }

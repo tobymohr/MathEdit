@@ -12,10 +12,15 @@ namespace MathEdit.Model
         private ListOfEnabledDocs _boxes;
         private int minWidth = 50;
         private int margin =10;
-        public PowModel()
+        public PowModel(string id)
         {
             outerWidth = minWidth;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+        }
+
+        public PowModel()
+        {
+
         }
 
         public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }

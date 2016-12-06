@@ -406,21 +406,11 @@ namespace MathEdit.ViewModels
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
                 UIElement element = GetUIElementForType(op);
+                Console.WriteLine(op.GetType());
                 Paragraph par = new Paragraph();
                 par.Inlines.Add(element);
                 currentDocument.Blocks.Add(par);
                 currentDocument.childrenOperations.Add(op);
-
-                for(int i = 0; i<op.ListOfEnabledDocs.Count; i++)
-                {
-                    EnabledFlowDocument operationDocument = op.ListOfEnabledDocs.ElementAt(i);
-                    string text = operationDocument.text;
-                    Paragraph tempParagraph = new Paragraph();
-                    Run run = new Run(text);
-                    tempParagraph.Inlines.Add(run);
-                    operationDocument.Blocks.Add(tempParagraph);
-                    //openDocInGUI(op.ListOfEnabledDocs.ElementAt(i), op.ListOfEnabledDocs.ElementAt(i));
-                }
             }
         }
 
@@ -429,10 +419,17 @@ namespace MathEdit.ViewModels
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
                 string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
+                Console.WriteLine(text);
                 Paragraph tempParagraph = new Paragraph();
                 Run run = new Run(text);
-                tempParagraph.Inlines.Add(run);
-                childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
+                text = text.Trim();
+                if (text != "")
+                {
+                    tempParagraph.Inlines.Add(run);
+                    childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
+                }
+                
+                openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
 
@@ -479,7 +476,7 @@ namespace MathEdit.ViewModels
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { NewLineChars = "\r\n", Indent = true, Encoding = utf8NoBom });
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings {  Indent = true, Encoding = utf8NoBom });
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);

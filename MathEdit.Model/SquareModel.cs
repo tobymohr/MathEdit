@@ -10,7 +10,6 @@ namespace MathEdit.Model
     {
         private ListOfEnabledDocs _boxes;
         private double minWidth = 50;
-        private Thickness t;
         private double _outerWidth;
 
         public SquareModel()
@@ -20,7 +19,6 @@ namespace MathEdit.Model
 
         public SquareModel(string id)
         {
-            t = new Thickness(1);
             outerWidth = minWidth;
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }
