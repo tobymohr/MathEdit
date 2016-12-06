@@ -38,7 +38,6 @@ namespace MathEdit.ViewModels
 
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddFormulaCommand { get; }
 
         public FlowDocumentModel documentModel;
         public EnabledFlowDocument mainFlowDocument;
@@ -57,13 +56,11 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
 
 
         public MainWindowModel()
         {
-            formulas = new ObservableCollection<Operation>();
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
@@ -80,7 +77,6 @@ namespace MathEdit.ViewModels
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
-            this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
 
             documentModel = new FlowDocumentModel();
             mainFlowDocument = documentModel.mainFlowDocument;
