@@ -8,6 +8,7 @@ namespace MathEdit.Model
     {
         #region Fields
         private ListOfOperations _childrenOperations;
+        public string text { get; set; }
         #endregion
         public EnabledFlowDocument(string id)
         {

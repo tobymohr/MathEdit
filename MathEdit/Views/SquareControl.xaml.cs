@@ -13,7 +13,7 @@ namespace MathEdit.Views
         public SquareModel model { get; set; }
         public SquareControl()
         {
-            model = new SquareModel();
+            model = new SquareModel("");
             DataContext = model;
             InitializeComponent();
             numberBox.Document = model.ListOfEnabledDocs.ElementAt(0);

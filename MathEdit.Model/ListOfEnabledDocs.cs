@@ -25,7 +25,7 @@ namespace MathEdit.Model
             while (reader.IsStartElement("EnabledFlowDocument"))
             {
                 EnabledFlowDocument doc = new EnabledFlowDocument("");
-                string text = reader.GetAttribute("Data");
+                doc.text = reader.GetAttribute("Data");
                 doc.childrenOperations.ReadXml(reader);
                 this.Add(doc);
                 reader.ReadEndElement();

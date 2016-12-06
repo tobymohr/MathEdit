@@ -301,7 +301,6 @@ namespace MathEdit.ViewModels
             {
                 text.ApplyPropertyValue(RichTextBox.FontSizeProperty, fontSize);
             }
-
         }
 
         private void textBoxMain_SelectionChanged(object sender)
@@ -397,11 +396,71 @@ namespace MathEdit.ViewModels
         {
             // needs work
             DocumentHelper helper = new DocumentHelper();
-
+            EnabledFlowDocument newDoc = null;
             using (MemoryStream stream = new MemoryStream())
             {
-                MainFlowDocument = helper.openFile();
+                newDoc = helper.openFile();
 
+            }
+            openDocInGUI(mainFlowDocument, newDoc);
+        }
+
+        private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
+        {
+            foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
+            {
+                UIElement element = GetUIElementForType(op);
+                Paragraph par = new Paragraph();
+                par.Inlines.Add(element);
+                currentDocument.Blocks.Add(par);
+                currentDocument.childrenOperations.Add(op);
+
+                for(int i = 0; i<op.ListOfEnabledDocs.Count; i++)
+                {
+                    EnabledFlowDocument operationDocument = op.ListOfEnabledDocs.ElementAt(i);
+                    string text = operationDocument.text;
+                    Paragraph tempParagraph = new Paragraph();
+                    Run run = new Run(text);
+                    tempParagraph.Inlines.Add(run);
+                    operationDocument.Blocks.Add(tempParagraph);
+                    //openDocInGUI(op.ListOfEnabledDocs.ElementAt(i), op.ListOfEnabledDocs.ElementAt(i));
+                }
+            }
+        }
+
+        private void setupChildDocs(Operation childModel, Operation loadModel)
+        {
+            for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
+            {
+                string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
+                Paragraph tempParagraph = new Paragraph();
+                Run run = new Run(text);
+                tempParagraph.Inlines.Add(run);
+                childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
+            }
+        }
+
+        private UIElement GetUIElementForType(Operation op)
+        {
+            if(op.GetType() == typeof(FractionModel))
+            {
+                FractionControl f = new FractionControl();
+                setupChildDocs(f.model, op);
+                return f;
+            }else if (op.GetType() == typeof(SquareModel))
+            {
+                SquareControl f = new SquareControl();
+                setupChildDocs(f.model, op);
+                return f;
+            } else if (op.GetType() == typeof(PowModel))
+            {
+                PowControl f = new PowControl();
+                setupChildDocs(f.model, op);
+                return f;
+            }
+            else
+            {
+                return null;
             }
         }
 

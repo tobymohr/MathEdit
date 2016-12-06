@@ -15,9 +15,14 @@ namespace MathEdit.Model
 
         public SquareModel()
         {
+ 
+        }
+
+        public SquareModel(string id)
+        {
             t = new Thickness(1);
             outerWidth = minWidth;
-            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("")};
+            _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }
 
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }

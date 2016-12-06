@@ -1,7 +1,9 @@
-﻿using MathEdit.Model;
+﻿using MathEdit.Helpers;
+using MathEdit.Model;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System;
 
 namespace MathEdit.Views
 {

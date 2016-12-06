@@ -72,6 +72,7 @@ namespace MathEdit.Helpers
                     doc = docs.ElementAt(0);
 
                 }
+
                 return doc;
             }
             else

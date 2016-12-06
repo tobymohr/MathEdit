@@ -10,10 +10,10 @@ namespace MathEdit.Model
     public class FractionModel : Operation
     {
         private double _outerWidth;
-        private  ListOfEnabledDocs _boxes;
+        private ListOfEnabledDocs _boxes;
         public FractionModel()
         {
-            
+
         }
 
         public FractionModel(string id)
