@@ -11,13 +11,15 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
+        public EnabledFlowDocument Parent { get; set; }
         public FractionModel()
         {
 
         }
 
-        public FractionModel(string id)
+        public FractionModel(EnabledFlowDocument parent)
         {
+            Parent = parent;
             outerWidth = 70;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }

@@ -10,6 +10,10 @@ namespace MathEdit.Model
         private ListOfOperations _childrenOperations;
         public string text { get; set; }
         #endregion
+
+
+
+        #region public methods
         public EnabledFlowDocument(string id)
         {
             childrenOperations = new ListOfOperations();
@@ -17,7 +21,7 @@ namespace MathEdit.Model
         public EnabledFlowDocument()
         {
         }
-       
+
         public ListOfOperations childrenOperations
         {
             get
@@ -29,9 +33,11 @@ namespace MathEdit.Model
                 _childrenOperations = value;
             }
         }
-     
 
-        #region public methods
+        public void RemoveChild(Operation operation)
+        {
+            
+        }
         #endregion
 
 
