@@ -23,9 +23,15 @@ namespace MathEdit.Views
             denumenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(1);
             numenatorTextBox.TextChanged += onChange;
             denumenatorTextBox.TextChanged += onChange;
+            setUIWidth();
         }
 
         public void onChange(object sender, RoutedEventArgs e)
+        {
+            setUIWidth();
+        }
+
+        public void setUIWidth()
         {
             denumenatorTextBox.Width = model.denumenatorWidth;
             numenatorTextBox.Width = model.numenatorWidth;

@@ -22,9 +22,15 @@ namespace MathEdit.Views
             number.Document = model.ListOfEnabledDocs.ElementAt(1);
             pow.TextChanged += onChange;
             number.TextChanged += onChange;
+            setUIWidth();
         }
 
         public void onChange(object sender, RoutedEventArgs e)
+        {
+            setUIWidth();
+        }
+
+        public void setUIWidth()
         {
             pow.Width = model.powWidth;
             number.Width = model.numberWidth;

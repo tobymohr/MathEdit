@@ -328,13 +328,14 @@ namespace MathEdit.ViewModels
         {
             int intPosition = 0;
             TextPointer currentPosition = rtb.Document.ContentStart;
-            if(currentPosition != null  && pointerPosition != null)
-            {
                 while (currentPosition.CompareTo(pointerPosition) != 0)
                 {
                     intPosition++;
                     currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
-                }
+                    if(currentPosition == null)
+                    {
+                        break;
+                    }
             }
             return intPosition;
         }
@@ -352,6 +353,7 @@ namespace MathEdit.ViewModels
             parentFd.childrenOperations.Add(fControl.model);
             fControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(fControl);
+            
             //latestOperation = fControl.model;
             addFormula(fControl,"fraction");
         }
@@ -524,9 +526,10 @@ namespace MathEdit.ViewModels
                 string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
                 int position = loadModel.position;
                 RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
-                SetIntPosition(position, parentTb);
+                //SetIntPosition(position, parentTb);
                 TextPointer pointerposition = parentTb.CaretPosition;
                 Paragraph tempParagraph = insertOnParagraph(parentTb, pointerposition);
+                tempParagraph = new Paragraph();
                 Run run = new Run(text);
                 text = text.Trim();
                 if (text != "")
@@ -542,7 +545,7 @@ namespace MathEdit.ViewModels
         {
             if(op.GetType() == typeof(FractionModel))
             {
-                FractionControl f = new FractionControl();
+                FractionControl f = new FractionControl(currentDocument);
                 setupChildDocs(f.model, op, currentDocument);
                 return f;
             }else if (op.GetType() == typeof(SquareModel))
@@ -581,7 +584,7 @@ namespace MathEdit.ViewModels
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings {  Indent = true, Encoding = utf8NoBom });
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { OmitXmlDeclaration = true,  NewLineHandling = NewLineHandling.None, Indent = true, Encoding = utf8NoBom });
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);

@@ -18,12 +18,19 @@ namespace MathEdit.Views
             InitializeComponent();
             numberBox.Document = model.ListOfEnabledDocs.ElementAt(0);
             numberBox.TextChanged += onChange;
+            setUIWidth();
+            
         }
 
         public void onChange(object sender, RoutedEventArgs e)
         {
+            setUIWidth();
+        }
+
+        private void setUIWidth()
+        {
             numberBox.Width = model.numberWidth + 20;
-            TrackSurface.Width = model.outerWidth;
+            TrackSurface.Width = model.outerWidth + 20;
         }
     }
 }
