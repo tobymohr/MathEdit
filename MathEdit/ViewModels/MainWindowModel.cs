@@ -170,8 +170,8 @@ namespace MathEdit.ViewModels
         private void newDocument(object sender)
         {
             Console.WriteLine("New Document");
-            mainFlowDocument.Blocks.Clear();
-            mainFlowDocument.childrenOperations.Clear();
+            MainFlowDocument.Blocks.Clear();
+            MainFlowDocument.childrenOperations.Clear();
         }
 
         private void createFraction(object sender)
@@ -524,8 +524,8 @@ namespace MathEdit.ViewModels
                 Paragraph par = new Paragraph();
                 par.Inlines.Add(element);
                 currentDocument.Blocks.Add(par);
-                currentDocument.childrenOperations.Add(op);
-                
+                currentDocument.text = loadDoc.text;
+               
             }
         }
 
@@ -534,7 +534,6 @@ namespace MathEdit.ViewModels
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
                 string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
-                Console.WriteLine(text + "Text in load");
                 int position = loadModel.position;
                 //RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
                 //SetIntPosition(position, parentTb);
@@ -547,9 +546,8 @@ namespace MathEdit.ViewModels
                 {
                     tempParagraph.Inlines.Add(run);
                     childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
-                   
+                    childModel.ListOfEnabledDocs.ElementAt(i).text = text;
                 }
-                childModel.ListOfEnabledDocs.ElementAt(i).text = text;
                 openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
@@ -560,16 +558,19 @@ namespace MathEdit.ViewModels
             {
                 FractionControl f = new FractionControl(currentDocument);
                 setupChildDocs(f.model, op, currentDocument);
+                currentDocument.childrenOperations.Add(f.model);
                 return f;
             }else if (op.GetType() == typeof(SquareModel))
             {
                 SquareControl f = new SquareControl();
                 setupChildDocs(f.model, op, currentDocument);
+                currentDocument.childrenOperations.Add(f.model);
                 return f;
             } else if (op.GetType() == typeof(PowModel))
             {
                 PowControl f = new PowControl();
                 setupChildDocs(f.model, op, currentDocument);
+                currentDocument.childrenOperations.Add(f.model);
                 return f;
             }
             else
