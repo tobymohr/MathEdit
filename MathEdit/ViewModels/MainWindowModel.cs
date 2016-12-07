@@ -376,7 +376,7 @@ namespace MathEdit.ViewModels
             TextPointer position = parentBox.CaretPosition;
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            PowControl pControl = new PowControl();
+            PowControl pControl = new PowControl(parentFd);
             parentFd.childrenOperations.Add(pControl.model);
             pControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(pControl);
@@ -391,7 +391,7 @@ namespace MathEdit.ViewModels
             TextPointer position = parentBox.CaretPosition;
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            SquareControl sControl = new SquareControl();
+            SquareControl sControl = new SquareControl(parentFd);
             sControl.model.position = GetIntPosition(position, parentTb);
             parentFd.childrenOperations.Add(sControl.model);
             para.Inlines.Add(sControl);
@@ -512,19 +512,21 @@ namespace MathEdit.ViewModels
                 newDocument(this);
                 openDocInGUI(MainFlowDocument, newDoc);
             }
-           
         }
 
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
+            Paragraph par = new Paragraph();
+            Run run = new Run(loadDoc.text);
+            currentDocument.text = loadDoc.text;
+            par.Inlines.Add(run);
+            currentDocument.Blocks.Add(par);
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
                 UIElement element = GetUIElementForType(op, currentDocument);
                 Console.WriteLine(op.GetType());
-                Paragraph par = new Paragraph();
                 par.Inlines.Add(element);
                 currentDocument.Blocks.Add(par);
-                currentDocument.text = loadDoc.text;
                
             }
         }
@@ -533,21 +535,7 @@ namespace MathEdit.ViewModels
         {
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
-                string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
-                int position = loadModel.position;
-                //RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
-                //SetIntPosition(position, parentTb);
-                // TextPointer pointerposition = parentTb.CaretPosition;
-                // Paragraph tempParagraph = insertOnParagraph(parentTb, pointerposition);
-                Paragraph tempParagraph = new Paragraph();
-                Run run = new Run(text);
-                text = text.Trim();
-                if (text != "")
-                {
-                    tempParagraph.Inlines.Add(run);
-                    childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
-                    childModel.ListOfEnabledDocs.ElementAt(i).text = text;
-                }
+                childModel.position = loadModel.position; 
                 openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
@@ -562,13 +550,13 @@ namespace MathEdit.ViewModels
                 return f;
             }else if (op.GetType() == typeof(SquareModel))
             {
-                SquareControl f = new SquareControl();
+                SquareControl f = new SquareControl(currentDocument);
                 setupChildDocs(f.model, op, currentDocument);
                 currentDocument.childrenOperations.Add(f.model);
                 return f;
             } else if (op.GetType() == typeof(PowModel))
             {
-                PowControl f = new PowControl();
+                PowControl f = new PowControl(currentDocument);
                 setupChildDocs(f.model, op, currentDocument);
                 currentDocument.childrenOperations.Add(f.model);
                 return f;

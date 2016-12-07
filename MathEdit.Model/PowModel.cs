@@ -13,8 +13,10 @@ namespace MathEdit.Model
         private int minWidth = 50;
         private int margin =10;
         private int myPostion = 0;
-        public PowModel(string id)
+        private EnabledFlowDocument parent;
+        public PowModel(EnabledFlowDocument parent)
         {
+            this.parent = parent;
             outerWidth = minWidth;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }

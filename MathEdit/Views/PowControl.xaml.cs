@@ -13,9 +13,9 @@ namespace MathEdit.Views
     public partial class PowControl : UserControl
     {
         public PowModel model { get; set; }
-        public PowControl()
+        public PowControl(EnabledFlowDocument parent)
         {
-            model = new PowModel("");
+            model = new PowModel(parent);
             DataContext = model;
             InitializeComponent();
             pow.Document = model.ListOfEnabledDocs.ElementAt(0);

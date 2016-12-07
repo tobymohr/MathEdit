@@ -11,9 +11,9 @@ namespace MathEdit.Views
     public partial class SquareControl : UserControl
     {
         public SquareModel model { get; set; }
-        public SquareControl()
+        public SquareControl(EnabledFlowDocument parent)
         {
-            model = new SquareModel("");
+            model = new SquareModel(parent);
             DataContext = model;
             InitializeComponent();
             numberBox.Document = model.ListOfEnabledDocs.ElementAt(0);

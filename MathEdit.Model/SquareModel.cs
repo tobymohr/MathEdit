@@ -12,13 +12,15 @@ namespace MathEdit.Model
         private double minWidth = 50;
         private double _outerWidth;
         private int myPostion = 0;
+        private EnabledFlowDocument parent;
         public SquareModel()
         {
  
         }
 
-        public SquareModel(string id)
+        public SquareModel(EnabledFlowDocument parent)
         {
+            this.parent = parent;
             outerWidth = minWidth;
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }

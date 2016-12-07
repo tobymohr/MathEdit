@@ -33,9 +33,6 @@ namespace MathEdit.Views
 
         public void setUIWidth()
         {
-            Console.WriteLine("Setup UI");
-            Console.WriteLine(model.ListOfEnabledDocs.ElementAt(0).text);
-            Console.WriteLine(model.ListOfEnabledDocs.ElementAt(1).text);
             denumenatorTextBox.Width = model.denumenatorWidth;
             numenatorTextBox.Width = model.numenatorWidth;
             TrackSurface.Width = model.outerWidth;
