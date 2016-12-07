@@ -11,16 +11,23 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
+        private EnabledFlowDocument parent;
         private int myPostion = 0;
         public FractionModel()
         {
 
         }
 
-        public FractionModel(string id)
+        public FractionModel(EnabledFlowDocument parent)
         {
+            this.parent = parent;
             outerWidth = 70;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
+        }
+
+        public EnabledFlowDocument getParent()
+        {
+            return parent;
         }
         public Thickness numborder
         {

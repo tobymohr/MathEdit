@@ -14,9 +14,9 @@ namespace MathEdit.Views
     {
         public FractionModel model { get; set; }
 
-        public FractionControl()
+        public FractionControl(EnabledFlowDocument parent)
         {
-            model = new FractionModel("");
+            model = new FractionModel(parent);
             DataContext = model;
             InitializeComponent();
             numenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(0);

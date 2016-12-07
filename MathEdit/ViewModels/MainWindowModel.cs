@@ -38,7 +38,6 @@ namespace MathEdit.ViewModels
 
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddFormulaCommand { get; }
 
         public FlowDocumentModel documentModel;
         public EnabledFlowDocument mainFlowDocument;
@@ -58,13 +57,12 @@ namespace MathEdit.ViewModels
         private bool isItalicChecked;
         private bool dropDownOpen;
         private Visibility visibility;
-        public ObservableCollection<Operation> formulas { get; set; }
         private double zoomValue;
+        private UndoRedo undoRedo;
 
 
         public MainWindowModel()
         {
-            formulas = new ObservableCollection<Operation>();
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
             this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
@@ -81,7 +79,6 @@ namespace MathEdit.ViewModels
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
-            this.AddFormulaCommand = new RelayCommand<object>(this.AddFormula);
 
             documentModel = new FlowDocumentModel();
             mainFlowDocument = documentModel.mainFlowDocument;
@@ -95,7 +92,7 @@ namespace MathEdit.ViewModels
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
             zoomValue = 1;
-
+            undoRedo = new UndoRedo();
         }
         #region PropertyFields
         public EnabledFlowDocument MainFlowDocument
@@ -207,17 +204,63 @@ namespace MathEdit.ViewModels
 
         public void undoOperation(object sender)
         {
-            undoRedoController.Undo();
+            //undoRedoController.Undo();
+            UndoRedoObject uro = undoRedo.Undo();
+            if (uro == null) return;
+            deleteOrRecreate(uro);
+            uro.Deleted = !uro.Deleted;
         }
 
         public void redoOperation(object sender)
         {
-            undoRedoController.Redo();
+            //undoRedoController.Redo();
+            UndoRedoObject uro = undoRedo.Redo();
+            if (uro == null) return;
+            deleteOrRecreate(uro);
+            uro.Deleted = !uro.Deleted;
         }
 
-        private void AddFormula(object sender)
+        private void addFormula(UserControl uc, string type)
         {
-            undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
+            //undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
+            //False means it is not being delete, therefore added.
+            undoRedo.Add(uc,false);
+        }
+
+        private void deleteOrRecreate(UndoRedoObject uro)
+        {
+            if (uro.Deleted)
+            {
+                //recreate
+                if (uro.Uc.GetType() == typeof(FractionControl))
+                {
+                    FractionControl fControl = (FractionControl)uro.Uc;
+                    fControl.model.getParent().childrenOperations.Add(fControl.model);
+                    Paragraph par = new Paragraph();
+                    par.Inlines.Add(fControl);
+                    //Mangler bestemt position
+                    fControl.model.getParent().Blocks.Add(par);
+                }
+                else if (uro.Uc.GetType() == typeof(PowControl))
+                {
+
+                }
+            }
+            else
+            {
+                //delete
+                if (uro.Uc.GetType() == typeof(FractionControl))
+                {
+                    FractionControl fControl = (FractionControl)uro.Uc;
+                    fControl.model.getParent().childrenOperations.Remove(fControl.model);
+                    //Dette fjerner the child fra parents liste, men ikke UserControlen fra flowdokumentet
+
+                }else if (uro.Uc.GetType() == typeof(PowControl))
+                {
+                    
+                }
+                
+            }
         }
 
         #endregion
@@ -305,10 +348,12 @@ namespace MathEdit.ViewModels
             TextPointer position = parentBox.CaretPosition;
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            FractionControl fControl = new FractionControl();
+            FractionControl fControl = new FractionControl(parentFd);
             parentFd.childrenOperations.Add(fControl.model);
             fControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(fControl);
+            //latestOperation = fControl.model;
+            addFormula(fControl,"fraction");
         }
 
         private void createNewPowControl()

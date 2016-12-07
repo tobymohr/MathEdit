@@ -7,9 +7,13 @@ namespace MathEdit.Model
     public class EnabledFlowDocument : FlowDocument
     {
         #region Fields
-        private ListOfOperations _childrenOperations;
+        public ListOfOperations childrenOperations { get; set; }
         public string text { get; set; }
         #endregion
+
+
+
+        #region public methods
         public EnabledFlowDocument(string id)
         {
             childrenOperations = new ListOfOperations();
@@ -17,21 +21,6 @@ namespace MathEdit.Model
         public EnabledFlowDocument()
         {
         }
-       
-        public ListOfOperations childrenOperations
-        {
-            get
-            {
-                return _childrenOperations;
-            }
-            set
-            {
-                _childrenOperations = value;
-            }
-        }
-     
-
-        #region public methods
         #endregion
 
 
