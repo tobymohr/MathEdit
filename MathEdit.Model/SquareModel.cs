@@ -11,7 +11,7 @@ namespace MathEdit.Model
         private ListOfEnabledDocs _boxes;
         private double minWidth = 50;
         private double _outerWidth;
-
+        private int myPostion = 0;
         public SquareModel()
         {
  
@@ -55,6 +55,19 @@ namespace MathEdit.Model
             }
         }
 
-        
+
+        public override int position
+        {
+            get
+            {
+                return myPostion;
+            }
+
+            set
+            {
+                myPostion = value;
+            }
+        }
+
     }
 }

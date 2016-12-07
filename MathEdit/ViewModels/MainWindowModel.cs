@@ -42,6 +42,7 @@ namespace MathEdit.ViewModels
 
         public FlowDocumentModel documentModel;
         public EnabledFlowDocument mainFlowDocument;
+        public BlockUIContainer bU = new BlockUIContainer();
 
         public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
@@ -223,12 +224,10 @@ namespace MathEdit.ViewModels
 
         #region Menu Item calls
 
-
-        private Paragraph getCorrectParagraph(RichTextBox parentTb)
+        private void setupDoc(RichTextBox parentTb)
         {
-
             FlowDocument parentFd;
-            Paragraph para = null;
+          
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
             {
                 parentFd = parentTb.Document;
@@ -236,21 +235,65 @@ namespace MathEdit.ViewModels
             else
             {
                 parentFd = new EnabledFlowDocument("");
+                parentFd.Blocks.Add(bU);
                 parentTb.Document = parentFd;
             }
+        }
 
-            if (parentFd.Blocks.Count == 0)
+        private Paragraph insertOnParagraph(RichTextBox parentTb, TextPointer position)
+        {
+            EnabledFlowDocument parentFd = (EnabledFlowDocument) parentTb.Document;
+            Paragraph para = null;
+            
+            if (position.Parent.GetType() != typeof(Paragraph) && position.Parent.GetType() != typeof(Run))
             {
                 para = new Paragraph();
                 parentFd.Blocks.Add(para);
-                string text = String.Join(String.Empty, para.Inlines.Select(line => line.ContentStart.GetTextInRun(LogicalDirection.Forward)));
-                para.Inlines.Add(text);
-            }
-            else if (parentFd.Blocks.Count > 0)
+               
+            }else
             {
-                para = (Paragraph)parentFd.Blocks.LastBlock;
+                if(position.Parent.GetType() == typeof(Run))
+                {
+                    Run run = (Run)position.Parent;
+                    Console.WriteLine(run.Parent.GetType());
+                    para = (Paragraph)run.Parent;
+                }
+                else
+                {
+                    para = (Paragraph)position.Parent;
+                }
             }
             return para;
+        }
+
+        void SetIntPosition(int intPosition, RichTextBox rtb)
+        {
+            TextPointer currentPosition = rtb.Document.ContentStart;
+            for (int i = 0; i < intPosition; i++)
+            {
+                currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+
+            if(currentPosition == null)
+            {
+                currentPosition = rtb.Document.ContentStart;
+            }
+            rtb.CaretPosition = currentPosition;
+        }
+
+        int GetIntPosition(TextPointer pointerPosition, RichTextBox rtb)
+        {
+            int intPosition = 0;
+            TextPointer currentPosition = rtb.Document.ContentStart;
+            if(currentPosition != null  && pointerPosition != null)
+            {
+                while (currentPosition.CompareTo(pointerPosition) != 0)
+                {
+                    intPosition++;
+                    currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+                }
+            }
+            return intPosition;
         }
 
         private void createNewFractionControl()
@@ -258,13 +301,14 @@ namespace MathEdit.ViewModels
             Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
+            setupDoc(parentBox);
+            TextPointer position = parentBox.CaretPosition;
+            para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl();
             parentFd.childrenOperations.Add(fControl.model);
+            fControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(fControl);
-            latestOperation = fControl.model;
-            AddFormula(null);
         }
 
         private void createNewPowControl()
@@ -272,10 +316,13 @@ namespace MathEdit.ViewModels
             Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
+            setupDoc(parentBox);
+            TextPointer position = parentBox.CaretPosition;
+            para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             PowControl pControl = new PowControl();
             parentFd.childrenOperations.Add(pControl.model);
+            pControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(pControl);
         }
 
@@ -284,9 +331,12 @@ namespace MathEdit.ViewModels
             Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
-            para = getCorrectParagraph(parentBox);
+            setupDoc(parentBox);
+            TextPointer position = parentBox.CaretPosition;
+            para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             SquareControl sControl = new SquareControl();
+            sControl.model.position = GetIntPosition(position, parentTb);
             parentFd.childrenOperations.Add(sControl.model);
             para.Inlines.Add(sControl);
         }
@@ -400,16 +450,20 @@ namespace MathEdit.ViewModels
             using (MemoryStream stream = new MemoryStream())
             {
                 newDoc = helper.openFile();
-
             }
-            openDocInGUI(mainFlowDocument, newDoc);
+            if(newDoc != null)
+            {
+                openDocInGUI(mainFlowDocument, newDoc);
+            }
+           
         }
 
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
+            currentDocument.Blocks.Add(new Paragraph());
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
-                UIElement element = GetUIElementForType(op);
+                UIElement element = GetUIElementForType(op, currentDocument);
                 Console.WriteLine(op.GetType());
                 Paragraph par = new Paragraph();
                 par.Inlines.Add(element);
@@ -418,13 +472,16 @@ namespace MathEdit.ViewModels
             }
         }
 
-        private void setupChildDocs(Operation childModel, Operation loadModel)
+        private void setupChildDocs(Operation childModel, Operation loadModel, EnabledFlowDocument currentDocument)
         {
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
                 string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
-                Console.WriteLine(text);
-                Paragraph tempParagraph = new Paragraph();
+                int position = loadModel.position;
+                RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
+                SetIntPosition(position, parentTb);
+                TextPointer pointerposition = parentTb.CaretPosition;
+                Paragraph tempParagraph = insertOnParagraph(parentTb, pointerposition);
                 Run run = new Run(text);
                 text = text.Trim();
                 if (text != "")
@@ -432,27 +489,26 @@ namespace MathEdit.ViewModels
                     tempParagraph.Inlines.Add(run);
                     childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
                 }
-                
                 openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
 
-        private UIElement GetUIElementForType(Operation op)
+        private UIElement GetUIElementForType(Operation op ,EnabledFlowDocument currentDocument)
         {
             if(op.GetType() == typeof(FractionModel))
             {
                 FractionControl f = new FractionControl();
-                setupChildDocs(f.model, op);
+                setupChildDocs(f.model, op, currentDocument);
                 return f;
             }else if (op.GetType() == typeof(SquareModel))
             {
                 SquareControl f = new SquareControl();
-                setupChildDocs(f.model, op);
+                setupChildDocs(f.model, op, currentDocument);
                 return f;
             } else if (op.GetType() == typeof(PowModel))
             {
                 PowControl f = new PowControl();
-                setupChildDocs(f.model, op);
+                setupChildDocs(f.model, op, currentDocument);
                 return f;
             }
             else
@@ -484,7 +540,6 @@ namespace MathEdit.ViewModels
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-
             if (isSaveAsCaller)
             {
                 var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });

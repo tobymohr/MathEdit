@@ -11,6 +11,7 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
+        private int myPostion = 0;
         public FractionModel()
         {
 
@@ -80,6 +81,19 @@ namespace MathEdit.Model
             set
             {
                 _boxes = value;
+            }
+        }
+
+        public override int position
+        {
+            get
+            {
+                return myPostion;
+            }
+
+            set
+            {
+                myPostion = value;
             }
         }
 

@@ -12,6 +12,7 @@ namespace MathEdit.Model
         private ListOfEnabledDocs _boxes;
         private int minWidth = 50;
         private int margin =10;
+        private int myPostion = 0;
         public PowModel(string id)
         {
             outerWidth = minWidth;
@@ -57,6 +58,17 @@ namespace MathEdit.Model
             }
         }
 
-       
+        public override int position
+        {
+            get
+            {
+                return myPostion;
+            }
+
+            set
+            {
+                myPostion = value;
+            }
+        }
     }
 }
