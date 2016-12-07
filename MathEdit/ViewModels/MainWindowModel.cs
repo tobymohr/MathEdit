@@ -28,6 +28,7 @@ namespace MathEdit.ViewModels
         public ICommand OpenHotkeysCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand CreateNewRTBCommand { get; }
+        public ICommand NewCommand { get; }
 
         public ICommand ToggleBold { get; }
         public ICommand ToggleItalic { get; }
@@ -79,6 +80,7 @@ namespace MathEdit.ViewModels
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
             this.UndoCommand = new RelayCommand<object>(this.undoOperation);
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
+            this.NewCommand = new RelayCommand<object>(this.newDocument);
 
             documentModel = new FlowDocumentModel();
             mainFlowDocument = documentModel.mainFlowDocument;
@@ -151,6 +153,7 @@ namespace MathEdit.ViewModels
         }
         #endregion
 
+
         #region hotKey calls
         private void openHotKeys(object sender)
         {
@@ -163,6 +166,14 @@ namespace MathEdit.ViewModels
                 Visibility = Visibility.Visible;
             }
         }
+
+        private void newDocument(object sender)
+        {
+            Console.WriteLine("New Document");
+            mainFlowDocument.Blocks.Clear();
+            mainFlowDocument.childrenOperations.Clear();
+        }
+
         private void createFraction(object sender)
         {
             createNewFractionControl();
@@ -183,9 +194,7 @@ namespace MathEdit.ViewModels
             if (ZoomValue < 10)
             {
                 ZoomValue = ZoomValue + 0.5;
-
             }
-
         }
 
         private void scrollOut(object sender)
@@ -500,14 +509,14 @@ namespace MathEdit.ViewModels
             }
             if(newDoc != null)
             {
-                openDocInGUI(mainFlowDocument, newDoc);
+                newDocument(this);
+                openDocInGUI(MainFlowDocument, newDoc);
             }
            
         }
 
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
-            currentDocument.Blocks.Add(new Paragraph());
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
                 UIElement element = GetUIElementForType(op, currentDocument);
@@ -516,6 +525,7 @@ namespace MathEdit.ViewModels
                 par.Inlines.Add(element);
                 currentDocument.Blocks.Add(par);
                 currentDocument.childrenOperations.Add(op);
+                
             }
         }
 
@@ -524,19 +534,22 @@ namespace MathEdit.ViewModels
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
                 string text = loadModel.ListOfEnabledDocs.ElementAt(i).text;
+                Console.WriteLine(text + "Text in load");
                 int position = loadModel.position;
-                RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
+                //RichTextBox parentTb = (RichTextBox)currentDocument.Parent;
                 //SetIntPosition(position, parentTb);
-                TextPointer pointerposition = parentTb.CaretPosition;
-                Paragraph tempParagraph = insertOnParagraph(parentTb, pointerposition);
-                tempParagraph = new Paragraph();
+                // TextPointer pointerposition = parentTb.CaretPosition;
+                // Paragraph tempParagraph = insertOnParagraph(parentTb, pointerposition);
+                Paragraph tempParagraph = new Paragraph();
                 Run run = new Run(text);
                 text = text.Trim();
                 if (text != "")
                 {
                     tempParagraph.Inlines.Add(run);
                     childModel.ListOfEnabledDocs.ElementAt(i).Blocks.Add(tempParagraph);
+                   
                 }
+                childModel.ListOfEnabledDocs.ElementAt(i).text = text;
                 openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
@@ -584,9 +597,11 @@ namespace MathEdit.ViewModels
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { OmitXmlDeclaration = true,  NewLineHandling = NewLineHandling.None, Indent = true, Encoding = utf8NoBom });
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings {  Indent = true, Encoding = utf8NoBom });
             xmlSerializer.Serialize(xmlTextWriter, docs);
             finalXml = stringBuilder.ToString();
+            finalXml = finalXml.Replace("&#xA", "");
+            finalXml = finalXml.Replace("&#xD;;", "");
             BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
             if (isSaveAsCaller)
             {

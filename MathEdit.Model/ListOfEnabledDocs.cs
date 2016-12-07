@@ -39,7 +39,7 @@ namespace MathEdit.Model
             foreach (EnabledFlowDocument doc in this)
             {
                 writer.WriteStartElement("EnabledFlowDocument");
-                writer.WriteAttributeString("Data", doc.GetFormattedText().Text);
+                writer.WriteAttributeString("Data", doc.text);
                 doc.childrenOperations.WriteXml(writer);
                 writer.WriteEndElement();
                 writer.WriteEndElement();
