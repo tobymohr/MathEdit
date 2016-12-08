@@ -10,6 +10,6 @@ namespace MathEdit.ViewModels
 {
     public interface MathControl
     {
-         Operation model { get; set; }
+        Operation model { get; set; }
     }
 }

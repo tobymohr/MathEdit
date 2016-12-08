@@ -7,17 +7,20 @@
         xmlns:h="clr-namespace:MathEdit.Helpers"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
-        Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
+        FocusManager.FocusedElement="{Binding ElementName=FirstBox}"
+        Title="MainWindow" Height="950" Width="850" Background="AliceBlue"
+        >
 
     <Window.InputBindings>
-        <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
+        <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}"/>
         <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}" ></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
         <KeyBinding Key="D" Modifiers="Alt" Command="{Binding CreateSqrtCommand}"></KeyBinding>
+        <KeyBinding Key="Y" Modifiers="Alt" Command="{Binding RedoCommand}"></KeyBinding>
+        <KeyBinding Key="Z" Modifiers="Alt" Command="{Binding UndoCommand}"></KeyBinding>
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
     </Window.InputBindings>
@@ -29,14 +32,14 @@
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <Separator />
-                <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" Command=""/>
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Copy"  Command="ApplicationCommands.Copy"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"  FocusManager.IsFocusScope="True"></MenuItem>
-                <MenuItem Header="_Redo" x:Name="Redo"  Command="{Binding RedoCommand}"></MenuItem>
-                <MenuItem Header="_Undo" x:Name="Undo"  Command="{Binding UndoCommand}" ></MenuItem> 
+                <MenuItem Header="_Redo" x:Name="Redo" InputGestureText="Alt+Y" Command="{Binding RedoCommand}"></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo" InputGestureText="Alt+Z" Command="{Binding UndoCommand}"></MenuItem> 
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
