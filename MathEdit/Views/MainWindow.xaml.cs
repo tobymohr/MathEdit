@@ -9,8 +9,7 @@ namespace MathEdit.Views
         {
             DataContext = new MainWindowModel();
             InitializeComponent();
-
-
+            
             //MainWindowModel modeltest = new MainWindowModel();
             //modeltest.openDoc(null);
 
