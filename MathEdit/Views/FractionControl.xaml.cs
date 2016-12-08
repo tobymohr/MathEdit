@@ -33,10 +33,10 @@ namespace MathEdit.Views
         {
             model = new FractionModel(parent);
             InitializeComponent();
-            numenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(0);
-            denumenatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(1);
-            numenatorTextBox.TextChanged += onChange;
-            denumenatorTextBox.TextChanged += onChange;
+            numeratorTextBox.Document = model.ListOfEnabledDocs.ElementAt(0);
+            denominatorTextBox.Document = model.ListOfEnabledDocs.ElementAt(1);
+            numeratorTextBox.TextChanged += onChange;
+            denominatorTextBox.TextChanged += onChange;
             setUIWidth();
         }
 
@@ -48,8 +48,8 @@ namespace MathEdit.Views
         public void setUIWidth()
         {
             FractionModel model = (FractionModel)this.model;
-            denumenatorTextBox.Width = model.denumenatorWidth + 15;
-            numenatorTextBox.Width = model.numenatorWidth + 15;
+            denominatorTextBox.Width = model.denumenatorWidth + 15;
+            numeratorTextBox.Width = model.numenatorWidth + 15;
             TrackSurface.Width = model.outerWidth;
         }
     }
