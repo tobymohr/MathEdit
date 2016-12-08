@@ -6,7 +6,6 @@ namespace MathEdit.Command
 {
     public class AsyncRelayCommand<T> : ICommand
     {
-        /////////////////////////////////////////////////////////////////////////////////////////////
         #region // Private Members
 
         private readonly Action<T> _execute;
@@ -14,8 +13,7 @@ namespace MathEdit.Command
 
         #endregion
 
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        #region // Constructors
+        #region Constructors
 
         public AsyncRelayCommand(Action<T> execute)
             : this(execute, null)
@@ -35,8 +33,7 @@ namespace MathEdit.Command
 
         #endregion
 
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        #region // Public Methods
+        #region Public Methods
 
         public event EventHandler CanExecuteChanged
         {

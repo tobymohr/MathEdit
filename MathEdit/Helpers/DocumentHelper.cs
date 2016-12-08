@@ -27,11 +27,11 @@ namespace MathEdit.Helpers
             return null;
         }
           
-        public void saveDoc(byte[] binaryFlowDocument, string fileName)
+        public void saveDoc(byte[] FlowDocumentBytes, string fileName)
         {
             try
             {
-                File.WriteAllBytes(fileName, binaryFlowDocument);
+                File.WriteAllBytes(fileName, FlowDocumentBytes);
             }
             catch (IOException e)
             {

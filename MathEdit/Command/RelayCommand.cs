@@ -15,7 +15,7 @@ namespace MathEdit.Command
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
 
-        #endregion // Fields
+        #endregion 
 
         #region Constructors
 
@@ -33,7 +33,7 @@ namespace MathEdit.Command
             _canExecute = canExecute;
         }
 
-        #endregion // Constructors
+        #endregion 
 
         #region ICommand Members
 
@@ -53,6 +53,6 @@ namespace MathEdit.Command
         {
             _execute(parameters);
         }
-        #endregion // ICommand Members
+        #endregion 
     }
 }

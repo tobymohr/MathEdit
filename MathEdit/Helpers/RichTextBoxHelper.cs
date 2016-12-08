@@ -4,6 +4,7 @@ using System.Windows.Controls;
 
 namespace MathEdit.Helpers
 {
+    // Proxy class for binding RTB.document
     public class RichTextBoxHelper : DependencyObject
     {
         public static EnabledFlowDocument GetDocumentXaml(DependencyObject obj)

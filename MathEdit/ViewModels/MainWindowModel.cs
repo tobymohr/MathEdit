@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -104,10 +105,10 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref mainFlowDocument, value); }
         }
 
-        public byte[] BinaryFlowDocument
+        public byte[] FlowDocumentBytes
         {
-            get { return documentModel.binaryFlowDocument; }
-            set { documentModel.binaryFlowDocument = value; }
+            get { return documentModel.flowDocumentBytes; }
+            set { documentModel.flowDocumentBytes = value; }
         }
 
         public Visibility Visibility
@@ -639,9 +640,7 @@ namespace MathEdit.ViewModels
             DocumentHelper helper = new DocumentHelper();
             string dialogResult = null;
 
-            // Serialize while operating fileDialog
-            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
-
+            serializeDocument(); // Serialize model
             // Get dialog if first save.
             if (fileName == "")
             {
@@ -652,8 +651,8 @@ namespace MathEdit.ViewModels
             if (dialogResult != null || fileName != "")
             {
                 fileName = dialogResult;
-                // Queue for execution, await serialization
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                saveExecute.Execute(null);
             }
 
         }
@@ -665,22 +664,19 @@ namespace MathEdit.ViewModels
 
             string dialogResult = null;
 
-            // Serialize while operating fileDialog
-            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
-
-            // Get dialog
-            dialogResult = helper.getSaveDialog();
+            serializeDocument(); // Serialize model
+            dialogResult = helper.getSaveDialog(); // Get dialog
 
             // Save if user did not cancel
             if (dialogResult != null)
             {
                 fileName = dialogResult;
-                // Queue for execution, await serialization
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+                saveExecute.Execute(null);
             }
         }
 
-        private void serializeDocument(object sender)
+        private void serializeDocument()
         {
             String finalXml;
             var utf8NoBom = new UTF8Encoding(false);
@@ -693,13 +689,15 @@ namespace MathEdit.ViewModels
             finalXml = stringBuilder.ToString();
             finalXml = finalXml.Replace("&#xA", "");
             finalXml = finalXml.Replace("&#xD;;", "");
-            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);           
+            FlowDocumentBytes = Encoding.ASCII.GetBytes(finalXml);     
         }
 
         private void saveAsync(object sender)
         {
+
             DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
+            helper.saveDoc(FlowDocumentBytes, fileName);
+
         }
 
         private void setPositions(EnabledFlowDocument document)
