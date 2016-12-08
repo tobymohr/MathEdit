@@ -245,14 +245,28 @@ namespace MathEdit.ViewModels
                 {
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Add(fControl.model);
-                    //par.Inlines.Add(fControl);
                     Paragraph p = fControl.model.getParent().Blocks.ElementAt(fControl.model.blockPosition) as Paragraph;
-                    //p.Inlines.ElementAt(fControl.)
-                    //Mangler bestemt position
+                    InlineUIContainer container = new InlineUIContainer {Child = fControl};
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(fControl.model.parPosition),container);
                 }
                 else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Add(pControl.model);
+                    Paragraph p = pControl.model.getParent().Blocks.ElementAt(pControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = pControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(pControl.model.parPosition), container);
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Add(sControl.model);
+                    Paragraph p = sControl.model.getParent().Blocks.ElementAt(sControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = sControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(sControl.model.parPosition), container);
                 }
             }
             else
@@ -292,7 +306,68 @@ namespace MathEdit.ViewModels
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-                    
+                    //Fjerner child fra EnabledFlowDocument
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Remove(pControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in pControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == pControl)
+                                    {
+                                        pControl.model.parPosition = inlinePosition;
+                                        pControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
+
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    //Fjerner child fra EnabledFlowDocument
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Remove(sControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in sControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == sControl)
+                                    {
+                                        sControl.model.parPosition = inlinePosition;
+                                        sControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
                 }
                 
             }

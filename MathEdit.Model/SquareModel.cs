@@ -26,6 +26,11 @@ namespace MathEdit.Model
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }
 
+        public EnabledFlowDocument getParent()
+        {
+            return parent;
+        }
+
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
 
         public override double outerWidth

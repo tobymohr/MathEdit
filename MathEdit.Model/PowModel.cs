@@ -26,6 +26,10 @@ namespace MathEdit.Model
         {
 
         }
+        public EnabledFlowDocument getParent()
+        {
+            return parent;
+        }
 
         public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(1)) + margin; } }
