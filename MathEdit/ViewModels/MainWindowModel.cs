@@ -717,13 +717,69 @@ namespace MathEdit.ViewModels
         private void saveDoc(object sender)
         {
             MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, false);
+            DocumentHelper helper = new DocumentHelper();
+            string dialogResult = null;
+
+            // Serialize while operating fileDialog
+            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
+
+            // Get dialog if first save.
+            if (fileName == "")
+            {
+                dialogResult = helper.getSaveDialog();
+            }
+
+            // Check if FileName is set, if not - cancel
+            if (dialogResult != null || fileName != "")
+            {
+                fileName = dialogResult;
+                // Queue for execution, await serialization
+                var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+            }
+
         }
 
         private void saveAsDoc(object sender)
         {
             MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, true);
+            DocumentHelper helper = new DocumentHelper();
+            string dialogResult = null;
+
+            // Serialize while operating fileDialog
+            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
+
+            // Get dialog
+            dialogResult = helper.getSaveDialog();
+
+            // Save if user did not cancel
+            if (dialogResult != null)
+            {
+                fileName = dialogResult;
+                // Queue for execution, await serialization
+                var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+            }
+        }
+
+        private void serializeDocument(object sender)
+        {
+            String finalXml;
+            var utf8NoBom = new UTF8Encoding(false);
+            setPositions(MainFlowDocument);
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { MainFlowDocument };
+            var xmlSerializer = new XmlSerializer(docs.GetType());
+            var stringBuilder = new StringBuilder();
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { Indent = true, Encoding = utf8NoBom });
+            xmlSerializer.Serialize(xmlTextWriter, docs);
+            finalXml = stringBuilder.ToString();
+            finalXml = finalXml.Replace("&#xA", "");
+            finalXml = finalXml.Replace("&#xD;;", "");
+            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);           
+        }
+
+        private void saveAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDoc(BinaryFlowDocument, fileName);
         }
 
         private void setPositions(EnabledFlowDocument document)
@@ -745,7 +801,7 @@ namespace MathEdit.ViewModels
                             {
                                 FractionControl f = (FractionControl)container.Child;
                                 model = f.model;
-                               
+
                             }
                             else if (container.Child is SquareControl)
                             {
@@ -759,7 +815,7 @@ namespace MathEdit.ViewModels
                             }
                             model.blockPosition = blockCounter;
                             model.parPosition = parCounter;
-                            foreach(EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                            foreach (EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
                             {
                                 setPositions(tempDoc);
                             }
@@ -776,43 +832,6 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
-        {
-            String finalXml;
-            var utf8NoBom = new UTF8Encoding(false);
-            setPositions(document);
-            ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-            var xmlSerializer = new XmlSerializer(docs.GetType());
-            var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings {  Indent = true, Encoding = utf8NoBom });
-            xmlSerializer.Serialize(xmlTextWriter, docs);
-            finalXml = stringBuilder.ToString();
-            finalXml = finalXml.Replace("&#xA", "");
-            finalXml = finalXml.Replace("&#xD;;", "");
-            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-            if (isSaveAsCaller)
-            {
-                var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-                command.Execute(BinaryFlowDocument);
-            }
-            else
-            {
-                var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                command.Execute(BinaryFlowDocument);
-            }
-        }
-
-        private void saveAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
-        }
-
-        private void saveAsAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveAsDoc(BinaryFlowDocument);
-        }
         #endregion
 
 
