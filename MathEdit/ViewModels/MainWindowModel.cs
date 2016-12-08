@@ -513,11 +513,15 @@ namespace MathEdit.ViewModels
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
             Paragraph par = null;
-            Run run = new Run(loadDoc.text);
-            par = new Paragraph();
-            currentDocument.text = loadDoc.text;
-            par.Inlines.Add(run);
-            currentDocument.Blocks.Add(par);
+            if(loadDoc.text != "")
+            {
+                Run run = new Run(loadDoc.text);
+                par = new Paragraph();
+                currentDocument.text = loadDoc.text;
+                par.Inlines.Add(run);
+                currentDocument.Blocks.Add(par);
+            }
+            
             int prevBlockPos = -1;
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
@@ -592,39 +596,38 @@ namespace MathEdit.ViewModels
             int parCounter = 0;
             foreach (Block b in document.Blocks)
             {
-                Console.WriteLine("BlockCounter" + blockCounter);
                 if (b is Paragraph)
                 {
                     parCounter = 0;
                     foreach (Inline inline in ((Paragraph)b).Inlines)
                     {
-                        Console.WriteLine("Parcounter" + parCounter);
-
                         if (inline is InlineUIContainer)
                         {
+                            Operation model = null;
                             InlineUIContainer container = (InlineUIContainer)inline;
                             if (container.Child is FractionControl)
                             {
                                 FractionControl f = (FractionControl)container.Child;
-                                f.model.blockPosition = blockCounter;
-                                f.model.parPosition = parCounter;
-                                Console.WriteLine("UIELEMENT " + container.Child.GetType());
+                                model = f.model;
+                               
                             }
 
                             if (container.Child is SquareControl)
                             {
                                 SquareControl f = (SquareControl)container.Child;
-                                f.model.blockPosition = blockCounter;
-                                f.model.parPosition = parCounter;
-                                Console.WriteLine("UIELEMENT " + container.Child.GetType());
+                                model = f.model;
                             }
 
                             if (container.Child is PowControl)
                             {
                                 PowControl f = (PowControl)container.Child;
-                                f.model.blockPosition = blockCounter;
-                                f.model.parPosition = parCounter;
-                                Console.WriteLine("UIELEMENT " + container.Child.GetType());
+                                model = f.model;
+                            }
+                            model.blockPosition = blockCounter;
+                            model.parPosition = parCounter;
+                            foreach(EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                            {
+                                setPositions(tempDoc);
                             }
                         }
                         else if (inline is Run)
