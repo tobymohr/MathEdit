@@ -247,8 +247,8 @@ namespace MathEdit.ViewModels
                     fControl.model.getParent().childrenOperations.Add(fControl.model);
                     Paragraph par = new Paragraph();
                     par.Inlines.Add(fControl);
-                    //Mangler bestemt position
                     fControl.model.getParent().Blocks.Add(par);
+                    //Mangler bestemt position
                 }
                 else if (uro.Uc.GetType() == typeof(PowControl))
                 {
@@ -260,9 +260,30 @@ namespace MathEdit.ViewModels
                 //delete
                 if (uro.Uc.GetType() == typeof(FractionControl))
                 {
+                    //Fjerner child fra EnabledFlowDocument
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Remove(fControl.model);
-                    //Dette fjerner the child fra parents liste, men ikke UserControlen fra flowdokumentet
+                    //Fjerner det fra UI
+                    foreach (Block b in fControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph) b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer UIc = (InlineUIContainer) inline;
+                                    if (UIc.Child == fControl)
+                                    {
+                                        UIc.Child = null;
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
                 {
