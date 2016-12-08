@@ -73,9 +73,9 @@ namespace MathEdit.ViewModels
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
             this.ToggleItalic = new RelayCommand<object>(this.italic_Click);
             this.ChangeFontSize = new RelayCommand<object>(this.changeFontSize);
-            this.CreateFractionCommand = new RelayCommand<object>(this.createFraction);
-            this.CreatePowCommand = new RelayCommand<object>(this.createPow);
-            this.CreateSqrtCommand = new RelayCommand<object>(this.createSquared);
+            this.CreateFractionCommand = new RelayCommand<object>(this.createNewFractionControl);
+            this.CreatePowCommand = new RelayCommand<object>(this.createNewPowControl);
+            this.CreateSqrtCommand = new RelayCommand<object>(this.createNewSqrtControl);
             this.TextBoxMainSelectionChanged = new RelayCommand<object>(this.textBoxMain_SelectionChanged);
             this.ScrollIn = new RelayCommand<object>(this.scrollIn);
             this.ScrollOut = new RelayCommand<object>(this.scrollOut);
@@ -172,21 +172,6 @@ namespace MathEdit.ViewModels
         {
             MainFlowDocument.Blocks.Clear();
             MainFlowDocument.childrenOperations.Clear();
-        }
-
-        private void createFraction(object sender)
-        {
-            createNewFractionControl();
-        }
-
-        private void createPow(object sender)
-        {
-            createNewPowControl();
-        }
-
-        private void createSquared(object sender)
-        {
-            createNewSqrtControl();
         }
 
         private void scrollIn(object sender)
@@ -326,7 +311,7 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void createNewFractionControl()
+        private void createNewFractionControl(object sender)
         {
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
@@ -337,7 +322,7 @@ namespace MathEdit.ViewModels
             addFormula(fControl, "fraction");
         }
 
-        private void createNewPowControl()
+        private void createNewPowControl(object sender)
         {
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
@@ -348,7 +333,7 @@ namespace MathEdit.ViewModels
             addFormula(pControl, "power");
         }
 
-        private void createNewSqrtControl()
+        private void createNewSqrtControl(object sender)
         {
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
@@ -550,14 +535,13 @@ namespace MathEdit.ViewModels
             if (fileName == "")
             {
                 dialogResult = helper.getSaveDialog();
+                if (dialogResult != null)
+                {
+                    fileName = dialogResult;
+                }
             }
 
             // Check if FileName is set, if not - cancel
-            if (dialogResult != null)
-            {
-                fileName = dialogResult;
-            }
-
             if (fileName != "")
             {
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
