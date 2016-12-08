@@ -100,15 +100,12 @@
     <Compile Include="Helpers\MouseWheel.cs" />
     <Compile Include="Helpers\MouseWheelGesture.cs" />
     <Compile Include="Helpers\RichTextBoxHelper.cs" />
-    <Compile Include="Helpers\Undoer.cs" />
     <Compile Include="Views\HotkeyMenu.xaml.cs">
       <DependentUpon>HotkeyMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PowControl.xaml.cs">
       <DependentUpon>PowControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Command\IUndoRedoCommand.cs" />
-    <Compile Include="Helpers\UndoRedoController.cs" />
     <Compile Include="Helpers\DocumentHelper.cs" />
     <Compile Include="Command\AsyncRelayCommand.cs" />
     <Compile Include="Command\RelayCommand.cs" />

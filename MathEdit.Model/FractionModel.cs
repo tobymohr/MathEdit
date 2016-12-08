@@ -28,13 +28,7 @@ namespace MathEdit.Model
         }
 
 
-        public override EnabledFlowDocument getParent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
+        public override EnabledFlowDocument getParent => _parent;
 
 
         public double numenatorWidth { get { return getTotalWidth(ListOfEnabledDocs.ElementAt(0)) + 10; } }

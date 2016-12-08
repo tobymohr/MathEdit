@@ -20,7 +20,6 @@ namespace MathEdit.ViewModels
 {
     class MainWindowModel : ViewModelBase
     {
-        private UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ICommand SaveCommand { get; }
         public ICommand CreateFractionCommand { get; }
         public ICommand CreatePowCommand { get; }
@@ -233,7 +232,7 @@ namespace MathEdit.ViewModels
         private void addFormula(UserControl uc, string type)
         {
             //undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
-            //False means it is not being delete, therefore added.
+            //False means it is not being delete, therefore being created.
             undoRedo.Add(uc,false);
         }
 
@@ -246,7 +245,7 @@ namespace MathEdit.ViewModels
                 controlModel.model.getParent.childrenOperations.Add(controlModel.model);
                 Paragraph p = controlModel.model.getParent.Blocks.ElementAt(controlModel.model.blockPosition) as Paragraph;
                 InlineUIContainer container = new InlineUIContainer { Child = tempUserControl };
-                container.Unloaded += presenter_Unloaded;
+                container.Unloaded += UserControl_Unloaded;
                 p.Inlines.InsertBefore(p.Inlines.ElementAt(controlModel.model.parPosition), container);
 
             }
@@ -304,21 +303,27 @@ namespace MathEdit.ViewModels
             }
 
             InlineUIContainer container = new InlineUIContainer(element, parentTb.CaretPosition);
-            container.Unloaded += presenter_Unloaded;
+            container.Unloaded += UserControl_Unloaded;
             parentFd.childrenOperations.Add(model);
         }
 
     
 
-        void presenter_Unloaded(object sender, RoutedEventArgs e)
+        void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            InlineUIContainer container = sender as InlineUIContainer;
-            Operation localmodel = null;
-            MathControl ctrlmodel = container.Child as MathControl;
-            if(ctrlmodel != null)
-            {
-                localmodel = ctrlmodel.model;
-            }
+            //InlineUIContainer container = sender as InlineUIContainer;
+            //Operation localmodel = null;
+            //MathControl ctrlmodel = container.Child as MathControl;
+            ////Fjerner child fra parent og sætter position
+            //if (ctrlmodel != null)
+            //{
+            //    localmodel = ctrlmodel.model;
+            //}
+            //localmodel.getParent.childrenOperations.Remove(localmodel);
+            ////Finder position
+            //IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+            //RichTextBox parentBox = focusedControl as RichTextBox;
+
         }
 
         private void createNewFractionControl()
@@ -496,7 +501,7 @@ namespace MathEdit.ViewModels
                     par = new Paragraph();
                     InlineUIContainer container = new InlineUIContainer();
                     container.Child = element;
-                    container.Unloaded += presenter_Unloaded;
+                    container.Unloaded += UserControl_Unloaded;
                     par.Inlines.Add(container);
                     currentDocument.Blocks.Add(par);
                 }else
