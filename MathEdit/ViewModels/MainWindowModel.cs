@@ -105,10 +105,10 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref mainFlowDocument, value); }
         }
 
-        public byte[] BinaryFlowDocument
+        public byte[] FlowDocumentBytes
         {
-            get { return documentModel.binaryFlowDocument; }
-            set { documentModel.binaryFlowDocument = value; }
+            get { return documentModel.flowDocumentBytes; }
+            set { documentModel.flowDocumentBytes = value; }
         }
 
         public Visibility Visibility
@@ -698,14 +698,14 @@ namespace MathEdit.ViewModels
             finalXml = stringBuilder.ToString();
             finalXml = finalXml.Replace("&#xA", "");
             finalXml = finalXml.Replace("&#xD;;", "");
-            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);     
+            FlowDocumentBytes = Encoding.ASCII.GetBytes(finalXml);     
         }
 
         private void saveAsync(object sender)
         {
 
             DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
+            helper.saveDoc(FlowDocumentBytes, fileName);
 
         }
 
