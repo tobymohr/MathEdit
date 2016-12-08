@@ -90,7 +90,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command\AddFormulaCommand.cs" />
     <Compile Include="Helpers\UndoRedo.cs" />
     <Compile Include="Helpers\UndoRedoObject.cs" />
     <Compile Include="ViewModels\MathControl.cs" />
