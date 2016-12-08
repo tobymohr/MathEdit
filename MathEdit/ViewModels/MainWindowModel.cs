@@ -243,35 +243,6 @@ namespace MathEdit.ViewModels
             MathControl controlModel = tempUserControl as MathControl;
             if (uro.Deleted)
             {
-                //recreate
-                //if (uro.Uc.GetType() == typeof(FractionControl))
-                //{
-                //    FractionControl fControl = (FractionControl)uro.Uc;
-                //    fControl.model.getParent().childrenOperations.Add(fControl.model);
-                //    Paragraph p = fControl.model.getParent().Blocks.ElementAt(fControl.model.blockPosition) as Paragraph;
-                //    InlineUIContainer container = new InlineUIContainer {Child = fControl};
-                //    container.Unloaded += presenter_Unloaded;
-                //    p.Inlines.InsertBefore(p.Inlines.ElementAt(fControl.model.parPosition),container);
-                //}
-                //else if (uro.Uc.GetType() == typeof(PowControl))
-                //{
-                //    PowControl pControl = (PowControl)uro.Uc;
-                //    pControl.model.getParent().childrenOperations.Add(pControl.model);
-                //    Paragraph p = pControl.model.getParent().Blocks.ElementAt(pControl.model.blockPosition) as Paragraph;
-                //    InlineUIContainer container = new InlineUIContainer { Child = pControl };
-                //    container.Unloaded += presenter_Unloaded;
-                //    p.Inlines.InsertBefore(p.Inlines.ElementAt(pControl.model.parPosition), container);
-                //}
-                //else if (uro.Uc.GetType() == typeof(SquareControl))
-                //{
-                //    SquareControl sControl = (SquareControl)uro.Uc;
-                //    sControl.model.getParent().childrenOperations.Add(sControl.model);
-                //    Paragraph p = sControl.model.getParent().Blocks.ElementAt(sControl.model.blockPosition) as Paragraph;
-                //    InlineUIContainer container = new InlineUIContainer { Child = sControl };
-                //    container.Unloaded += presenter_Unloaded;
-                //    p.Inlines.InsertBefore(p.Inlines.ElementAt(sControl.model.parPosition), container);
-                //}
-
                 controlModel.model.getParent.childrenOperations.Add(controlModel.model);
                 Paragraph p = controlModel.model.getParent.Blocks.ElementAt(controlModel.model.blockPosition) as Paragraph;
                 InlineUIContainer container = new InlineUIContainer { Child = tempUserControl };
@@ -281,9 +252,6 @@ namespace MathEdit.ViewModels
             }
             else
             {
-                //delete
-                //if (uro.Uc.GetType() == typeof(FractionControl))
-                //{
                 //    //Fjerner child fra EnabledFlowDocument
                     controlModel.model.getParent.childrenOperations.Remove(controlModel.model);
                     //Fjerner det fra UI
@@ -291,6 +259,7 @@ namespace MathEdit.ViewModels
                     int inlinePosition = 0;
                     foreach (Block b in controlModel.model.getParent.Blocks)
                     {
+                        inlinePosition = 0;
                         if (b is Paragraph)
                         {
                             Paragraph p = (Paragraph)b;
@@ -312,74 +281,6 @@ namespace MathEdit.ViewModels
                         }
                         blockPosition++;
                     }
-
-                //}
-                //else if (uro.Uc.GetType() == typeof(PowControl))
-                //{
-                //    //Fjerner child fra EnabledFlowDocument
-                //    PowControl pControl = (PowControl)uro.Uc;
-                //    pControl.model.getParent().childrenOperations.Remove(pControl.model);
-                //    //Fjerner det fra UI
-                //    int blockPosition = 0;
-                //    int inlinePosition = 0;
-                //    foreach (Block b in pControl.model.getParent().Blocks)
-                //    {
-                //        if (b is Paragraph)
-                //        {
-                //            Paragraph p = (Paragraph)b;
-                //            foreach (Inline inline in p.Inlines)
-                //            {
-                //                if (inline is InlineUIContainer)
-                //                {
-                //                    InlineUIContainer uic = (InlineUIContainer)inline;
-                //                    if (uic.Child == pControl)
-                //                    {
-                //                        pControl.model.parPosition = inlinePosition;
-                //                        pControl.model.blockPosition = blockPosition;
-                //                        uic.Child = null;
-                //                        return;
-                //                    }
-                //                }
-                //                inlinePosition++;
-                //            }
-                //        }
-                //        blockPosition++;
-                //    }
-
-                //}
-                //else if (uro.Uc.GetType() == typeof(SquareControl))
-                //{
-                //    //Fjerner child fra EnabledFlowDocument
-                //    SquareControl sControl = (SquareControl)uro.Uc;
-                //    sControl.model.getParent().childrenOperations.Remove(sControl.model);
-                //    //Fjerner det fra UI
-                //    int blockPosition = 0;
-                //    int inlinePosition = 0;
-                //    foreach (Block b in sControl.model.getParent().Blocks)
-                //    {
-                //        if (b is Paragraph)
-                //        {
-                //            Paragraph p = (Paragraph)b;
-                //            foreach (Inline inline in p.Inlines)
-                //            {
-                //                if (inline is InlineUIContainer)
-                //                {
-                //                    InlineUIContainer uic = (InlineUIContainer)inline;
-                //                    if (uic.Child == sControl)
-                //                    {
-                //                        sControl.model.parPosition = inlinePosition;
-                //                        sControl.model.blockPosition = blockPosition;
-                //                        uic.Child = null;
-                //                        return;
-                //                    }
-                //                }
-                //                inlinePosition++;
-                //            }
-                //        }
-                //        blockPosition++;
-                //    }
-                //}
-
             }
         }
 
@@ -717,23 +618,6 @@ namespace MathEdit.ViewModels
                             InlineUIContainer container = (InlineUIContainer)inline;
                             MathControl contrl = container.Child as MathControl;
                             model = contrl.model;
-                            //if (container.Child is FractionControl)
-                            //{
-                            //    FractionControl f = (FractionControl)container.Child;
-                            //    MathControl contrl = f as MathControl;
-                            //    model = contrl.model;
-
-                            //}
-                            //else if (container.Child is SquareControl)
-                            //{
-                            //    SquareControl f = (SquareControl)container.Child;
-                            //    model = f.model;
-                            //}
-                            //else if (container.Child is PowControl)
-                            //{
-                            //    PowControl f = (PowControl)container.Child;
-                            //    model = f.model;
-                            //}
                             if (model != null)
                             {
                                 model.blockPosition = blockCounter;
