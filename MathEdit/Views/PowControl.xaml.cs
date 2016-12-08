@@ -48,9 +48,9 @@ namespace MathEdit.Views
         public void setUIWidth()
         {
             PowModel pM = (PowModel)model;
-            pow.Width = pM.powWidth;
-            number.Width = pM.numberWidth;
-            TrackSurface.Width = pM.outerWidth;
+            pow.Width = pM.powWidth + 5;
+            number.Width = pM.numberWidth + 5;
+            TrackSurface.Width = pM.outerWidth +15;
         }
     }
 }
