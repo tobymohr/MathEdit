@@ -1,4 +1,5 @@
 ﻿<Window x:Class="MathEdit.Views.MainWindow"
+        x:Name="TestWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,10 +9,10 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
-        Title="MainWindow" Height="950" Width="850" Background="AliceBlue">
+         Height="950" Width="850" Background="AliceBlue">
 
     <Window.InputBindings>
-        <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}" />
+        <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}"/>
         <MouseBinding Gesture="{h:MouseWheel Direction=Down}" Command="{Binding ScrollOut}" />
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand}" ></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
@@ -31,7 +32,7 @@
                 <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <MenuItem Header="_Save As" InputGestureText="Ctrl+Alt+S" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"/>
                 <Separator />
-                <MenuItem Header="_Exit" InputGestureText="Alt+F4" />
+                <MenuItem Header="_Exit" InputGestureText="Alt+F4" Command=""/>
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
@@ -42,7 +43,7 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
-                <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"/>
+                <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"  CommandParameter="{Binding ElementName=TestWindow}" />
             </MenuItem>
             <ComboBox x:Name="fontSizeBox" IsEditable="True" IsTextSearchEnabled="False" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" IsDropDownOpen="{Binding FontDropOpen}">
                 <ComboBoxItem Content="5"/>

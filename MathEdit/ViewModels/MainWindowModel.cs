@@ -554,9 +554,13 @@ namespace MathEdit.ViewModels
             }
 
             // Check if FileName is set, if not - cancel
-            if (dialogResult != null || fileName != "")
+            if (dialogResult != null)
             {
                 fileName = dialogResult;
+            }
+
+            if (fileName != "")
+            {
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
                 saveExecute.Execute(null);
             }
