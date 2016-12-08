@@ -1,5 +1,4 @@
 ﻿<Window x:Class="MathEdit.Views.MainWindow"
-        x:Name="TestWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,8 +7,9 @@
         xmlns:h="clr-namespace:MathEdit.Helpers"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        FocusManager.FocusedElement="{Binding ElementName=menuPanel}"
-         Height="950" Width="850" Background="AliceBlue">
+        FocusManager.FocusedElement="{Binding ElementName=FirstBox}"
+        Title="MainWindow" Height="950" Width="850" Background="AliceBlue"
+        >
 
     <Window.InputBindings>
         <MouseBinding Gesture="{h:MouseWheel Direction=Up}" Command="{Binding ScrollIn}"/>
@@ -24,7 +24,7 @@
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
     </Window.InputBindings>
-    <DockPanel x:Name="menuPanel" FocusManager.FocusedElement="{Binding ElementName=FirstBox}">
+    <DockPanel x:Name="menuPanel">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewCommand}" />
@@ -43,7 +43,7 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
-                <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"  CommandParameter="{Binding ElementName=TestWindow}" />
+                <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"/>
             </MenuItem>
             <ComboBox x:Name="fontSizeBox" IsEditable="True" IsTextSearchEnabled="False" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" IsDropDownOpen="{Binding FontDropOpen}">
                 <ComboBoxItem Content="5"/>
