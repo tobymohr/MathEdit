@@ -218,7 +218,7 @@ namespace MathEdit.ViewModels
         {
             //undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
             //False means it is not being delete, therefore being created.
-            undoRedo.Add(uc,false);
+            undoRedo.Add(new UndoRedoObject(uc,false));
         }
 
         private void deleteOrRecreate(UndoRedoObject uro)
@@ -227,12 +227,23 @@ namespace MathEdit.ViewModels
             MathControl controlModel = tempUserControl as MathControl;
             if (uro.Deleted)
             {
+                //Tilføjer barnets model
                 controlModel.model.getParent.childrenOperations.Add(controlModel.model);
-                Paragraph p = controlModel.model.getParent.Blocks.ElementAt(controlModel.model.blockPosition) as Paragraph;
-                InlineUIContainer container = new InlineUIContainer { Child = tempUserControl };
-                container.Unloaded += UserControl_Unloaded;
-                p.Inlines.InsertBefore(p.Inlines.ElementAt(controlModel.model.parPosition), container);
-
+                if (uro.TextPointer == null)
+                {
+                    //Hvis ingen textPointer er sat, så benyt modellens position
+                    Paragraph p =
+                        controlModel.model.getParent.Blocks.ElementAt(controlModel.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = tempUserControl };
+                    container.Unloaded += UserControl_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(controlModel.model.parPosition), container);
+                }
+                else
+                {
+                    //Hvis textPointer er sat, så er modellen position ikke, derfor brug textPointer
+                    InlineUIContainer container = new InlineUIContainer(tempUserControl, uro.TextPointer);
+                    container.Unloaded += UserControl_Unloaded;
+                }
             }
             else
             {
@@ -240,10 +251,9 @@ namespace MathEdit.ViewModels
                     controlModel.model.getParent.childrenOperations.Remove(controlModel.model);
                     //Fjerner det fra UI
                     int blockPosition = 0;
-                    int inlinePosition = 0;
                     foreach (Block b in controlModel.model.getParent.Blocks)
                     {
-                        inlinePosition = 0;
+                        var inlinePosition = 0;
                         if (b is Paragraph)
                         {
                             Paragraph p = (Paragraph)b;
@@ -294,21 +304,22 @@ namespace MathEdit.ViewModels
 
     
 
-        void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            //InlineUIContainer container = sender as InlineUIContainer;
-            //Operation localmodel = null;
-            //MathControl ctrlmodel = container.Child as MathControl;
-            ////Fjerner child fra parent og sætter position
-            //if (ctrlmodel != null)
-            //{
-            //    localmodel = ctrlmodel.model;
-            //}
-            //localmodel.getParent.childrenOperations.Remove(localmodel);
-            ////Finder position
-            //IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            //RichTextBox parentBox = focusedControl as RichTextBox;
-
+            InlineUIContainer container = sender as InlineUIContainer;
+            MathControl ctrlmodel = container.Child as MathControl;
+            if (ctrlmodel.model != null)
+            {
+                Operation localmodel = ctrlmodel.model;
+                //Fjerner child fra parent og sætter position
+                localmodel.getParent.childrenOperations.Remove(localmodel);
+                //Finder position
+                IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+                RichTextBox parentBox = focusedControl as RichTextBox;
+                UndoRedoObject uro = new UndoRedoObject((UserControl) container.Child, true, parentBox.CaretPosition);
+                undoRedo.Add(uro);
+                container.Child = null;
+            }
         }
 
         private void createNewFractionControl(object sender)

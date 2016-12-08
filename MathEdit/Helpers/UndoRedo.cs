@@ -20,10 +20,10 @@ namespace MathEdit.Helpers
             
         }
 
-        public void Add(UserControl uc, bool delete)
+        public void Add(UndoRedoObject uro)
         {
             redoStack.Clear();
-            undoStack.Push(new UndoRedoObject(uc,delete));
+            undoStack.Push(uro);
         }
 
         public UndoRedoObject Undo()
