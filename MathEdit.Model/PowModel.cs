@@ -27,13 +27,7 @@ namespace MathEdit.Model
 
         }
 
-        public override EnabledFlowDocument getParent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
+        public override EnabledFlowDocument getParent => _parent;
 
         public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(1)); } }
