@@ -12,7 +12,9 @@ namespace MathEdit.Model
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
         private EnabledFlowDocument parent;
-        private int myPostion = 0;
+        private int _parPostion = 0;
+        private int _blockPosition = 0;
+
         public FractionModel()
         {
 
@@ -62,18 +64,30 @@ namespace MathEdit.Model
             }
         }
 
-        public override int position
+        public override int parPosition
         {
             get
             {
-                return myPostion;
+                return _parPostion;
             }
 
             set
             {
-                myPostion = value;
+                _parPostion = value;
             }
         }
 
+        public override int blockPosition
+        {
+            get
+            {
+                return _blockPosition;
+            }
+
+            set
+            {
+                _blockPosition = value;
+            }
+        }
     }
 }

@@ -11,8 +11,9 @@ namespace MathEdit.Model
         [XmlElement("outerWidth")]
         abstract public double outerWidth { get; set; }
         abstract public ListOfEnabledDocs ListOfEnabledDocs { get; set; }
-        abstract public int position { get; set; }
-        
+        abstract public int parPosition { get; set; }
+        abstract public int blockPosition { get; set; }
+
         public virtual double getTotalWidth(EnabledFlowDocument model)
         {
             double maxValue = 0;
