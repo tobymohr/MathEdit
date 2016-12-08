@@ -10,8 +10,8 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
-        private int minWidth = 50;
-        private int margin =10;
+        private int minWidth = 30;
+        private int margin =30;
         private int _parPostion = 0;
         private int _blockPosition = 0;
         private EnabledFlowDocument _parent;
@@ -29,8 +29,8 @@ namespace MathEdit.Model
 
         public override EnabledFlowDocument getParent => _parent;
 
-        public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }
-        public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(1)) + margin; } }
+        public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
+        public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(1)); } }
 
         public override double outerWidth
         {

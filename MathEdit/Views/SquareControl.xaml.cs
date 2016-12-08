@@ -36,6 +36,7 @@ namespace MathEdit.Views
             numberBox.TextChanged += onChange;
             setUIWidth();
             
+            
         }
 
         public void onChange(object sender, RoutedEventArgs e)
@@ -43,11 +44,11 @@ namespace MathEdit.Views
             setUIWidth();
         }
 
-        private void setUIWidth()
+        public void setUIWidth()
         {
             SquareModel sM = (SquareModel)model;
             numberBox.Width = sM.numberWidth + 20;
-            TrackSurface.Width = sM.outerWidth + 20;
+            TrackSurface.Width = sM.outerWidth;
         }
     }
 }

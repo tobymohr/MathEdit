@@ -491,7 +491,6 @@ namespace MathEdit.ViewModels
             int prevBlockPos = -1;
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
-
                 UIElement element = GetUIElementForType(op, currentDocument);
                 Console.WriteLine(op.GetType());
                
