@@ -19,7 +19,6 @@ namespace MathEdit.Model
         public virtual double getTotalWidth(EnabledFlowDocument model)
         {
             double maxValue = 0;
-            model.text = model.GetFormattedText().Text;
             double textWidth = model.GetFormattedText().WidthIncludingTrailingWhitespace;
             double sumWidth = 0;
             foreach (Operation op in model.childrenOperations)
