@@ -685,6 +685,28 @@ namespace MathEdit.ViewModels
             }
         }
 
+        private void serializeDocument(object sender)
+        {
+            String finalXml;
+            var utf8NoBom = new UTF8Encoding(false);
+            setPositions(MainFlowDocument);
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { MainFlowDocument };
+            var xmlSerializer = new XmlSerializer(docs.GetType());
+            var stringBuilder = new StringBuilder();
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { Indent = true, Encoding = utf8NoBom });
+            xmlSerializer.Serialize(xmlTextWriter, docs);
+            finalXml = stringBuilder.ToString();
+            finalXml = finalXml.Replace("&#xA", "");
+            finalXml = finalXml.Replace("&#xD;;", "");
+            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);           
+        }
+
+        private void saveAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDoc(BinaryFlowDocument, fileName);
+        }
+
         private void setPositions(EnabledFlowDocument document)
         {
             int blockCounter = 0;
@@ -704,7 +726,7 @@ namespace MathEdit.ViewModels
                             {
                                 FractionControl f = (FractionControl)container.Child;
                                 model = f.model;
-                               
+
                             }
                             else if (container.Child is SquareControl)
                             {
@@ -718,7 +740,7 @@ namespace MathEdit.ViewModels
                             }
                             model.blockPosition = blockCounter;
                             model.parPosition = parCounter;
-                            foreach(EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                            foreach (EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
                             {
                                 setPositions(tempDoc);
                             }
@@ -735,30 +757,6 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
-        private void serializeDocument(object sender)
-        {
-            String finalXml;
-            var utf8NoBom = new UTF8Encoding(false);
-            setPositions(document);
-            ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-            var xmlSerializer = new XmlSerializer(docs.GetType());
-            var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { Indent = true, Encoding = utf8NoBom });
-            xmlSerializer.Serialize(xmlTextWriter, docs);
-            finalXml = stringBuilder.ToString();
-            finalXml = finalXml.Replace("&#xA", "");
-            finalXml = finalXml.Replace("&#xD;;", "");
-            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);           
-        }
-
-        private void saveAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
-        }
-
-     
         #endregion
 
 
