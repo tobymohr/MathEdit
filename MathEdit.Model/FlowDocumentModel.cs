@@ -6,7 +6,7 @@
             mainFlowDocument = new EnabledFlowDocument("");
         }
 
-        public EnabledFlowDocument mainFlowDocument { get;set;}
-        public byte[] flowDocumentBytes { get; set; }
+        public EnabledFlowDocument mainFlowDocument { get;set; } // Extracted from the main richtextbox.document
+        public byte[] flowDocumentBytes { get; set; } // mainFlowDocument ASCII conversion for saving.
     }
 }
