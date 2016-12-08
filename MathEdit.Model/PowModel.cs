@@ -12,7 +12,8 @@ namespace MathEdit.Model
         private ListOfEnabledDocs _boxes;
         private int minWidth = 50;
         private int margin =10;
-        private int myPostion = 0;
+        private int _parPostion = 0;
+        private int _blockPosition = 0;
         private EnabledFlowDocument parent;
         public PowModel(EnabledFlowDocument parent)
         {
@@ -60,16 +61,29 @@ namespace MathEdit.Model
             }
         }
 
-        public override int position
+        public override int parPosition
         {
             get
             {
-                return myPostion;
+                return _parPostion;
             }
 
             set
             {
-                myPostion = value;
+                _parPostion = value;
+            }
+        }
+
+        public override int blockPosition
+        {
+            get
+            {
+                return _blockPosition;
+            }
+
+            set
+            {
+                _blockPosition = value;
             }
         }
     }

@@ -169,7 +169,6 @@ namespace MathEdit.ViewModels
 
         private void newDocument(object sender)
         {
-            Console.WriteLine("New Document");
             MainFlowDocument.Blocks.Clear();
             MainFlowDocument.childrenOperations.Clear();
         }
@@ -381,7 +380,6 @@ namespace MathEdit.ViewModels
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl(parentFd);
             parentFd.childrenOperations.Add(fControl.model);
-            fControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(fControl);
             
             //latestOperation = fControl.model;
@@ -399,7 +397,6 @@ namespace MathEdit.ViewModels
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             PowControl pControl = new PowControl(parentFd);
             parentFd.childrenOperations.Add(pControl.model);
-            pControl.model.position = GetIntPosition(position, parentTb);
             para.Inlines.Add(pControl);
         }
 
@@ -413,7 +410,6 @@ namespace MathEdit.ViewModels
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             SquareControl sControl = new SquareControl(parentFd);
-            sControl.model.position = GetIntPosition(position, parentTb);
             parentFd.childrenOperations.Add(sControl.model);
             para.Inlines.Add(sControl);
         }
@@ -537,18 +533,34 @@ namespace MathEdit.ViewModels
 
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
-            Paragraph par = new Paragraph();
-            Run run = new Run(loadDoc.text);
-            currentDocument.text = loadDoc.text;
-            par.Inlines.Add(run);
-            currentDocument.Blocks.Add(par);
+            Paragraph par = null;
+            if(loadDoc.text != "")
+            {
+                Run run = new Run(loadDoc.text);
+                par = new Paragraph();
+                currentDocument.text = loadDoc.text;
+                par.Inlines.Add(run);
+                currentDocument.Blocks.Add(par);
+            }
+            
+            int prevBlockPos = -1;
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
+
                 UIElement element = GetUIElementForType(op, currentDocument);
                 Console.WriteLine(op.GetType());
-                par.Inlines.Add(element);
-                currentDocument.Blocks.Add(par);
                
+                if (prevBlockPos != op.blockPosition)
+                {
+                    prevBlockPos = op.blockPosition;
+                    par = new Paragraph();
+                    par.Inlines.Add(element);
+                    currentDocument.Blocks.Add(par);
+                }else
+                {
+                    par = (Paragraph) currentDocument.Blocks.LastBlock;
+                    par.Inlines.Add(element);
+                }
             }
         }
 
@@ -556,7 +568,6 @@ namespace MathEdit.ViewModels
         {
             for(int i = 0; i < loadModel.ListOfEnabledDocs.Count; i++)
             {
-                childModel.position = loadModel.position; 
                 openDocInGUI(childModel.ListOfEnabledDocs.ElementAt(i), loadModel.ListOfEnabledDocs.ElementAt(i));
             }
         }
@@ -600,10 +611,63 @@ namespace MathEdit.ViewModels
             serializeDocument(MainFlowDocument, true);
         }
 
+        private void setPositions(EnabledFlowDocument document)
+        {
+            int blockCounter = 0;
+            int parCounter = 0;
+            foreach (Block b in document.Blocks)
+            {
+                if (b is Paragraph)
+                {
+                    parCounter = 0;
+                    foreach (Inline inline in ((Paragraph)b).Inlines)
+                    {
+                        if (inline is InlineUIContainer)
+                        {
+                            Operation model = null;
+                            InlineUIContainer container = (InlineUIContainer)inline;
+                            if (container.Child is FractionControl)
+                            {
+                                FractionControl f = (FractionControl)container.Child;
+                                model = f.model;
+                               
+                            }
+
+                            if (container.Child is SquareControl)
+                            {
+                                SquareControl f = (SquareControl)container.Child;
+                                model = f.model;
+                            }
+
+                            if (container.Child is PowControl)
+                            {
+                                PowControl f = (PowControl)container.Child;
+                                model = f.model;
+                            }
+                            model.blockPosition = blockCounter;
+                            model.parPosition = parCounter;
+                            foreach(EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                            {
+                                setPositions(tempDoc);
+                            }
+                        }
+                        else if (inline is Run)
+                        {
+                            Console.WriteLine("RUN");
+                        }
+                        parCounter++;
+                    }
+                }
+                blockCounter++;
+            }
+
+        }
+
         private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
         {
             String finalXml;
             var utf8NoBom = new UTF8Encoding(false);
+            setPositions(document);
             ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
             var xmlSerializer = new XmlSerializer(docs.GetType());
             var stringBuilder = new StringBuilder();
