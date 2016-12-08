@@ -47,9 +47,9 @@ namespace MathEdit.Views
         public void setUIWidth()
         {
             FractionModel model = (FractionModel)this.model;
-            denumenatorTextBox.Width = model.denumenatorWidth;
-            numenatorTextBox.Width = model.numenatorWidth;
-            TrackSurface.Width = model.outerWidth;
+            denumenatorTextBox.Width = model.denumenatorWidth + 5;
+            numenatorTextBox.Width = model.numenatorWidth + 5;
+            TrackSurface.Width = model.outerWidth ;
         }
     }
 }
