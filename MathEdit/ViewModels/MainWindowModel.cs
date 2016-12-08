@@ -116,7 +116,6 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.visibility, value); }
         }
 
-
         public string FontSize
         {
             get { return this.fontSize; }

@@ -92,7 +92,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\UndoRedo.cs" />
     <Compile Include="Helpers\UndoRedoObject.cs" />
-    <Compile Include="ViewModels\MathControl.cs" />
+    <Compile Include="Helpers\MathControl.cs" />
     <Compile Include="Views\FractionControl.xaml.cs">
       <DependentUpon>FractionControl.xaml</DependentUpon>
     </Compile>
