@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -358,11 +359,39 @@ namespace MathEdit.ViewModels
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             FractionControl fControl = new FractionControl(parentFd);
+            InlineUIContainer container = new InlineUIContainer();
+            container.Child = fControl;
+            container.Unloaded += presenter_Unloaded;
             parentFd.childrenOperations.Add(fControl.model);
-            para.Inlines.Add(fControl);
+            para.Inlines.Add(container);
             
             //latestOperation = fControl.model;
             addFormula(fControl,"fraction");
+        }
+
+        void presenter_Unloaded(object sender, RoutedEventArgs e)
+        {
+            InlineUIContainer container = sender as InlineUIContainer;
+            Operation model = null;
+            if (container.Child is FractionControl)
+            {
+                FractionControl f = (FractionControl)container.Child;
+                model = f.model;
+
+            }
+            else if (container.Child is SquareControl)
+            {
+                SquareControl f = (SquareControl)container.Child;
+                model = f.model;
+            }
+            else if (container.Child is PowControl)
+            {
+                PowControl f = (PowControl)container.Child;
+                model = f.model;
+            }
+            Console.WriteLine(container.Child.GetType());
+            Console.WriteLine(model.ListOfEnabledDocs.ElementAt(0).text);
+
         }
 
         private void createNewPowControl()
@@ -375,8 +404,11 @@ namespace MathEdit.ViewModels
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             PowControl pControl = new PowControl(parentFd);
+            InlineUIContainer container = new InlineUIContainer();
+            container.Child = pControl;
+            container.Unloaded += presenter_Unloaded;
             parentFd.childrenOperations.Add(pControl.model);
-            para.Inlines.Add(pControl);
+            para.Inlines.Add(container);
         }
 
         private void createNewSqrtControl()
@@ -389,8 +421,11 @@ namespace MathEdit.ViewModels
             para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             SquareControl sControl = new SquareControl(parentFd);
+            InlineUIContainer container = new InlineUIContainer();
+            container.Child = sControl;
+            container.Unloaded += presenter_Unloaded;
             parentFd.childrenOperations.Add(sControl.model);
-            para.Inlines.Add(sControl);
+            para.Inlines.Add(container);
         }
 
         private void changeFontSize(object sender)
@@ -611,14 +646,12 @@ namespace MathEdit.ViewModels
                                 model = f.model;
                                
                             }
-
-                            if (container.Child is SquareControl)
+                            else if (container.Child is SquareControl)
                             {
                                 SquareControl f = (SquareControl)container.Child;
                                 model = f.model;
                             }
-
-                            if (container.Child is PowControl)
+                            else if (container.Child is PowControl)
                             {
                                 PowControl f = (PowControl)container.Child;
                                 model = f.model;
