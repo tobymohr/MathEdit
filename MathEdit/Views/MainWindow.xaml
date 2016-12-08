@@ -18,10 +18,12 @@
         <KeyBinding Key="W" Modifiers="Alt" Command="{Binding CreateFractionCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Alt" Command="{Binding CreatePowCommand}"></KeyBinding>
         <KeyBinding Key="D" Modifiers="Alt" Command="{Binding CreateSqrtCommand}"></KeyBinding>
+        <KeyBinding Key="Y" Modifiers="Alt" Command="{Binding RedoCommand}"></KeyBinding>
+        <KeyBinding Key="Z" Modifiers="Alt" Command="{Binding UndoCommand}"></KeyBinding>
         <KeyBinding Key="Z" Modifiers="Control+Alt" Command="{Binding OpenHotkeysCommand}"></KeyBinding>
         <KeyBinding Key="S" Modifiers="Control+Alt" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=FirstBox, Path=Document}"></KeyBinding>
     </Window.InputBindings>
-    <DockPanel x:Name="menuPanel">
+    <DockPanel x:Name="menuPanel" FocusManager.FocusedElement="{Binding ElementName=FirstBox}">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding NewCommand}" />
@@ -35,8 +37,8 @@
                 <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Copy"  Command="ApplicationCommands.Copy"  FocusManager.IsFocusScope="True"></MenuItem>
                 <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"  FocusManager.IsFocusScope="True"></MenuItem>
-                <MenuItem Header="_Redo" x:Name="Redo"  Command="{Binding RedoCommand}"></MenuItem>
-                <MenuItem Header="_Undo" x:Name="Undo"  Command="{Binding UndoCommand}" ></MenuItem> 
+                <MenuItem Header="_Redo" x:Name="Redo" InputGestureText="Alt+Y" Command="{Binding RedoCommand}"></MenuItem>
+                <MenuItem Header="_Undo" x:Name="Undo" InputGestureText="Alt+Z" Command="{Binding UndoCommand}"></MenuItem> 
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
