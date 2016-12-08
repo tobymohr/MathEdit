@@ -4,15 +4,30 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System;
+using MathEdit.ViewModels;
 
 namespace MathEdit.Views
 {
     /// <summary>
     /// Interaction logic for PowControl.xaml
     /// </summary>
-    public partial class PowControl : UserControl
+    public partial class PowControl : UserControl, MathControl
     {
-        public PowModel model { get; set; }
+        private Operation model;
+
+        Operation MathControl.model
+        {
+            get
+            {
+                return model;
+            }
+
+            set
+            {
+                model = value;
+            }
+        }
+
         public PowControl(EnabledFlowDocument parent)
         {
             model = new PowModel(parent);
@@ -32,9 +47,10 @@ namespace MathEdit.Views
 
         public void setUIWidth()
         {
-            pow.Width = model.powWidth;
-            number.Width = model.numberWidth;
-            TrackSurface.Width = model.outerWidth;
+            PowModel pM = (PowModel)model;
+            pow.Width = pM.powWidth;
+            number.Width = pM.numberWidth;
+            TrackSurface.Width = pM.outerWidth;
         }
     }
 }

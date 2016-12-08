@@ -1,16 +1,32 @@
 ﻿using MathEdit.Model;
+using MathEdit.ViewModels;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System;
 
 namespace MathEdit.Views
 {
     /// <summary>
     /// Interaction logic for SquareControl.xaml
     /// </summary>
-    public partial class SquareControl : UserControl
+    public partial class SquareControl : UserControl, MathControl
     {
-        public SquareModel model { get; set; }
+        private Operation model;
+
+        Operation MathControl.model
+        {
+            get
+            {
+                return model;
+            }
+
+            set
+            {
+                model = value;
+            }
+        }
+
         public SquareControl(EnabledFlowDocument parent)
         {
             model = new SquareModel(parent);
@@ -29,8 +45,9 @@ namespace MathEdit.Views
 
         private void setUIWidth()
         {
-            numberBox.Width = model.numberWidth + 20;
-            TrackSurface.Width = model.outerWidth + 20;
+            SquareModel sM = (SquareModel)model;
+            numberBox.Width = sM.numberWidth + 20;
+            TrackSurface.Width = sM.outerWidth + 20;
         }
     }
 }

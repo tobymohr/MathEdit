@@ -13,6 +13,8 @@ namespace MathEdit.Model
         abstract public ListOfEnabledDocs ListOfEnabledDocs { get; set; }
         abstract public int parPosition { get; set; }
         abstract public int blockPosition { get; set; }
+        [XmlIgnore]
+        abstract public EnabledFlowDocument getParent { get; }
 
         public virtual double getTotalWidth(EnabledFlowDocument model)
         {

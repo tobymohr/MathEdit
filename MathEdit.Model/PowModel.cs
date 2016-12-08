@@ -14,10 +14,10 @@ namespace MathEdit.Model
         private int margin =10;
         private int _parPostion = 0;
         private int _blockPosition = 0;
-        private EnabledFlowDocument parent;
+        private EnabledFlowDocument _parent;
         public PowModel(EnabledFlowDocument parent)
         {
-            this.parent = parent;
+            _parent = parent;
             outerWidth = minWidth;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
@@ -26,9 +26,13 @@ namespace MathEdit.Model
         {
 
         }
-        public EnabledFlowDocument getParent()
+
+        public override EnabledFlowDocument getParent
         {
-            return parent;
+            get
+            {
+                return _parent;
+            }
         }
 
         public double powWidth { get { return getTotalWidth(_boxes.ElementAt(0)) + margin; } }
@@ -90,5 +94,7 @@ namespace MathEdit.Model
                 _blockPosition = value;
             }
         }
+
+      
     }
 }

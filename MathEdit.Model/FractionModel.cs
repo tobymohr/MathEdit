@@ -11,7 +11,7 @@ namespace MathEdit.Model
     {
         private double _outerWidth;
         private ListOfEnabledDocs _boxes;
-        private EnabledFlowDocument parent;
+        private EnabledFlowDocument _parent;
         private int _parPostion = 0;
         private int _blockPosition = 0;
 
@@ -22,16 +22,20 @@ namespace MathEdit.Model
 
         public FractionModel(EnabledFlowDocument parent)
         {
-            this.parent = parent;
+            _parent = parent;
             outerWidth = 70;
             ListOfEnabledDocs = new ListOfEnabledDocs { new EnabledFlowDocument(""), new EnabledFlowDocument("") };
         }
 
-        public EnabledFlowDocument getParent()
+
+        public override EnabledFlowDocument getParent
         {
-            return parent;
+            get
+            {
+                return _parent;
+            }
         }
-       
+
 
         public double numenatorWidth { get { return getTotalWidth(ListOfEnabledDocs.ElementAt(0)) + 10; } }
         public double denumenatorWidth { get { return getTotalWidth(ListOfEnabledDocs.ElementAt(1)) + 10; } }
@@ -89,5 +93,7 @@ namespace MathEdit.Model
                 _blockPosition = value;
             }
         }
+
+       
     }
 }

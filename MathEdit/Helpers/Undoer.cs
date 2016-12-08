@@ -1,4 +1,5 @@
 ﻿using MathEdit.Model;
+using MathEdit.ViewModels;
 using MathEdit.Views;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace MathEdit.Helpers
         public Undoer(FractionControl txtBox)
         {
             this.txtBox = txtBox;
-            LastData.Add(txtBox.model);
+            MathControl model = txtBox as MathControl;
+            LastData.Add(model.model);
         }
 
         public void undo_Click(object sender, EventArgs e)

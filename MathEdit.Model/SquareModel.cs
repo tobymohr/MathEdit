@@ -11,7 +11,7 @@ namespace MathEdit.Model
         private ListOfEnabledDocs _boxes;
         private double minWidth = 50;
         private double _outerWidth;
-        private EnabledFlowDocument parent;
+        private EnabledFlowDocument _parent;
         private int _parPostion = 0;
         private int _blockPosition = 0;
         public SquareModel()
@@ -21,14 +21,19 @@ namespace MathEdit.Model
 
         public SquareModel(EnabledFlowDocument parent)
         {
-            this.parent = parent;
+            _parent = parent;
             outerWidth = minWidth;
             _boxes = new ListOfEnabledDocs { new EnabledFlowDocument("") };
         }
 
-        public EnabledFlowDocument getParent()
+       
+
+        public override EnabledFlowDocument getParent
         {
-            return parent;
+            get
+            {
+                return _parent;
+            }
         }
 
         public double numberWidth { get { return getTotalWidth(_boxes.ElementAt(0)); } }
@@ -90,5 +95,7 @@ namespace MathEdit.Model
                 _blockPosition = value;
             }
         }
+
+      
     }
 }
