@@ -12,31 +12,7 @@ namespace MathEdit.Helpers
     /* Filesystem IO */
     class DocumentHelper
     {
-        public void saveDoc(byte[] binaryFlowDocument, string fileName)
-        {
-            // build document while preparing
-            if (fileName != "")
-            {
-                File.WriteAllBytes(fileName, binaryFlowDocument);
-            }
-            else
-            {
-                SaveFileDialog saveDialog = new SaveFileDialog();
-                saveDialog.FileName = "Sheet";
-                saveDialog.DefaultExt = ".xml";
-                saveDialog.Filter = "XML Files|*.xml";
-
-                bool? result = saveDialog.ShowDialog();
-                if (result == true)
-                {
-                    File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
-                }
-            }
-        }
-
-
-
-        public void saveAsDoc(byte[] binaryFlowDocument)
+        public string getSaveDialog()
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.FileName = "Sheet";
@@ -46,7 +22,20 @@ namespace MathEdit.Helpers
             bool? result = saveDialog.ShowDialog();
             if (result == true)
             {
-                File.WriteAllBytes(saveDialog.FileName, binaryFlowDocument);
+                return saveDialog.FileName;
+            }
+            return null;
+        }
+          
+        public void saveDoc(byte[] binaryFlowDocument, string fileName)
+        {
+            try
+            {
+                File.WriteAllBytes(fileName, binaryFlowDocument);
+            }
+            catch (IOException e)
+            {
+                System.Diagnostics.Debug.WriteLine("Noget gik galt i gemme processen" + e.InnerException);
             }
         }
 
