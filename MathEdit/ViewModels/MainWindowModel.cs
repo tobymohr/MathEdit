@@ -661,7 +661,6 @@ namespace MathEdit.ViewModels
             if (dialogResult != null || fileName != "")
             {
                 fileName = dialogResult;
-                // Queue for execution, await serialization
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
                 saveExecute.Execute(null);
             }
@@ -681,7 +680,6 @@ namespace MathEdit.ViewModels
             if (dialogResult != null)
             {
                 fileName = dialogResult;
-                // Queue for execution, await serialization
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
                 saveExecute.Execute(null);
             }
