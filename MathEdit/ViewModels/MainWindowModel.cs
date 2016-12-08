@@ -115,7 +115,6 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.visibility, value); }
         }
 
-
         public string FontSize
         {
             get { return this.fontSize; }
@@ -338,8 +337,10 @@ namespace MathEdit.ViewModels
             FractionControl fControl = new FractionControl(parentFd);
             MathControl icontrol = fControl as MathControl;
             setupDoc(parentBox, fControl, icontrol.model);
+            startEnabledFlowDoc(parentFd);
             addFormula(fControl, "fraction");
         }
+
 
         private void createNewPowControl(object sender)
         {
@@ -349,6 +350,7 @@ namespace MathEdit.ViewModels
             PowControl pControl = new PowControl(parentFd);
             MathControl icontrol = pControl as MathControl;
             setupDoc(parentBox, pControl, icontrol.model);
+            startEnabledFlowDoc(parentFd);
             addFormula(pControl, "power");
         }
 
@@ -360,6 +362,7 @@ namespace MathEdit.ViewModels
             SquareControl sControl = new SquareControl(parentFd);
             MathControl icontrol = sControl as MathControl;
             setupDoc(parentBox, sControl, icontrol.model);
+            startEnabledFlowDoc(parentFd);
             addFormula(sControl, "square");
         }
 
@@ -427,6 +430,14 @@ namespace MathEdit.ViewModels
             }
         }
 
+
+        private void startEnabledFlowDoc(EnabledFlowDocument doc)
+        {
+            Paragraph p = doc.Blocks.LastBlock as Paragraph;
+            Run run = new Run(" ");
+            p.Inlines.Add(run);
+        }
+
         private void bold_Click(object sender)
         {
             parentTb = (RichTextBox)FocusManager.GetFocusedElement(focusedObj);
@@ -483,7 +494,7 @@ namespace MathEdit.ViewModels
         private void openDocInGUI(EnabledFlowDocument currentDocument, EnabledFlowDocument loadDoc)
         {
             Paragraph par = null;
-            if(loadDoc.text != "")
+            if(loadDoc.text != " " && loadDoc.text != "")
             {
                 Run run = new Run(loadDoc.text);
                 par = new Paragraph();
@@ -496,8 +507,6 @@ namespace MathEdit.ViewModels
             foreach (Operation op in loadDoc.childrenOperations.ToList<Operation>())
             {
                 UIElement element = GetUIElementForType(op, currentDocument);
-                Console.WriteLine(op.GetType());
-               
                 if (prevBlockPos != op.blockPosition)
                 {
                     prevBlockPos = op.blockPosition;
@@ -628,9 +637,10 @@ namespace MathEdit.ViewModels
                             Operation model = null;
                             InlineUIContainer container = (InlineUIContainer)inline;
                             MathControl contrl = container.Child as MathControl;
-                            model = contrl.model;
+                        
                             if (model != null)
                             {
+                                model = contrl.model;
                                 model.blockPosition = blockCounter;
                                 model.parPosition = parCounter;
                                 foreach (EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)

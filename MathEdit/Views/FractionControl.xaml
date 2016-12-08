@@ -12,7 +12,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <RichTextBox  x:Name="numenatorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2" Width="{Binding numenatorWidth}"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
+        <RichTextBox  x:Name="numeratorTextBox" Grid.Column="0" Grid.Row="0" Margin="0,0,0,2" Width="{Binding numeratorWidth}"  MinWidth="15"  MinHeight="10" HorizontalAlignment="Stretch" VerticalAlignment="Top"  >
             <FlowDocument>
                 <Paragraph>
                     <Run Text=" "/>
@@ -29,7 +29,7 @@
             </Path.Data>
         </Path>
 
-        <RichTextBox x:Name="denumenatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0" Width="{Binding denumenatorWidth}"   MinWidth="15" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
+        <RichTextBox x:Name="denominatorTextBox" Grid.Column="0" Grid.Row="2" Margin="0,2,0,0" Width="{Binding denominatorWidth}"   MinWidth="15" MinHeight="10" HorizontalAlignment="Stretch"  VerticalAlignment="Bottom"   >
             <FlowDocument>
                 <Paragraph>
                     <Run Text=" "/>

@@ -35,8 +35,6 @@ namespace MathEdit.Views
             numberBox.Document = model.ListOfEnabledDocs.ElementAt(0);
             numberBox.TextChanged += onChange;
             setUIWidth();
-            
-            
         }
 
         public void onChange(object sender, RoutedEventArgs e)
