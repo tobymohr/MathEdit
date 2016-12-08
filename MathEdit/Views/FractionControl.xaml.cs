@@ -27,6 +27,7 @@ namespace MathEdit.Views
                 this.model = value;
             }
         }
+
         public FractionControl(EnabledFlowDocument parent)
         {
             model = new FractionModel(parent);
