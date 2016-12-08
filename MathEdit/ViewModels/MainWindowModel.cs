@@ -245,14 +245,28 @@ namespace MathEdit.ViewModels
                 {
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Add(fControl.model);
-                    Paragraph par = new Paragraph();
-                    par.Inlines.Add(fControl);
-                    fControl.model.getParent().Blocks.Add(par);
-                    //Mangler bestemt position
+                    Paragraph p = fControl.model.getParent().Blocks.ElementAt(fControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer {Child = fControl};
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(fControl.model.parPosition),container);
                 }
                 else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Add(pControl.model);
+                    Paragraph p = pControl.model.getParent().Blocks.ElementAt(pControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = pControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(pControl.model.parPosition), container);
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Add(sControl.model);
+                    Paragraph p = sControl.model.getParent().Blocks.ElementAt(sControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = sControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(sControl.model.parPosition), container);
                 }
             }
             else
@@ -264,6 +278,8 @@ namespace MathEdit.ViewModels
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Remove(fControl.model);
                     //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
                     foreach (Block b in fControl.model.getParent().Blocks)
                     {
                         if (b is Paragraph)
@@ -273,21 +289,85 @@ namespace MathEdit.ViewModels
                             {
                                 if (inline is InlineUIContainer)
                                 {
-                                    InlineUIContainer UIc = (InlineUIContainer) inline;
-                                    if (UIc.Child == fControl)
+                                    InlineUIContainer uic = (InlineUIContainer) inline;
+                                    if (uic.Child == fControl)
                                     {
-                                        UIc.Child = null;
+                                        fControl.model.parPosition = inlinePosition;
+                                        fControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
                                         return;
                                     }
                                 }
+                                inlinePosition++;
                             }
                         }
-                        
+                        blockPosition++;
                     }
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-                    
+                    //Fjerner child fra EnabledFlowDocument
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Remove(pControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in pControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == pControl)
+                                    {
+                                        pControl.model.parPosition = inlinePosition;
+                                        pControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
+
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    //Fjerner child fra EnabledFlowDocument
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Remove(sControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in sControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == sControl)
+                                    {
+                                        sControl.model.parPosition = inlinePosition;
+                                        sControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
                 }
                 
             }
@@ -566,13 +646,69 @@ namespace MathEdit.ViewModels
         private void saveDoc(object sender)
         {
             MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, false);
+            DocumentHelper helper = new DocumentHelper();
+            string dialogResult = null;
+
+            // Serialize while operating fileDialog
+            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
+
+            // Get dialog if first save.
+            if (fileName == "")
+            {
+                dialogResult = helper.getSaveDialog();
+            }
+
+            // Check if FileName is set, if not - cancel
+            if (dialogResult != null || fileName != "")
+            {
+                fileName = dialogResult;
+                // Queue for execution, await serialization
+                var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+            }
+
         }
 
         private void saveAsDoc(object sender)
         {
             MainFlowDocument = sender as EnabledFlowDocument;
-            serializeDocument(MainFlowDocument, true);
+            DocumentHelper helper = new DocumentHelper();
+            string dialogResult = null;
+
+            // Serialize while operating fileDialog
+            var serializationCommand = new AsyncRelayCommand<object>(serializeDocument, (a) => { return !this.isSaving; });
+
+            // Get dialog
+            dialogResult = helper.getSaveDialog();
+
+            // Save if user did not cancel
+            if (dialogResult != null)
+            {
+                fileName = dialogResult;
+                // Queue for execution, await serialization
+                var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
+            }
+        }
+
+        private void serializeDocument(object sender)
+        {
+            String finalXml;
+            var utf8NoBom = new UTF8Encoding(false);
+            setPositions(MainFlowDocument);
+            ListOfEnabledDocs docs = new ListOfEnabledDocs { MainFlowDocument };
+            var xmlSerializer = new XmlSerializer(docs.GetType());
+            var stringBuilder = new StringBuilder();
+            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings { Indent = true, Encoding = utf8NoBom });
+            xmlSerializer.Serialize(xmlTextWriter, docs);
+            finalXml = stringBuilder.ToString();
+            finalXml = finalXml.Replace("&#xA", "");
+            finalXml = finalXml.Replace("&#xD;;", "");
+            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);           
+        }
+
+        private void saveAsync(object sender)
+        {
+            DocumentHelper helper = new DocumentHelper();
+            helper.saveDoc(BinaryFlowDocument, fileName);
         }
 
         private void setPositions(EnabledFlowDocument document)
@@ -594,7 +730,7 @@ namespace MathEdit.ViewModels
                             {
                                 FractionControl f = (FractionControl)container.Child;
                                 model = f.model;
-                               
+
                             }
                             else if (container.Child is SquareControl)
                             {
@@ -629,43 +765,6 @@ namespace MathEdit.ViewModels
 
         }
 
-        private void serializeDocument(EnabledFlowDocument document, bool isSaveAsCaller)
-        {
-            String finalXml;
-            var utf8NoBom = new UTF8Encoding(false);
-            setPositions(document);
-            ListOfEnabledDocs docs = new ListOfEnabledDocs { document };
-            var xmlSerializer = new XmlSerializer(docs.GetType());
-            var stringBuilder = new StringBuilder();
-            var xmlTextWriter = XmlTextWriter.Create(stringBuilder, new XmlWriterSettings {  Indent = true, Encoding = utf8NoBom });
-            xmlSerializer.Serialize(xmlTextWriter, docs);
-            finalXml = stringBuilder.ToString();
-            finalXml = finalXml.Replace("&#xA", "");
-            finalXml = finalXml.Replace("&#xD;;", "");
-            BinaryFlowDocument = Encoding.ASCII.GetBytes(finalXml);
-            if (isSaveAsCaller)
-            {
-                var command = new AsyncRelayCommand<object>(saveAsAsync, (a) => { return !this.isSaving; });
-                command.Execute(BinaryFlowDocument);
-            }
-            else
-            {
-                var command = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                command.Execute(BinaryFlowDocument);
-            }
-        }
-
-        private void saveAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveDoc(BinaryFlowDocument, fileName);
-        }
-
-        private void saveAsAsync(object sender)
-        {
-            DocumentHelper helper = new DocumentHelper();
-            helper.saveAsDoc(BinaryFlowDocument);
-        }
         #endregion
 
 
