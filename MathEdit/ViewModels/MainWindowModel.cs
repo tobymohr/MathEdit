@@ -244,9 +244,9 @@ namespace MathEdit.ViewModels
                 {
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Add(fControl.model);
-                    Paragraph par = new Paragraph();
-                    par.Inlines.Add(fControl);
-                    fControl.model.getParent().Blocks.Add(par);
+                    //par.Inlines.Add(fControl);
+                    Paragraph p = fControl.model.getParent().Blocks.ElementAt(fControl.model.blockPosition) as Paragraph;
+                    //p.Inlines.ElementAt(fControl.)
                     //Mangler bestemt position
                 }
                 else if (uro.Uc.GetType() == typeof(PowControl))
@@ -263,6 +263,8 @@ namespace MathEdit.ViewModels
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Remove(fControl.model);
                     //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
                     foreach (Block b in fControl.model.getParent().Blocks)
                     {
                         if (b is Paragraph)
@@ -272,16 +274,19 @@ namespace MathEdit.ViewModels
                             {
                                 if (inline is InlineUIContainer)
                                 {
-                                    InlineUIContainer UIc = (InlineUIContainer) inline;
-                                    if (UIc.Child == fControl)
+                                    InlineUIContainer uic = (InlineUIContainer) inline;
+                                    if (uic.Child == fControl)
                                     {
-                                        UIc.Child = null;
+                                        fControl.model.parPosition = inlinePosition;
+                                        fControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
                                         return;
                                     }
                                 }
+                                inlinePosition++;
                             }
                         }
-                        
+                        blockPosition++;
                     }
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
