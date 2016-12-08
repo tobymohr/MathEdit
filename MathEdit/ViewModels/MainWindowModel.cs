@@ -246,14 +246,28 @@ namespace MathEdit.ViewModels
                 {
                     FractionControl fControl = (FractionControl)uro.Uc;
                     fControl.model.getParent().childrenOperations.Add(fControl.model);
-                    //par.Inlines.Add(fControl);
                     Paragraph p = fControl.model.getParent().Blocks.ElementAt(fControl.model.blockPosition) as Paragraph;
-                    //p.Inlines.ElementAt(fControl.)
-                    //Mangler bestemt position
+                    InlineUIContainer container = new InlineUIContainer {Child = fControl};
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(fControl.model.parPosition),container);
                 }
                 else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Add(pControl.model);
+                    Paragraph p = pControl.model.getParent().Blocks.ElementAt(pControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = pControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(pControl.model.parPosition), container);
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Add(sControl.model);
+                    Paragraph p = sControl.model.getParent().Blocks.ElementAt(sControl.model.blockPosition) as Paragraph;
+                    InlineUIContainer container = new InlineUIContainer { Child = sControl };
+                    container.Unloaded += presenter_Unloaded;
+                    p.Inlines.InsertBefore(p.Inlines.ElementAt(sControl.model.parPosition), container);
                 }
             }
             else
@@ -293,7 +307,68 @@ namespace MathEdit.ViewModels
 
                 }else if (uro.Uc.GetType() == typeof(PowControl))
                 {
-                    
+                    //Fjerner child fra EnabledFlowDocument
+                    PowControl pControl = (PowControl)uro.Uc;
+                    pControl.model.getParent().childrenOperations.Remove(pControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in pControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == pControl)
+                                    {
+                                        pControl.model.parPosition = inlinePosition;
+                                        pControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
+
+                }
+                else if (uro.Uc.GetType() == typeof(SquareControl))
+                {
+                    //Fjerner child fra EnabledFlowDocument
+                    SquareControl sControl = (SquareControl)uro.Uc;
+                    sControl.model.getParent().childrenOperations.Remove(sControl.model);
+                    //Fjerner det fra UI
+                    int blockPosition = 0;
+                    int inlinePosition = 0;
+                    foreach (Block b in sControl.model.getParent().Blocks)
+                    {
+                        if (b is Paragraph)
+                        {
+                            Paragraph p = (Paragraph)b;
+                            foreach (Inline inline in p.Inlines)
+                            {
+                                if (inline is InlineUIContainer)
+                                {
+                                    InlineUIContainer uic = (InlineUIContainer)inline;
+                                    if (uic.Child == sControl)
+                                    {
+                                        sControl.model.parPosition = inlinePosition;
+                                        sControl.model.blockPosition = blockPosition;
+                                        uic.Child = null;
+                                        return;
+                                    }
+                                }
+                                inlinePosition++;
+                            }
+                        }
+                        blockPosition++;
+                    }
                 }
                 
             }
@@ -303,13 +378,13 @@ namespace MathEdit.ViewModels
 
         #region Menu Item calls
 
-        private void setupDoc(RichTextBox parentTb)
+        private void setupDoc(RichTextBox parentTb, UIElement element, Operation model)
         {
-            FlowDocument parentFd;
-          
+            EnabledFlowDocument parentFd;
+
             if (parentTb.Document.GetType() == typeof(EnabledFlowDocument))
             {
-                parentFd = parentTb.Document;
+                parentFd = (EnabledFlowDocument)parentTb.Document;
             }
             else
             {
@@ -317,84 +392,13 @@ namespace MathEdit.ViewModels
                 parentFd.Blocks.Add(bU);
                 parentTb.Document = parentFd;
             }
-        }
 
-        private Paragraph insertOnParagraph(RichTextBox parentTb, TextPointer position)
-        {
-            EnabledFlowDocument parentFd = (EnabledFlowDocument) parentTb.Document;
-            Paragraph para = null;
-            
-            if (position.Parent.GetType() != typeof(Paragraph) && position.Parent.GetType() != typeof(Run))
-            {
-                para = new Paragraph();
-                parentFd.Blocks.Add(para);
-               
-            }else
-            {
-                if(position.Parent.GetType() == typeof(Run))
-                {
-                    Run run = (Run)position.Parent;
-                    Console.WriteLine(run.Parent.GetType());
-                    para = (Paragraph)run.Parent;
-                }
-                else
-                {
-                    para = (Paragraph)position.Parent;
-                }
-            }
-            return para;
-        }
-
-        void SetIntPosition(int intPosition, RichTextBox rtb)
-        {
-            TextPointer currentPosition = rtb.Document.ContentStart;
-            for (int i = 0; i < intPosition; i++)
-            {
-                currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
-            }
-
-            if(currentPosition == null)
-            {
-                currentPosition = rtb.Document.ContentStart;
-            }
-            rtb.CaretPosition = currentPosition;
-        }
-
-        int GetIntPosition(TextPointer pointerPosition, RichTextBox rtb)
-        {
-            int intPosition = 0;
-            TextPointer currentPosition = rtb.Document.ContentStart;
-                while (currentPosition.CompareTo(pointerPosition) != 0)
-                {
-                    intPosition++;
-                    currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
-                    if(currentPosition == null)
-                    {
-                        break;
-                    }
-            }
-            return intPosition;
-        }
-
-        private void createNewFractionControl()
-        {
-            Paragraph para = null;
-            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
-            RichTextBox parentBox = focusedControl as RichTextBox;
-            setupDoc(parentBox);
-            TextPointer position = parentBox.CaretPosition;
-            para = insertOnParagraph(parentBox, position);
-            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
-            FractionControl fControl = new FractionControl(parentFd);
-            InlineUIContainer container = new InlineUIContainer();
-            container.Child = fControl;
+            InlineUIContainer container = new InlineUIContainer(element, parentTb.CaretPosition);
             container.Unloaded += presenter_Unloaded;
-            parentFd.childrenOperations.Add(fControl.model);
-            para.Inlines.Add(container);
-            
-            //latestOperation = fControl.model;
-            addFormula(fControl,"fraction");
+            parentFd.childrenOperations.Add(model);
         }
+
+    
 
         void presenter_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -419,40 +423,37 @@ namespace MathEdit.ViewModels
             Console.WriteLine(container.Child.GetType());
             Console.WriteLine(model.ListOfEnabledDocs.ElementAt(0).text);
 
+
+        }
+
+        private void createNewFractionControl()
+        {
+            IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
+            RichTextBox parentBox = focusedControl as RichTextBox;
+            EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
+            FractionControl fControl = new FractionControl(parentFd);
+            setupDoc(parentBox, fControl, fControl.model);
+            addFormula(fControl, "fraction");
         }
 
         private void createNewPowControl()
         {
-            Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
-            setupDoc(parentBox);
-            TextPointer position = parentBox.CaretPosition;
-            para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             PowControl pControl = new PowControl(parentFd);
-            InlineUIContainer container = new InlineUIContainer();
-            container.Child = pControl;
-            container.Unloaded += presenter_Unloaded;
-            parentFd.childrenOperations.Add(pControl.model);
-            para.Inlines.Add(container);
+            setupDoc(parentBox, pControl, pControl.model);
+            addFormula(pControl, "power");
         }
 
         private void createNewSqrtControl()
         {
-            Paragraph para = null;
             IInputElement focusedControl = FocusManager.GetFocusedElement(focusedObj);
             RichTextBox parentBox = focusedControl as RichTextBox;
-            setupDoc(parentBox);
-            TextPointer position = parentBox.CaretPosition;
-            para = insertOnParagraph(parentBox, position);
             EnabledFlowDocument parentFd = parentBox.Document as EnabledFlowDocument;
             SquareControl sControl = new SquareControl(parentFd);
-            InlineUIContainer container = new InlineUIContainer();
-            container.Child = sControl;
-            container.Unloaded += presenter_Unloaded;
-            parentFd.childrenOperations.Add(sControl.model);
-            para.Inlines.Add(container);
+            setupDoc(parentBox, sControl, sControl.model);
+            addFormula(sControl, "square");
         }
 
         private void changeFontSize(object sender)
@@ -595,7 +596,10 @@ namespace MathEdit.ViewModels
                 {
                     prevBlockPos = op.blockPosition;
                     par = new Paragraph();
-                    par.Inlines.Add(element);
+                    InlineUIContainer container = new InlineUIContainer();
+                    container.Child = element;
+                    container.Unloaded += presenter_Unloaded;
+                    par.Inlines.Add(container);
                     currentDocument.Blocks.Add(par);
                 }else
                 {
@@ -738,12 +742,16 @@ namespace MathEdit.ViewModels
                                 PowControl f = (PowControl)container.Child;
                                 model = f.model;
                             }
-                            model.blockPosition = blockCounter;
-                            model.parPosition = parCounter;
-                            foreach (EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                            if (model != null)
                             {
-                                setPositions(tempDoc);
+                                model.blockPosition = blockCounter;
+                                model.parPosition = parCounter;
+                                foreach (EnabledFlowDocument tempDoc in model.ListOfEnabledDocs)
+                                {
+                                    setPositions(tempDoc);
+                                }
                             }
+                           
                         }
                         else if (inline is Run)
                         {
