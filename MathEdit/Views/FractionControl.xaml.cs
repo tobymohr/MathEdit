@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System;
 using MathEdit.ViewModels;
+using System.Windows.Documents;
 
 namespace MathEdit.Views
 {
