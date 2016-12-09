@@ -89,7 +89,7 @@ namespace MathEdit.ViewModels
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
-            fontSizeIndex = 1;
+            fontSizeIndex = 2;
             isBoldChecked = false;
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
