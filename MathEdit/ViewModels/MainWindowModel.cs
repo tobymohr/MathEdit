@@ -43,15 +43,15 @@ namespace MathEdit.ViewModels
 
         public FlowDocumentModel documentModel;
         public EnabledFlowDocument mainFlowDocument;
-        public BlockUIContainer bU = new BlockUIContainer();
+        public BlockUIContainer bU;
 
-        public string fileName { get; set; }
         public HotkeyMenu hotKeys { get; set; }
         public bool isSaving { get; set; }
         public RichTextBox parentTb { get; set; }
         public int rtbCount { get; set; }
         public double minWidth { get; set; }
         public MainWindow focusedObj;
+        private string fileName;
         private string fontSize;
         private int fontSizeIndex;
         private bool isBoldChecked;
@@ -64,9 +64,9 @@ namespace MathEdit.ViewModels
 
         public MainWindowModel()
         {
-            this.SaveCommand = new RelayCommand<object>(this.saveDoc);
+            this.SaveCommand = new RelayCommand<object>(this.saveDoc); // Async IO declaration in method
             this.OpenCommand = new RelayCommand<object>(this.openDoc);
-            this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc);
+            this.SaveAsCommand = new RelayCommand<object>(this.saveAsDoc); // Async IO declaration in method
             this.OpenHotkeysCommand = new RelayCommand<object>(this.openHotKeys);
             this.OpenSettingsCommand = new RelayCommand<object>(this.openSettings);
             this.ToggleBold = new RelayCommand<object>(this.bold_Click);
@@ -82,10 +82,11 @@ namespace MathEdit.ViewModels
             this.RedoCommand = new RelayCommand<object>(this.redoOperation);
             this.NewCommand = new RelayCommand<object>(this.newDocument);
 
+            bU = new BlockUIContainer();
             documentModel = new FlowDocumentModel();
             mainFlowDocument = documentModel.mainFlowDocument;
-            fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
+            fileName = "";
             rtbCount = 0;
             minWidth = 0;
             fontSizeIndex = 2;
@@ -613,10 +614,8 @@ namespace MathEdit.ViewModels
 
         private void saveAsync(object sender)
         {
-
             DocumentHelper helper = new DocumentHelper();
             helper.saveDoc(FlowDocumentBytes, fileName);
-
         }
 
         private void setPositions(EnabledFlowDocument document)
@@ -657,11 +656,7 @@ namespace MathEdit.ViewModels
                 }
                 blockCounter++;
             }
-
         }
-
         #endregion
-
-
     }
 }
