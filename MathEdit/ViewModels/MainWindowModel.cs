@@ -84,12 +84,11 @@ namespace MathEdit.ViewModels
 
             documentModel = new FlowDocumentModel();
             mainFlowDocument = documentModel.mainFlowDocument;
-
             fileName = "";
             focusedObj = (MainWindow)System.Windows.Application.Current.MainWindow;
             rtbCount = 0;
             minWidth = 0;
-            fontSizeIndex = 1;
+            fontSizeIndex = 2;
             isBoldChecked = false;
             isItalicChecked = false;
             visibility = Visibility.Collapsed;
@@ -233,13 +232,21 @@ namespace MathEdit.ViewModels
                         controlModel.model.getParent.Blocks.ElementAt(controlModel.model.blockPosition) as Paragraph;
                     InlineUIContainer container = new InlineUIContainer { Child = tempUserControl };
                     container.Unloaded += UserControl_Unloaded;
-                    p.Inlines.InsertBefore(p.Inlines.ElementAt(controlModel.model.parPosition), container);
+                    int pos = controlModel.model.parPosition;
+                    if (p.Inlines.Count == 0 || pos>=p.Inlines.Count)
+                    {
+                        p.Inlines.Add(container);
+                    }
+                    else
+                    {
+                        p.Inlines.InsertBefore(p.Inlines.ElementAt(pos), container);
+                    }
                 }
                 else
                 {
                     //Hvis textPointer er sat, så er modellen position ikke, derfor brug textPointer
                     InlineUIContainer container = new InlineUIContainer(tempUserControl, uro.TextPointer);
-                    container.Unloaded += UserControl_Unloaded;
+                   container.Unloaded += UserControl_Unloaded;
                 }
             }
             else
@@ -263,7 +270,9 @@ namespace MathEdit.ViewModels
                                     {
                                         controlModel.model.parPosition = inlinePosition;
                                         controlModel.model.blockPosition = blockPosition;
+                                        inline.Unloaded -= UserControl_Unloaded;
                                         uic.Child = null;
+                                        p.Inlines.Remove(inline);
                                         return;
                                     }
                                 }
@@ -304,9 +313,8 @@ namespace MathEdit.ViewModels
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             InlineUIContainer container = sender as InlineUIContainer;
-            MathControl ctrlmodel = container.Child as MathControl;
-            if (ctrlmodel.model != null)
-            {
+            if(container.Child != null) { 
+                MathControl ctrlmodel = container.Child as MathControl;
                 Operation localmodel = ctrlmodel.model;
                 //Fjerner child fra parent og sætter position
                 localmodel.getParent.childrenOperations.Remove(localmodel);
