@@ -62,7 +62,6 @@ namespace MathEdit.ViewModels
         private double zoomValue;
         private UndoRedo undoRedo;
 
-
         public MainWindowModel()
         {
             this.SaveCommand = new RelayCommand<object>(this.saveDoc);
@@ -152,7 +151,6 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.zoomValue, value); }
         }
         #endregion
-
 
         #region hotKey calls
         private void openHotKeys(object sender)
