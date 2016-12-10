@@ -572,10 +572,14 @@ namespace MathEdit.ViewModels
             if (fileName != "")
             {
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                saveExecute.Execute(null);
+                if (this.isSaving == false)
+                    saveExecute.Execute(null);
+                else
+                    showErrorMessage("Something went wrong while saving, try again", "Save Error");
             }
-
         }
+
+   
 
         private void saveAsDoc(object sender)
         {
@@ -592,7 +596,10 @@ namespace MathEdit.ViewModels
             {
                 fileName = dialogResult;
                 var saveExecute = new AsyncRelayCommand<object>(saveAsync, (a) => { return !this.isSaving; });
-                saveExecute.Execute(null);
+                if(this.isSaving == false)
+                    saveExecute.Execute(null);
+                else
+                    showErrorMessage("Something went wrong while saving, try again", "Save Error");
             }
         }
 
@@ -656,6 +663,13 @@ namespace MathEdit.ViewModels
                 }
                 blockCounter++;
             }
+        }
+
+        private void showErrorMessage(string text, string caption)
+        {
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+            MessageBox.Show(text, caption, button, icon);
         }
         #endregion
     }
