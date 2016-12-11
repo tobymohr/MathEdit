@@ -45,7 +45,7 @@
                 <MenuItem Header="_Settings" Command="{Binding OpenSettingsCommand}" />
                 <MenuItem Header="_Hot Keys" Command="{Binding OpenHotkeysCommand}"/>
             </MenuItem>
-            <ComboBox x:Name="fontSizeBox" IsEditable="True" IsTextSearchEnabled="False" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}" IsDropDownOpen="{Binding FontDropOpen}">
+            <ComboBox x:Name="fontSizeBox" IsEditable="True" IsTextSearchEnabled="False" Width="40" Text="{Binding FontSize}" SelectedIndex="{Binding FontSizeIndex}">
                 <ComboBoxItem Content="5"/>
                 <ComboBoxItem Content="12"/>
                 <ComboBoxItem Content="16"/>

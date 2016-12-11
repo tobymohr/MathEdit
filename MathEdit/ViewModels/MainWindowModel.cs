@@ -57,7 +57,6 @@ namespace MathEdit.ViewModels
         private bool isBoldChecked;
         private Operation latestOperation;
         private bool isItalicChecked;
-        private bool dropDownOpen;
         private Visibility visibility;
         private double zoomValue;
         private UndoRedo undoRedo;
@@ -139,12 +138,6 @@ namespace MathEdit.ViewModels
             set { this.SetProperty(ref this.isItalicChecked, value); }
         }
 
-        public bool FontDropOpen
-        {
-            get { return this.dropDownOpen; }
-            set { this.SetProperty(ref this.dropDownOpen, value); }
-        }
-
         public double ZoomValue
         {
             get { return this.zoomValue; }
@@ -211,7 +204,7 @@ namespace MathEdit.ViewModels
             uro.Deleted = !uro.Deleted;
         }
 
-        private void addFormula(UserControl uc, string type)
+        private void addFormula(UserControl uc)
         {
             //undoRedoController.AddAndExecute(new AddFormulaCommand(formulas, latestOperation));
             //False means it is not being delete, therefore being created.
@@ -337,7 +330,7 @@ namespace MathEdit.ViewModels
             MathControl icontrol = fControl as MathControl;
             setupDoc(parentBox, fControl, icontrol.model);
             startEnabledFlowDoc(parentFd);
-            addFormula(fControl, "fraction");
+            addFormula(fControl);
         }
 
 
@@ -350,7 +343,7 @@ namespace MathEdit.ViewModels
             MathControl icontrol = pControl as MathControl;
             setupDoc(parentBox, pControl, icontrol.model);
             startEnabledFlowDoc(parentFd);
-            addFormula(pControl, "power");
+            addFormula(pControl);
         }
 
         private void createNewSqrtControl(object sender)
@@ -362,7 +355,7 @@ namespace MathEdit.ViewModels
             MathControl icontrol = sControl as MathControl;
             setupDoc(parentBox, sControl, icontrol.model);
             startEnabledFlowDoc(parentFd);
-            addFormula(sControl, "square");
+            addFormula(sControl);
         }
 
         private void changeFontSize(object sender)
